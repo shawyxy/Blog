@@ -1,6 +1,6 @@
 --- 
 title: 数据库基础（二）
-
+weight: 2
 open: true
 --- 
 

@@ -1,6 +1,6 @@
 ---
 title: 库的操作
-
+weight: 3
 open: true
 ---
 # 创建数据库

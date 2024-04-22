@@ -1,6 +1,6 @@
 ---
 title: 数据库基础（一）
-
+weight: 1
 open: true
 ---
 

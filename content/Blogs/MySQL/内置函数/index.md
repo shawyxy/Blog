@@ -1,6 +1,6 @@
 ---
 title: 内置函数
-
+weight: 8
 open: true
 ---
 # MySQL 内置函数

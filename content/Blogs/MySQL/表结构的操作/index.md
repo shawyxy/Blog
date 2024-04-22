@@ -1,6 +1,6 @@
 ---
 title: 表结构的操作
-
+weight: 4
 open: true
 ---
 阅读前导：

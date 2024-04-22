@@ -1,7 +1,6 @@
 ---
-title: C/C++
+title: "C/C++"
 type: folder
-
 cascade:
   _build:
     render: false

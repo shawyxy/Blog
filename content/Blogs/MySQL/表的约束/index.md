@@ -1,6 +1,6 @@
 ---
 title: 表的约束
-
+weight: 6
 open: true
 ---
 # 什么是约束
