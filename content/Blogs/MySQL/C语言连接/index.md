@@ -1,6 +1,9 @@
 ---
 title: C语言连接
-
+cascade:
+  _build:
+    render: false
+    list: false
 open: true
 ---
 

@@ -2,6 +2,9 @@
 title: C/C++
 type: folder
 
-sidebar: 
+cascade:
+  _build:
+    render: false
+    list: false
 open: true
 ---

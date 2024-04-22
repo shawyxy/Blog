@@ -1,6 +1,6 @@
 ---
 title: 索引
-
+math: true
 open: true
 ---
 # 什么是索引

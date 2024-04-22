@@ -2,6 +2,9 @@
 title: 计算机网络
 type: folder
 
-sidebar: 
+cascade:
+  _build:
+    render: false
+    list: false
 open: true
 ---
