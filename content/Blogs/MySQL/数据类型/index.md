@@ -124,7 +124,7 @@ mysql> create table t2(
     -> );
 ```
 
-![image-20231022210908555](./数据类型.IMG/image-20231022210908555.png)
+<img src="./数据类型.IMG/image-20231022210908555.png" alt="image-20231022210908555" style="zoom:33%;" />
 
 如果像第二条这样直接插入一个整数，而不是一个用`b''`包含的二进制序列，那么 MySQL 会将这个十进制整数转为二进制，也就是 10 转成二进制 1010。
 
@@ -201,7 +201,7 @@ mysql> create table t5(
     -> );
 ```
 
-![image-20231023185747509](./数据类型.IMG/image-20231023185747509.png)
+<img src="./数据类型.IMG/image-20231023185747509.png" alt="image-20231023185747509" style="zoom:33%;" />
 
 浮点数存储有精度损失，根本原因是二进制无法精确表示浮点数。
 
@@ -350,7 +350,7 @@ mysql> create table t8(
 
 查看表结构：
 
-![image-20231023203527157](./数据类型.IMG/image-20231023203527157.png)
+<img src="./数据类型.IMG/image-20231023203527157.png" alt="image-20231023203527157" style="zoom:33%;" />
 
 其中，timestamp 列属性不允许为 NULL，并且默认值为 CURRENT_TIMESTAMP，它的含义是：如果你在创建一个时间字段时，使用了 DEFAULT CURRENT_TIMESTAMP 或者 ON UPDATE CURRENT_TIMESTAMP，那么数据库会自动维护这个字段的值，不需要你手动指定。
 

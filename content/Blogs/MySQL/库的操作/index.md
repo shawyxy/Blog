@@ -313,7 +313,7 @@ mysql> show databases;
 9 rows in set (0.00 sec)
 ```
 
-![image-20231021234835215](./库的操作.IMG/image-20231021234835215.png)
+<img src="./库的操作.IMG/image-20231021234835215.png" alt="image-20231021234835215" style="zoom:33%;" />
 
 删除它：
 

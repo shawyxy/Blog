@@ -1817,7 +1817,7 @@ struct Span
 
 在 CentralCache::GetOneSpan() 获取新 Span 后，立即将它改为 true，注意要在桶锁中进行。
 
-![image-20240306185952551](./高并发内存池.IMG/image-20240306185952551.png)
+<img src="./高并发内存池.IMG/image-20240306185952551.png" alt="image-20240306185952551" style="zoom:33%;" />
 
 还有一个问题，CentralCache 在调用 PageHeap::ReleaseSpanToPageHeap() 向两边合并 Span 时，PageHeap 可能会访问 CentralCache 这个桶的任何一个 Span，包括 CentralCache 还回来的，和 PageHeap 刚分配给 CentralCache 的。
 
