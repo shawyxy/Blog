@@ -6,7 +6,7 @@ open: true
 ---
 {{< cards >}}
   {{< card link="/blogs/cpp/" title="C++" icon="folder" >}}
-  {{< card link="/blogs/data-structure-and-algorithm/" title="数据结构与算法" icon="folder" >}}
+  {{< card link="/blogs/data-structure/" title="数据结构" icon="folder" >}}
   {{< card link="/blogs/os/" title="操作系统" icon="folder" >}}
   {{< card link="/blogs/network/" title="计算机网络" icon="folder" >}}
   {{< card link="/blogs/mysql/" title="MySQL" icon="folder" >}}
