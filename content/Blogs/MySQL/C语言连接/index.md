@@ -43,7 +43,7 @@ g++ sql.cc -o sql -I/usr/include/mysql -L/usr/lib64/mysql -lmysqlclient
 - `-L`：用于指明库文件的搜索路径。
 - `-l`：用于指明需要连接库文件路径下的哪一个库。
 
-<img src="./C语言连接.IMG/image-20240227182921177.png" alt="image-20240227182921177" style="zoom:50%;" />
+<img src="./.C语言连接.IMG/image-20240227182921177.png" alt="image-20240227182921177" style="zoom:50%;" />
 
 因为这个库没有在链接的默认目录`/usr/lib64`下，所以作为第三方导入的库，在编译时需要显式地指定`-L/usr/lib64/mysql`；同理，头文件不在默认目录`/usr/include`下，所以要显式地指定`-I/usr/include/mysql`。在这个目录下，存在名为`mysqlclient`的第三方库，同样需要用`-l`显式地声明。
 
@@ -210,7 +210,7 @@ int main()
 
 编译并运行：
 
-<img src="./C语言连接.IMG/image-20240227190559910.png" alt="image-20240227190559910" style="zoom:50%;" />
+<img src="./.C语言连接.IMG/image-20240227190559910.png" alt="image-20240227190559910" style="zoom:50%;" />
 
 # 发送命令
 
@@ -272,7 +272,7 @@ int main()
 
 数据被成功插入到表中。
 
-<img src="./C语言连接.IMG/image-20240227193308014.png" alt="image-20240227193308014" style="zoom:50%;" />
+<img src="./.C语言连接.IMG/image-20240227193308014.png" alt="image-20240227193308014" style="zoom:50%;" />
 
 类似地，可以删除和修改记录：
 
@@ -280,13 +280,13 @@ int main()
 	string sql = "update account set balance=222 where id=2";
 ```
 
-<img src="./C语言连接.IMG/image-20240227193749866.png" alt="image-20240227193749866" style="zoom:50%;" />
+<img src="./.C语言连接.IMG/image-20240227193749866.png" alt="image-20240227193749866" style="zoom:50%;" />
 
 ```cpp
 	string sql = "delete from account where id=4";
 ```
 
-<img src="./C语言连接.IMG/image-20240227193844242.png" alt="image-20240227193844242" style="zoom:50%;" />
+<img src="./.C语言连接.IMG/image-20240227193844242.png" alt="image-20240227193844242" style="zoom:50%;" />
 
 # 查询记录
 
@@ -422,7 +422,7 @@ int main()
 }
 ```
 
-<img src="./C语言连接.IMG/image-20240227195504420.png" alt="image-20240227195504420" style="zoom:33%;" />
+<img src="./.C语言连接.IMG/image-20240227195504420.png" alt="image-20240227195504420" style="zoom:33%;" />
 
 # 参考资料
 

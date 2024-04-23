@@ -28,11 +28,11 @@ mysql> create table default_test(
 ```
 
 查看表结构：
-<img src="./表的约束.IMG/image-20231026175520595.png" alt="image-20231026175520595" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026175520595.png" alt="image-20231026175520595" style="zoom:50%;" />
 
 插入一条没有 name 属性的记录：
 
-<img src="./表的约束.IMG/image-20231026174132021.png" alt="image-20231026174132021" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026174132021.png" alt="image-20231026174132021" style="zoom:50%;" />
 
 在表已存在时添加DEFAULT约束：
 
@@ -66,7 +66,7 @@ alter table default_test change name name varchar(20);
 
 SELECT命令可以计算表达式的值：
 
-<img src="./表的约束.IMG/image-20231026180043606.png" alt="image-20231026180043606" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026180043606.png" alt="image-20231026180043606" style="zoom:50%;" />
 
 然而NULL 值是无法参与运算的，或者说 NULL 与任何值运算的结果都是 NULL。
 
@@ -87,13 +87,13 @@ mysql> create table null_test(
 ```
 
 查看表结构：
-<img src="./表的约束.IMG/image-20231026181118540.png" alt="image-20231026181118540" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026181118540.png" alt="image-20231026181118540" style="zoom:50%;" />
 
 说明在创建表时，属性的约束默认是 NULL。这意味着这个列可以存储空值或非空值。
 
 如果在插入时，不指定 tel 的值：
 
-<img src="./表的约束.IMG/image-20231026181256580.png" alt="image-20231026181256580" style="zoom: 50%;" />
+<img src="./.表的约束.IMG/image-20231026181256580.png" alt="image-20231026181256580" style="zoom: 50%;" />
 
 在这个表的基础上增加 tel 属性的约束为 NOT NULL：
 ```mysql
@@ -101,10 +101,10 @@ alter table null_test modify tel varchar(11) not null;
 ```
 
 查看表结构：
-<img src="./表的约束.IMG/image-20231026182341659.png" alt="image-20231026182341659" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026182341659.png" alt="image-20231026182341659" style="zoom:50%;" />
 
 插入数据：
-<img src="./表的约束.IMG/image-20231026182417715.png" alt="image-20231026182417715" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026182417715.png" alt="image-20231026182417715" style="zoom:50%;" />
 
 给表中某一列属性同时设置 not null 和 default ，它的意思是，这个列不能存储空值，只能存储非空值，而且如果没有为这个列提供值，那么它会自动赋值为 default 所指定的值。这个做法不是必要的，但是一种规范，因为 DEFAULT 就意味着它一定不是空的。
 
@@ -115,7 +115,7 @@ mysql> create table deft_null_test(
     -> );
 ```
 
-<img src="./表的约束.IMG/image-20231026183203203.png" alt="image-20231026183203203" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026183203203.png" alt="image-20231026183203203" style="zoom:50%;" />
 
 # COMMENT（注释约束）
 
@@ -132,7 +132,7 @@ mysql> create table comment_test(
 
 甚至还可以给表注释。这样就能方便维护时查看表的注释信息，可以使用：
 
-<img src="./表的约束.IMG/image-20231026184320467.png" alt="image-20231026184320467" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026184320467.png" alt="image-20231026184320467" style="zoom:50%;" />
 
 或者：
 
@@ -160,11 +160,11 @@ mysql> create table zerofill_test(
     -> );
 ```
 
-<img src="./表的约束.IMG/image-20231026185533933.png" alt="image-20231026185533933" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026185533933.png" alt="image-20231026185533933" style="zoom:50%;" />
 
 当然，zerofill 约束只是在显示时补充前导零，并不影响底层数据的存储方式。可以通过 hex()函数来验证。
 
-<img src="./表的约束.IMG/image-20231026185940726.png" alt="image-20231026185940726" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026185940726.png" alt="image-20231026185940726" style="zoom:50%;" />
 
 [注]hex()函数可以将一个数值或字符串转化为一个 16 进制的字符串。
 
@@ -195,7 +195,7 @@ mysql> create table uni_test(
     -> );
 ```
 
-<img src="./表的约束.IMG/image-20231026191341737.png" alt="image-20231026191341737" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026191341737.png" alt="image-20231026191341737" style="zoom:50%;" />
 
 Key 为 UNI 的列表示它是一个唯一键，唯一键是允许为空的。
 
@@ -208,7 +208,7 @@ ALTER TABLE uni_test DROP INDEX name;
 
 [注]如果删除的唯一约束列具有自增长约束，则必须先删除自增长约束，再去删除唯一约束。
 
-<img src="./表的约束.IMG/image-20231026191701937.png" alt="image-20231026191701937" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026191701937.png" alt="image-20231026191701937" style="zoom:50%;" />
 
 在使用上，被唯一键约束的列，插入记录时不允许重复，除非是 NULL 值。
 
@@ -244,25 +244,25 @@ mysql> create table pri_test(
     -> );
 ```
 
-<img src="./表的约束.IMG/image-20231026193902158.png" alt="image-20231026193902158" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026193902158.png" alt="image-20231026193902158" style="zoom:50%;" />
 
 Key 为 PRI 的列为表的主键，而且不允许为空，而唯一键允许为空。
 
-<img src="./表的约束.IMG/image-20231026193832057.png" alt="image-20231026193832057" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026193832057.png" alt="image-20231026193832057" style="zoom:50%;" />
 
 这个错误信息和唯一键是一样的，主键不允许重复。
 
 也可以在表已经存在时使用 alter table 语句来删除或添加主键约束，例如：
 
-<img src="./表的约束.IMG/image-20231026194525887.png" alt="image-20231026194525887" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026194525887.png" alt="image-20231026194525887" style="zoom:50%;" />
 
 值得注意的是，即使删除了这一列的主键约束，它原有的非空约束是不会被删除的。
 
-<img src="./表的约束.IMG/image-20231026194621228.png" alt="image-20231026194621228" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026194621228.png" alt="image-20231026194621228" style="zoom:50%;" />
 
 在表删除了唯一键后，让有两个不同 id 的记录的tel 值相同，然后试图将 tel 列作为主键：
 
-<img src="./表的约束.IMG/image-20231026195023725.png" alt="image-20231026195023725" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026195023725.png" alt="image-20231026195023725" style="zoom:50%;" />
 
 可见，不论是在插入记录，还是在已有表中设置主键，MySQL 都要检查数据的唯一性。
 
@@ -290,22 +290,22 @@ mysql> create table pris_test(
     -> );
 ```
 
-<img src="./表的约束.IMG/image-20231026200716005.png" alt="image-20231026200716005" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026200716005.png" alt="image-20231026200716005" style="zoom:50%;" />
 
 插入几条数据：
 
-<img src="./表的约束.IMG/image-20231026201019434.png" alt="image-20231026201019434" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026201019434.png" alt="image-20231026201019434" style="zoom:50%;" />
 
 只要复合主键这个整体没有重复，那么就可以插入。这个场景很符合学生选课时的场景，例如同一个学生可以选不同课，多个学生可以选同一门课。
 
 类似地，删除复合主键：
-<img src="./表的约束.IMG/image-20231026201439905.png" alt="image-20231026201439905" style="zoom:33%;" />
+<img src="./.表的约束.IMG/image-20231026201439905.png" alt="image-20231026201439905" style="zoom:33%;" />
 
 删除主键约束的列，其非空约束也不会被删除。
 
 在已有的表中增加复合主键：
 
-<img src="./表的约束.IMG/image-20231026201631997.png" alt="image-20231026201631997" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026201631997.png" alt="image-20231026201631997" style="zoom:50%;" />
 
 同样地，在增加复合主键时，也要保证这些「列组合」的唯一性。
 
@@ -322,7 +322,7 @@ MySQL 的外键约束是指在两个表之间建立的一种关联关系，建�
 
 例如在订单表中，引用了用户表的主键 id：
 
-<img src="./表的约束.IMG/image-20231026204404700.png" alt="image-20231026204404700" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026204404700.png" alt="image-20231026204404700" style="zoom:50%;" />
 
 创建 customers 表：
 
@@ -333,7 +333,7 @@ mysql> create table customers(
     -> );
 ```
 
-<img src="./表的约束.IMG/image-20231026205348344.png" alt="image-20231026205348344" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026205348344.png" alt="image-20231026205348344" style="zoom:50%;" />
 
 在创建表时使用 FOREIGN KEY 和 REFERENCES 关键字创建外键约束：
 ```mysql
@@ -345,7 +345,7 @@ mysql> create table sales(
     -> );
 ```
 
-<img src="./表的约束.IMG/image-20231026205704258.png" alt="image-20231026205704258" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231026205704258.png" alt="image-20231026205704258" style="zoom:50%;" />
 
 Key值为 MUL （multi）的列，表示这个列是一个非唯一索引的第一列，或者是一个唯一索引的部分组成但是可以含有空值。MUL 只表示这个列的值可以重复，并不表示这个列与其他列有关联。
 
@@ -355,11 +355,11 @@ Key值为 MUL （multi）的列，表示这个列是一个非唯一索引的第�
 
 首先在主表（customers）插入两条记录：
 
-<img src="./表的约束.IMG/image-20231027181132879.png" alt="image-20231027181132879" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027181132879.png" alt="image-20231027181132879" style="zoom:50%;" />
 
 再向从表（sales）插入：
 
-<img src="./表的约束.IMG/image-20231027181435081.png" alt="image-20231027181435081" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027181435081.png" alt="image-20231027181435081" style="zoom:50%;" />
 
 第二条记录插入的外键的值可以为 NULL，这是因为表没有对它做空值约束。
 
@@ -402,35 +402,35 @@ mysql> create table auto_inc(
     -> );
 ```
 
-<img src="./表的约束.IMG/image-20231027183550824.png" alt="image-20231027183550824" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027183550824.png" alt="image-20231027183550824" style="zoom:50%;" />
 
 默认情况下，AUTO_INCREMENT 的初始值是 1，每次新增一条记录，该列的值就会自动加 。
 
-<img src="./表的约束.IMG/image-20231027184106022.png" alt="image-20231027184106022" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027184106022.png" alt="image-20231027184106022" style="zoom:50%;" />
 
 如果想改变 AUTO_INCREMENT 的初始值或者步长，可以使用 ALTER TABLE 语句或者设置全局或会话级别的变量。例如，以下语句将表的 AUTO_INCREMENT 的初始值改为 10：
 
-<img src="./表的约束.IMG/image-20231027184328465.png" alt="image-20231027184328465" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027184328465.png" alt="image-20231027184328465" style="zoom:50%;" />
 
 除此之外，还可以使用 NULL 或者 DEFAULT 占位符插入含有自增属性的列值，效果和上面是一样的。
 
-<img src="./表的约束.IMG/image-20231027184632355.png" alt="image-20231027184632355" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027184632355.png" alt="image-20231027184632355" style="zoom:50%;" />
 
 如果在插入时，指定的 AUTO_INCREMENT值比表中记录的值还要大，那么它将会被更新为最大的那个AUTO_INCREMENT值。
 
-<img src="./表的约束.IMG/image-20231027184923890.png" alt="image-20231027184923890" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027184923890.png" alt="image-20231027184923890" style="zoom:50%;" />
 
 值得注意的是，即使删除了某一条记录，表中的AUTO_INCREMENT的值是不会被影响的，它只会记录当前的最大值。
 
-<img src="./表的约束.IMG/image-20231027185244191.png" alt="image-20231027185244191" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027185244191.png" alt="image-20231027185244191" style="zoom:50%;" />
 
 值得注意的是，一个表只允许欧一个自增长列，并且改列需要定义约束。
 
-<img src="./表的约束.IMG/image-20231027185838996.png" alt="image-20231027185838996" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027185838996.png" alt="image-20231027185838996" style="zoom:50%;" />
 
 删除某个列的自增属性：
 
-<img src="./表的约束.IMG/image-20231027190002938.png" alt="image-20231027190002938" style="zoom:50%;" />
+<img src="./.表的约束.IMG/image-20231027190002938.png" alt="image-20231027190002938" style="zoom:50%;" />
 
 # 参考资料
 

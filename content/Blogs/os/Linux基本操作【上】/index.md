@@ -346,14 +346,14 @@ man [选项] [参数]
 ```cpp
 man ls
 ```
-<img src="./Linux基本操作【上】.IMG/cb574b124c49790ae01fb051946e810e.png" alt="image.png" style="zoom:37%;" />
+<img src="./.Linux基本操作【上】.IMG/cb574b124c49790ae01fb051946e810e.png" alt="image.png" style="zoom:37%;" />
 实际上它很长，毕竟是使用手册。
 查看 sleep 命令手册
 
 ```cpp
 man sleep
 ```
-<img src="./Linux基本操作【上】.IMG/427eaa4e180a960efe62c7e52dda9f7f.png" alt="image.png" style="zoom:37%;" />
+<img src="./.Linux基本操作【上】.IMG/427eaa4e180a960efe62c7e52dda9f7f.png" alt="image.png" style="zoom:37%;" />
 # *7. cp 指令
 ## 语法
 cp [选项] [源文件/目标文件  +  目录]

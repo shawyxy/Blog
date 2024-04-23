@@ -51,7 +51,7 @@ mysql> create table table_test2(
 
 在`/var/lib/mysql/table_test_db1`路径下：
 
-<img src="./表结构的操作.IMG/image-20231022185357710.png" alt="image-20231022185357710" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022185357710.png" alt="image-20231022185357710" style="zoom:50%;" />
 
 从结果上看，MyISAM 和 InnoDB 两个存储引擎在创建表的时候，文件类型和数量是不一样的。为什么呢？（这是一个常见的面试题，你可能需要在学习完「索引」这部分才能理解）
 
@@ -88,7 +88,7 @@ SQL：
 desc <表名>;
 ```
 
-<img src="./表结构的操作.IMG/image-20231022191513043.png" alt="image-20231022191513043" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022191513043.png" alt="image-20231022191513043" style="zoom:50%;" />
 
 表结构的各个列属性：
 
@@ -110,7 +110,7 @@ show create database <数据库名> \G
 
 来查看创建表或数据库格式化后的 SQL：
 
-<img src="./表结构的操作.IMG/image-20231022191947763.png" alt="image-20231022191947763" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022191947763.png" alt="image-20231022191947763" style="zoom:50%;" />
 
 # 修改表
 
@@ -131,13 +131,13 @@ ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 ## 新增列属性
 
 为刚才创建的`table_test1`表中增加`name`和`adress`列属性：
-<img src="./表结构的操作.IMG/image-20231022193155544.png" alt="image-20231022193155544" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022193155544.png" alt="image-20231022193155544" style="zoom:50%;" />
 
 如果你想让新的一列插入到 name 列之后，只需在 SQL 的最后增加`after name`；如果要放在第一列，换成`not null first`。
 
 插入两条数据：
 
-<img src="./表结构的操作.IMG/image-20231022193705174.png" alt="image-20231022193705174" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022193705174.png" alt="image-20231022193705174" style="zoom:50%;" />
 
 ## 修改列属性
 
@@ -145,7 +145,7 @@ ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 
 例如修改`adress`属性为`varchar(64)`：
 
-<img src="./表结构的操作.IMG/image-20231022194058081.png" alt="image-20231022194058081" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022194058081.png" alt="image-20231022194058081" style="zoom:50%;" />
 
 值得注意的是， MySQL 在修改时，会把原来的列定义**替换**为新的列定义，而不是在原有的基础上修改。所以如果想保留原来的 comment 字段，需要再修改时显式定义。
 
@@ -153,7 +153,7 @@ ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 
 将上表的`adress`改为`home`：
 
-<img src="./表结构的操作.IMG/image-20231022194646689.png" alt="image-20231022194646689" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022194646689.png" alt="image-20231022194646689" style="zoom:50%;" />
 
 由于 MySQL 在修改列属性是是替换而不是直接修改，所以在修改列名时要指定列属性。
 
@@ -161,13 +161,13 @@ ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 
 将`table_test1`表改为`test_table1`：
 
-<img src="./表结构的操作.IMG/image-20231022195008486.png" alt="image-20231022195008486" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022195008486.png" alt="image-20231022195008486" style="zoom:50%;" />
 
 ## 删除列
 
 将`test_table1`表中的`name`列删除：
 
-<img src="./表结构的操作.IMG/image-20231022195328802.png" alt="image-20231022195328802" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022195328802.png" alt="image-20231022195328802" style="zoom:50%;" />
 
 删除这一列后，一整列的数据都没有了。除了备份外，MySQL 会记忆之前的所有插入的 SQL，其中包含了数据本身。
 
@@ -186,4 +186,4 @@ DROP [TEMPORARY] TABLE [IF EXISTS] table_name;
 - 为了避免重新连接后（TEMPORARY 已经不存在），在未做检测的情况下调用 DROP 误删了对应永久表，因此在使用 DROP 删除临时表时需要带上 TEMPORARY 关键字。
 
 删除`table_test_db1`数据库中的`table_test2`表：
-<img src="./表结构的操作.IMG/image-20231022195709736.png" alt="image-20231022195709736" style="zoom:50%;" />
+<img src="./.表结构的操作.IMG/image-20231022195709736.png" alt="image-20231022195709736" style="zoom:50%;" />

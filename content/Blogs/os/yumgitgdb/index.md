@@ -65,17 +65,17 @@ Vim 采用**模式编辑**的理念，即在不同的模式下只能该模式下
 ```cpp
 vim test1.txt
 ```
-<img src="./yumgitgdb.IMG/MD202209151400320.png" alt="image-20220915140058214" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209151400320.png" alt="image-20220915140058214" style="zoom:37%;" />
 
 最下侧显示 NORMAL，说明现在处于命令模式，键入`i`：
 
-<img src="./yumgitgdb.IMG/MD202209151401679.png" alt="image-20220915140127603" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209151401679.png" alt="image-20220915140127603" style="zoom:37%;" />
 
 最下侧的标识变成 INSERT，说明现在正处于插入模式。
 
 修改文本内容，按下`esc`，并键入：`wq`
 
-<img src="./yumgitgdb.IMG/MD202209151409887.png" alt="image-20220915140950810" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209151409887.png" alt="image-20220915140950810" style="zoom:37%;" />
 
 按下回车自动退出 vim，回到当前工作目录。
 
@@ -244,7 +244,7 @@ int main()
 
 `gcc test1.c -o _test1`
 
-<img src="./yumgitgdb.IMG/MDMDMDimage-20220914202734283.png" alt="MDMDimage-20220914202734283" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MDMDMDimage-20220914202734283.png" alt="MDMDimage-20220914202734283" style="zoom:37%;" />
 
 可以看到当前工作目录下多了一个_test1 文件，那么我们可以知道，上面指令中的`-o`选项后面跟的内容就是指定生成的可执行程序的文件名，否则 Linux 下编译后生成的可执行程序名字默认是 a.out。
 
@@ -371,7 +371,7 @@ int main()
 
 【补充】首先要对 gdb 进行配置，有的机器默认情况下 gdb 是缺少配置的，会出现这样的问题（即使加了-g 选项）：
 
-<img src="./yumgitgdb.IMG/MDimage-20220915102137119.png" alt="image-20220915102137119" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MDimage-20220915102137119.png" alt="image-20220915102137119" style="zoom:37%;" />
 
 【原因】缺少配置
 
@@ -410,7 +410,7 @@ gdb _test1
 (gdb) r
 ```
 
-<img src="./yumgitgdb.IMG/MDimage-20220915102952228.png" alt="image-20220915102952228" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MDimage-20220915102952228.png" alt="image-20220915102952228" style="zoom:37%;" />
 
 由于没有以调试模式编译 test1.c，那么得到的二进制文件中就不会有调试信息，gdb 也就无法对其调试，这也是 Debug 版本的程序体积更大的原因。
 
@@ -429,13 +429,13 @@ gdb _test1
 (gdb) r
 ```
 
-<img src="./yumgitgdb.IMG/MDimage-20220915103120578.png" alt="image-20220915103120578" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MDimage-20220915103120578.png" alt="image-20220915103120578" style="zoom:37%;" />
 
 最下面的提示表明调试信息已经加载成功。
 
 - `r`运行程序，`l`显示源码：
 
-<img src="./yumgitgdb.IMG/MDMDimage-20220915104119320.png" alt="" style="zoom:37%;" />	
+<img src="./.yumgitgdb.IMG/MDMDimage-20220915104119320.png" alt="" style="zoom:37%;" />	
 
 `l`可以指定行号范围打印，也可以`l -`、`l +`向下或向上打印。
 
@@ -445,7 +445,7 @@ gdb _test1
 - `b + 行号`，给指定行打断点；
 - `i breakpoints、i b`，查看断点信息。
 
-<img src="./yumgitgdb.IMG/MDimage-20220915105505396.png" alt="image-20220915105505396" style="zoom:37%;" />		
+<img src="./.yumgitgdb.IMG/MDimage-20220915105505396.png" alt="image-20220915105505396" style="zoom:37%;" />		
 
 - `r`运行至最近的断点处，无断点则运行整个程序；
 - `n`单句执行，`s`遇到函数则进入函数；
@@ -453,19 +453,19 @@ gdb _test1
 - `display + 变量`每次执行语句都打印变量的值；`undisplay`取消；
 - `c`从当前位置从单步->连续执行，直到断点或执行完毕；
 
-<img src="./yumgitgdb.IMG/MDimage-20220915111626434.png" alt="" style="zoom:37%;" />	
+<img src="./.yumgitgdb.IMG/MDimage-20220915111626434.png" alt="" style="zoom:37%;" />	
 
 - `s`进入函数，`finish`结束函数，得到返回值：
-  <img src="./yumgitgdb.IMG/MDimage-20220915111233041.png" alt="image-20220915111233041" style="zoom:37%;" />
+  <img src="./.yumgitgdb.IMG/MDimage-20220915111233041.png" alt="image-20220915111233041" style="zoom:37%;" />
 
 - `disable breakpoints`禁用断点；
 - `enable breakpoints`启用断点。
 
-<img src="./yumgitgdb.IMG/MD202209151409892.png" alt="image-20220915140914826" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209151409892.png" alt="image-20220915140914826" style="zoom:37%;" />
 
 - `delete + 断点序号`删除断点；`delete breakpoints`删除所有断点；
 
-<img src="./yumgitgdb.IMG/MD202209151413534.png" alt="image-20220915141352460" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209151413534.png" alt="image-20220915141352460" style="zoom:37%;" />
 
 gdb 是一个非常强大的调试器，不仅限于 C/C++，熟练使用指令后，效率甚至比 IDE 还高，动手练才是王道。
 
@@ -511,11 +511,11 @@ gdb 是一个非常强大的调试器，不仅限于 C/C++，熟练使用指令�
 
 下面用一个简单的例子演示 make 使用 Makefile：
 
-<img src="./yumgitgdb.IMG/MD202209152013122.png" alt="image-20220915201339986" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209152013122.png" alt="image-20220915201339986" style="zoom:37%;" />
 
 其中 Makefile 的内容是：
 
-<img src="./yumgitgdb.IMG/MD202209152014066.png" alt="image-20220915201448022" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209152014066.png" alt="image-20220915201448022" style="zoom:37%;" />
 
 这就是它们最基本的用法，有没有很简单。下面补充更多基础用法。
 
@@ -525,11 +525,11 @@ gdb 是一个非常强大的调试器，不仅限于 C/C++，熟练使用指令�
 
 直接给出清理项目需要的 Makefile 代码：
 
-<img src="./yumgitgdb.IMG/MD202209152039684.png" alt="image-20220915203908536" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209152039684.png" alt="image-20220915203908536" style="zoom:37%;" />
 
 举个例子：
 
-<img src="./yumgitgdb.IMG/MD202209152041210.png" alt="image-20220915204146136" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209152041210.png" alt="image-20220915204146136" style="zoom:37%;" />
 
 在下面将说明这里的蹊跷之处。
 
@@ -569,7 +569,7 @@ _test1 : test1.c
 	gcc test1.c -o _test1
 ```
 
-<img src="./yumgitgdb.IMG/MD202209152105287.png" alt="image-20220915210522127" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209152105287.png" alt="image-20220915210522127" style="zoom:37%;" />
 
 因为默认是从上到下查找文件（注意刚刚已经更改了两个语句块的顺序），所以 make 执行的是 rm 指令。上文提到，Makefile 是由依赖关系和依赖方法组成，它们通过目标文件绑定在一起，这样我才能用`make+目标文件名`的形式使用特定的指令。
 
@@ -587,7 +587,7 @@ _test1 : test1.c
 
 下面解释这个“总是被执行的”到底是什么意思（这里 Makefile 已经恢复原样）：
 
-<img src="./yumgitgdb.IMG/MD202209152323208.png" alt="image-20220915232321103" style="zoom:37%;" />
+<img src="./.yumgitgdb.IMG/MD202209152323208.png" alt="image-20220915232321103" style="zoom:37%;" />
 
 我在这里多次 make，它提示目标文件已存在是最新的了，但是我多次 clean，即使当前目录没有目标文件，它依然执行`rm`命令，这就是“总是被执行的”。
 

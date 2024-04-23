@@ -7,7 +7,7 @@ open: true
 
 在名为`mysql`的数据库中有一个表`user`维护着 MySQL 的用户信息。
 
-<img src="./用户管理.IMG/image-20240227164127584.png" alt="image-20240227164127584" style="zoom:50%;" />
+<img src="./.用户管理.IMG/image-20240227164127584.png" alt="image-20240227164127584" style="zoom:50%;" />
 
 其中：
 
@@ -20,7 +20,7 @@ open: true
 
 尝试查看它们的值：
 
-<img src="./用户管理.IMG/image-20240227164314212.png" alt="image-20240227164314212" style="zoom:50%;" />
+<img src="./.用户管理.IMG/image-20240227164314212.png" alt="image-20240227164314212" style="zoom:50%;" />
 
 由于 user 表中 Host 和 User 属性共同作为联合主键，所以只要用户名和主机 IP 的组合唯一即可，这是合理的，一台主机可能有多个用户。
 
@@ -41,7 +41,7 @@ Your password does not satisfy the current policy requirements
 
 通过`SHOW VARIABLES LIKE 'validate_password%';`查看密码策略，从而设计符合条件的密码。
 
-<img src="./用户管理.IMG/image-20240227170352013.png" alt="image-20240227170352013" style="zoom:50%;" />
+<img src="./.用户管理.IMG/image-20240227170352013.png" alt="image-20240227170352013" style="zoom:50%;" />
 
 或者修改密码策略：
 
@@ -56,7 +56,7 @@ set global validate_password_length=1;
 create user 'new_user'@'%' identified by '12345';
 ```
 
-<img src="./用户管理.IMG/image-20240227170511859.png" alt="image-20240227170511859" style="zoom:50%;" />
+<img src="./.用户管理.IMG/image-20240227170511859.png" alt="image-20240227170511859" style="zoom:50%;" />
 
 现在可以以新用户的身份登录 MySQL：
 
@@ -66,7 +66,7 @@ mysql -unew_user -p
 
 登录后可以查看客户端信息：
 
-<img src="./用户管理.IMG/image-20240227170751017.png" alt="image-20240227170751017" style="zoom:50%;" />
+<img src="./.用户管理.IMG/image-20240227170751017.png" alt="image-20240227170751017" style="zoom:50%;" />
 
 由于`%`表示允许来自任何主机的用户登录，所以在远端登录 MySQL 的方式也是一样的。需要注意的是，可能在连接时会不被允许，这可能是服务端主机没有开放 3306（MySQL 服务器）端口，为了测试可以在`/etc/mysql.cnf`修改 MySQL 的端口配置为测试端口如 8080。实际应用中，数据库不对外开放而只在内网中使用。
 
@@ -146,11 +146,11 @@ grant select on curd_db.* to 'new_user'@'%' identified by '12345';
 
 这样新用户就能看到 curd_db 这个数据库了。
 
-<img src="./用户管理.IMG/image-20240227172042611.png" alt="image-20240227172042611" style="zoom:50%;" />
+<img src="./.用户管理.IMG/image-20240227172042611.png" alt="image-20240227172042611" style="zoom:50%;" />
 
 查看用户的权限：
 
-<img src="./用户管理.IMG/image-20240227172310098.png" alt="image-20240227172310098" style="zoom:50%;" />
+<img src="./.用户管理.IMG/image-20240227172310098.png" alt="image-20240227172310098" style="zoom:50%;" />
 
 其中：
 
@@ -170,7 +170,7 @@ grant all on curd_db.* to 'new_user'@'%';
 REVOKE 权限列表 ON 库名。对象名 FROM '用户名'@'登录地址';
 ```
 
-<img src="./用户管理.IMG/image-20240227172947228.png" alt="image-20240227172947228" style="zoom:50%;" />
+<img src="./.用户管理.IMG/image-20240227172947228.png" alt="image-20240227172947228" style="zoom:50%;" />
 
 注意：
 

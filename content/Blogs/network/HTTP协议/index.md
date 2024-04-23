@@ -13,7 +13,7 @@ open: true
 
 协议（Protocol）是一种实现约定好的规则。对于进行网络通信的双方，想要保证通信方式的一致性，就要基于相同的方法。不论是网络通信还是硬件、操作系统之间的通信，都需要一个通信参与方都知晓的规则约束通信方式。
 
-<img src="./HTTP 协议.IMG/MD202306101515661.png" alt="image-20230607231242091" style="zoom:67%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515661.png" alt="image-20230607231242091" style="zoom:67%;" />
 
 **TCP/IP 是互联网相关的各类协议族的总称**
 
@@ -77,7 +77,7 @@ TCP 协议在传输层提供可靠的字节流服务。
 
 若在握手过程中某个阶段莫名中断，TCP 协议会再次以相同的顺序发送相同的数据包。
 
-<img src="./HTTP 协议.IMG/MD202306101515663.png" alt="image-20230607233416943" style="zoom:67%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515663.png" alt="image-20230607233416943" style="zoom:67%;" />
 
 ## 2.3 负责域名解析的 DNS 服务
 
@@ -91,7 +91,7 @@ IP 地址是计算机在网络中的标识，但不符合人类的使用习惯�
 
 通过以上对于 HTTP 协议密切相关的协议的简要介绍，HTTP 协议和它们之间的关系大致如下：
 
-<img src="./HTTP 协议.IMG/MD202306101515664.png" alt="image-20230607234709948" style="zoom:67%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515664.png" alt="image-20230607234709948" style="zoom:67%;" />
 
 # 3. URL 和编码问题
 
@@ -144,7 +144,7 @@ https://www.example.com:443/index.html?id=123#section1
 - 使用 http: 或 https: 等协议方案名获取访问资源时要指定协议类型。不区分字母大小写，最后附一个冒号（:）。
 - URL 中的 path 部分沿用了 Unix 风格的路径表示法，这可能是因为当时大部分网络服务器都运行在 Unix 或类 Unix 系统上（现在大部分网络服务器运行在 Linux 系统上），同时也是因为 Unix 风格的路径表示法比较简洁和通用。
 
-<img src="./HTTP 协议.IMG/MD202306101515665.png" alt="image-20230608133538814" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515665.png" alt="image-20230608133538814" style="zoom:50%;" />
 
 上图是一个 URL 中各个部分的解释，需要注意的是：
 
@@ -156,7 +156,7 @@ https://www.example.com:443/index.html?id=123#section1
 - 后面两个是参数，它们是可选的。URL 可以采用绝对路径或相对路径来指定资源的位置。绝对路径是指完整的资源路径，包括主机名、路径和文件名等所有信息，可以独立地指定资源的位置。相对路径则是相对于当前页面或基准 URL 的路径，可以更简洁地指定资源的位置。
 
 客户端获取请求实际上是通过 URL 访问服务端中的资源，而服务端响应请求就是将这些资源通过网络传输给客户端。例如用户访问网页是通过浏览器向服务端发出请求，然后获取到服务端返回的 html 网页文件，浏览器再对这个 html 文件渲染，这样用户就能获取到网页中的内容。例如：
-<img src="./HTTP 协议.IMG/MD202306101515666.png" alt="image-20230608135746843" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515666.png" alt="image-20230608135746843" style="zoom:50%;" />
 
 除了传输网页资源之外，服务端还能返回视频、音频、图片等等资源，这就是 HTTP（Hyper Text Transfer Protocol，超文本传输协议）名称的由来。
 
@@ -180,13 +180,13 @@ rawurldecode("Hello%20World%21") 会返回 "Hello World!"
 
 在线编码/解码工具：https://www.urlencoder.org/
 
-<img src="./HTTP 协议.IMG/MD202306101515667.png" alt="image-20230608140839584" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515667.png" alt="image-20230608140839584" style="zoom:50%;" />
 
 # 4. 初识 HTTP 协议
 
 HTTP 作为应用层协议，它决定了向用户提供应用服务时通信的活动。前文提到，HTTP（应用层）通常运行在 TCP（传输层）之上。在网络通信中，其他层次结构的实现细节是对任意一层透明的，应用层也不例外，在每一层协议眼中，它们都会认为数据是对方同层协议直接传输而来的。就像这样：
 
-<img src="./HTTP 协议.IMG/MD202306101515668.png" alt="image-20230608142342998" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515668.png" alt="image-20230608142342998" style="zoom:50%;" />
 
 对于同层协议，不管是交付还是接收数据包，有效载荷和报头组合的整体都是同一个。这张图主要想表达的是红色的箭头，它不是真实存在的，但是右边主机的每一层协议在接收到数据时，就相当于直接从对端主机的同层协议接收
 
@@ -434,13 +434,13 @@ int main(int argc, char *argv[])
 
 通常在测试时，将端口设置为 8080 或 8081，浏览器本身就是一个客户端，键入服务器的公网 IP 和端口号，中间以`:`分隔：
 
-<img src="./HTTP 协议.IMG/MD202306101515669.png" alt="image-20230608230756103" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515669.png" alt="image-20230608230756103" style="zoom:50%;" />
 
 如果当你按下回车，服务端像这样什么都没显示，那么大概率是云服务器没有开放端口。可以搜索对应运营商的和系统的开放端口的方法。如果这样还不能解决，那么可能是系统的防火墙未开放端口。
 
 > 以阿里云的 CentOS 7 系统为例（2023/6/8）:
 >
-> <img src="./HTTP 协议.IMG/MD202306101515670.png" alt="image-20230608231258821" style="zoom:50%;" />
+> <img src="./.HTTP 协议.IMG/MD202306101515670.png" alt="image-20230608231258821" style="zoom:50%;" />
 >
 > 如果添加不了很多个的话，可以先添加，然后在最右侧的“编辑”按钮中修改。
 >
@@ -452,13 +452,13 @@ int main(int argc, char *argv[])
 
 正常情况下键入 IP 地址和端口号，按下回车后，服务端应该会立即显示以下内容；
 
-<img src="./HTTP 协议.IMG/MD202306101515671.png" alt="image-20230608231418545" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515671.png" alt="image-20230608231418545" style="zoom:50%;" />
 
 这就是上面介绍的响应报文。
 
 由于这个客户端的逻辑只是打印，而未返回任何内容给客户端，因此浏览器显示的是错误信息：
 
-<img src="./HTTP 协议.IMG/MD202306101515672.png" alt="image-20230608231703440" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515672.png" alt="image-20230608231703440" style="zoom:50%;" />
 
 值得注意的是，很多时候键入 URL 不用指明协议名称，因为浏览器默认使用的协议是 HTTP。
 
@@ -499,7 +499,7 @@ void HttpRequestHandler(int sockfd)
 }
 ```
 
-<img src="./HTTP 协议.IMG/MD202306101515673.png" alt="image-20230609100115123" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515673.png" alt="image-20230609100115123" style="zoom:50%;" />
 
 结果表明这是可行的。
 
@@ -615,7 +615,7 @@ void HttpRequestHandler(int sockfd)
 
 > 不过，在浏览器中可能会隐藏一些细节：
 >
-> <img src="./HTTP 协议.IMG/MD202306101515674.png" alt="image-20230609113153495" style="zoom:50%;" />
+> <img src="./.HTTP 协议.IMG/MD202306101515674.png" alt="image-20230609113153495" style="zoom:50%;" />
 >
 > 但事实上客户端的 HTTP 请求是：`http://8.130.106.177:8081/`（复制网址框的内容，然后粘贴），后面自动追加了一个`/`，表示默认在网根目录下请求。我们设置的`index.html`文件也就是首页要显示的内容。
 >
@@ -625,11 +625,11 @@ void HttpRequestHandler(int sockfd)
 
 测试结果：
 
-<img src="./HTTP 协议.IMG/MD202306101515675.png" alt="image-20230609114640531" style="zoom: 50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515675.png" alt="image-20230609114640531" style="zoom: 50%;" />
 
-<img src="./HTTP 协议.IMG/MD202306101515676.png" alt="image-20230609115610782" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515676.png" alt="image-20230609115610782" style="zoom:50%;" />
 
-<img src="./HTTP 协议.IMG/MD202306101515677.png" alt="image-20230609115816658" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515677.png" alt="image-20230609115816658" style="zoom:50%;" />
 
 [源代码：HttpServer Version 2](https://gitee.com/shawyxy/2023-linux/tree/main/HttpDemo/version2)
 
@@ -670,11 +670,11 @@ void HttpRequestHandler(int sockfd)
 
 - GET 方法用来请求访问已被 URI/URL 识别的资源。指定的资源经服务器端解析后返回响应内容。
 
-  <img src="./HTTP 协议.IMG/MD202306101515678.png" alt="image-20230609141210068" style="zoom:50%;" />
+  <img src="./.HTTP 协议.IMG/MD202306101515678.png" alt="image-20230609141210068" style="zoom:50%;" />
 
 - POST 方法用来传输实体的主体。
 
-  <img src="./HTTP 协议.IMG/MD202306101515679.png" alt="image-20230609141223882" style="zoom:50%;" />
+  <img src="./.HTTP 协议.IMG/MD202306101515679.png" alt="image-20230609141223882" style="zoom:50%;" />
 
 虽然用 GET 方法也可以传输实体的主体，但一般不用 GET 方法进行传输，而是用 POST 方法。虽说 POST 的功能与 GET 很相似，但 POST 的主要目的并不是获取响应的主体内容。它们都可以将数据上传到服务器，但是 URL 的长度是有限制的，所以 GET 方法有局限性；POST 方法以正文作为参数，可以传输更多信息。
 
@@ -719,12 +719,12 @@ GET 和 POST 的区别是：
 
 GET 方法：URL 作为参数，在 URL 中再增加 a 和 b 两个参数（为了显示具体信息，在 HttpRequestHandler() 函数中打印了获取到的客户端请求）：
 
-<img src="./HTTP 协议.IMG/MD202306101515680.png" alt="image-20230609145053790" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515680.png" alt="image-20230609145053790" style="zoom:50%;" />
 
 可以看到，请求行中也增加了传递的参数，这和第一栏"Params"（参数）是对应的。
 
 POST 方法：正文作为参数，应该在第 4 栏"Body"设置：
-<img src="./HTTP 协议.IMG/MD202306101515681.png" alt="image-20230609145604665" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515681.png" alt="image-20230609145604665" style="zoom:50%;" />
 
 这样 HTTP 请求的正文就被这个字符串填充，而不再是空字符串。正因如此，服务端的响应报头中出现了 Content-Length 字段，表示响应正文的长度。
 
@@ -767,13 +767,13 @@ HTML 表单用于收集用户的输入信息，表示文档中的一个区域，
 
 > 注意，本文的重点不是 html 的语法，只要简单了解即可。
 
-<img src="./HTTP 协议.IMG/MD202306101515682.png" alt="image-20230609153205842" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515682.png" alt="image-20230609153205842" style="zoom:50%;" />
 
 当用户访问服务端时，就会出现图中的表单，提交以后它们就会被作为参数插入到 URL 中。
 
 如果将方法改为 POST：
 
-<img src="./HTTP 协议.IMG/MD202306101515683.png" alt="image-20230609155122181" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515683.png" alt="image-20230609155122181" style="zoom:50%;" />
 
 如果方法是 PORT，那么用户提交的两个属性不会在 URL 中体现，而是被放在了正文中传输给服务端。
 
@@ -842,7 +842,7 @@ Location: http://example.org
 
 事实上，从现实例子也很好理解：当用户第一次访问网站时，是不知道这个网站是否是被重定向的。可能原先的域名更加好记，更具有代表性，而重定向的 IP 地址可能由于某种需要而被设置。
 
-<img src="./HTTP 协议.IMG/MD202306101515684.png" alt="image-20230609162939535" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515684.png" alt="image-20230609162939535" style="zoom:50%;" />
 
 Location 头部默认情况下会被浏览器缓存，没有任何过期日期。也就是说，它会一直保留在浏览器的缓存中，直到用户手动清除缓存，或者缓存条目被清理以腾出空间。
 
@@ -856,7 +856,7 @@ Location 头部默认情况下会被浏览器缓存，没有任何过期日期�
 
 和 301 Moved Permanently 状态码相似，但 302 状态码代表的资源不是被永久移动，只是临时性质的。换句话说，已移动的资源对应的 URL 将来还有可能发生改变。比如，用户把 URL 保存成书签，但不会像 301 状态码出现时那样去更新书签，而是仍旧保留返回 302 状态码的页面对应的 URL。
 
-<img src="./HTTP 协议.IMG/MD202306101515685.png" alt="image-20230609163115665" style="zoom:33%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515685.png" alt="image-20230609163115665" style="zoom:33%;" />
 
 #### 307(Temporary Redirect)
 
@@ -892,7 +892,7 @@ void HttpRequestHandler(int sockfd)
 
 只要 HTTP 协议识别到了 302/307 状态码，就会去找 Location 字段，然后就会跳转到指定的域名：
 
-<img src="./HTTP 协议.IMG/MD202306101515686.gif" alt="重定向 1" style="zoom:67%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515686.gif" alt="重定向 1" style="zoom:67%;" />
 
 [源代码：HttpServer Version 3]()
 
@@ -959,10 +959,10 @@ void HttpRequestHandler(int sockfd)
 
 这样浏览器就不会对这些 HTML 做渲染，显示出来的就是纯文本了。
 
-<img src="./HTTP 协议.IMG/MD202306101515687.png" alt="image-20230609195924449" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515687.png" alt="image-20230609195924449" style="zoom:50%;" />
 
 如果要访问服务器上的图片，可以将响应报头改成这样：`Content-Type: image/png\r\n`
-<img src="./HTTP 协议.IMG/MD202306101515688.png" alt="image-20230609213402093" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515688.png" alt="image-20230609213402093" style="zoom:50%;" />
 
 > 如果要传输图片，就要保证不能破坏图片的二进制格式，那么就不应该对它进行字符串分割，所以要用适合图片的方式，将图片的二进制序列放到 content 字符串中。
 >
@@ -990,7 +990,7 @@ Host header 存在的意义是支持虚拟主机的功能，即在同一个 IP �
 
 客户端对应的操作系统和浏览器的版本信息。例如我用手机查看刚才的图片：
 
-<img src="./HTTP 协议.IMG/MD202306101515690.png" alt="image-20230609221154021" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515690.png" alt="image-20230609221154021" style="zoom:50%;" />
 
 服务端接收到的请求内容就包含了客户端的设备和软件信息。
 
@@ -1033,7 +1033,7 @@ HTTP 是一种不保存状态，即无状态（stateless）协议。HTTP 协议�
 
 > 简单地说，HTTP 的每次请求与响应之间是没有任何关系的，但是我们实际体验中却并不是这样，例如你第一次使用了（请求）某个网站的登录服务（响应），即使重启了浏览器或机器以后，在很长一段时间内都可以保持登录状态。
 
-<img src="./HTTP 协议.IMG/MD202306101515691.png" alt="image-20230609231312432" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515691.png" alt="image-20230609231312432" style="zoom:50%;" />
 
 使用 HTTP 协议，每当有新的请求发送时，就会有对应的新响应产生。协议本身并不保留之前一切的请求或响应报文的信息。这是为了更快地处理大量事务，确保协议的可伸缩性，而特意把 HTTP 协议设计成如此简单的。
 
@@ -1047,7 +1047,7 @@ HTTP 是无状态协议，它不对之前发生过的请求和响应的状态进
 
 不可否认，无状态协议当然也有它的优点。由于不必保存状态，自然可减少服务器的 CPU 及内存资源的消耗，**如果让服务器管理全部客户端状态则会成为负担**。从另一侧面来说，也正是因为 HTTP 协议本身是非常简单的，所以才会被应用在各种场景里。
 
-<img src="./HTTP 协议.IMG/MD202306101515692.png" alt="image-20230609231722996" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515692.png" alt="image-20230609231722996" style="zoom:50%;" />
 
 保留无状态协议这个特征的同时又要解决类似的矛盾问题，于是引入了 Cookie 技术。Cookie 技术通过在请求和响应报文中写入 Cookie 信息来控制客户端的状态。
 
@@ -1074,11 +1074,11 @@ Cookie 会根据从服务器端发送的响应报文内的一个叫做 Set-Cooki
 
 **没有 Cookie 信息状态下的请求**：
 
-<img src="./HTTP 协议.IMG/MD202306101515693.png" alt="image-20230609231750140" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515693.png" alt="image-20230609231750140" style="zoom:50%;" />
 
 **第 2 次以后（存有 Cookie 信息状态）的请求**：
 
-<img src="./HTTP 协议.IMG/MD202306101515694.png" alt="image-20230609231813937" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515694.png" alt="image-20230609231813937" style="zoom:50%;" />
 
 上图展示了发生 Cookie 交互的情景，我们可以体会到， ==Cookie 实际上就是一个保存着用户私密信息（如 ID 和 PASSWORD）的数据包，它随着通信的方向一起传输==。
 
@@ -1119,7 +1119,7 @@ cookie 数据可以由服务端生成，也可以由客户端生成。一般来�
 
 例如在 Chrome 浏览器中，可以管理 Cookie 数据，只要删除了保存着用户登录信息的 cookie 文件，就意味着这个用户的登录状态被抹掉，需要重新登录。
 
-<img src="./HTTP 协议.IMG/MD202306101515695.png" alt="image-20230609233311482" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515695.png" alt="image-20230609233311482" style="zoom:50%;" />
 
 ### 安全问题
 
@@ -1155,7 +1155,7 @@ Session ID 是一种用于标识客户端和服务器之间会话的唯一标识
 >
 > xx 持久化，一般指的就是将内存中的数据保存到磁盘中。
 
-<img src="./HTTP 协议.IMG/MD202306101515696.png" alt="image-20230610131429884" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515696.png" alt="image-20230610131429884" style="zoom:50%;" />
 
 Session ID 的存在，使得 Cookie 文件不再存储私密信息，而是存储私密信息通过算法得到的唯一 ID 值，只要用户第一次登录，服务器就会为这个会话生成一个唯一的 ID，然后通过网络传输到客户端，后续再访问时浏览器会自动携带 Session ID 作为报文的一部分递交给服务端，这样就相当于拿到了一个长期门禁，服务端只要验证客户端发来的 Session ID 和本地的 Session ID 的一致性就能实现保存用户（登录）状态的效果。
 
@@ -1194,7 +1194,7 @@ Cookie 的类型对于用户和网站的体验和安全性都有影响。一般�
 
 在服务端响应信息中增加 set-cookie 字段，这样客户端就会创建 Cookie 文件，并将信息填充。
 
-<img src="./HTTP 协议.IMG/MD202306101515697.png" alt="image-20230610140633053" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515697.png" alt="image-20230610140633053" style="zoom:50%;" />
 
 由于当前版本的 Chrome 浏览器 (114.0.5735.110) 无法像旧版本一样直接从网址框旁边的按钮查看 Cookie 信息。所以首先要按 F12 进入调试模式，然后在 Console（控制台）键入 document.cookie，就能看到服务端填充的 Cookie 数据。
 
@@ -1202,7 +1202,7 @@ Cookie 的类型对于用户和网站的体验和安全性都有影响。一般�
 
 另外，还能用一个抓包工具 fiddler 来测试：
 
-<img src="./HTTP 协议.IMG/MD202306101515698.png" alt="image-20230610142129895" style="zoom:50%;" />
+<img src="./.HTTP 协议.IMG/MD202306101515698.png" alt="image-20230610142129895" style="zoom:50%;" />
 
 fiddler 是一个针对 HTTP 的抓包工具，可以抓取到本机的所有 HTTP 请求。
 

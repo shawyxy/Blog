@@ -24,7 +24,7 @@ UDP（User Datagram Protocol，用户数据报协议）是一个简单的面向�
 
 本小节将实现一个简单的回声服务器（echo server），即像`echo`指令一样回显内容：
 
-<img src="./网络编程：UDP socket.IMG/image-20230430125735059.png" alt="image-20230430125735059" style="zoom: 33%;" />	
+<img src="./.网络编程：UDP socket.IMG/image-20230430125735059.png" alt="image-20230430125735059" style="zoom: 33%;" />	
 
 ## 定义
 
@@ -170,7 +170,7 @@ int main(int argc, char* argv[])
 
 > 提供使用说明是规范的，大多数程序都会提供，例如：
 >
-> <img src="./网络编程：UDP socket.IMG/image-20230429173832545.png" alt="image-20230429173832545" style="zoom:50%;" />
+> <img src="./.网络编程：UDP socket.IMG/image-20230429173832545.png" alt="image-20230429173832545" style="zoom:50%;" />
 
 ## 初始化服务器
 
@@ -261,11 +261,11 @@ UdpServer : UdpServer.cc
 
 结果：
 
-<img src="./网络编程：UDP socket.IMG/image-20230429194023669.png" alt="image-20230429194023669" style="zoom:33%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230429194023669.png" alt="image-20230429194023669" style="zoom:33%;" />
 
 如果使用了错误的参数，会出现提示内容：
 
-<img src="./网络编程：UDP socket.IMG/image-20230430000538861.png" alt="image-20230430000538861" style="zoom:33%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230430000538861.png" alt="image-20230430000538861" style="zoom:33%;" />
 
 ### 绑定
 
@@ -358,7 +358,7 @@ bool initServer()
 
 自此服务器初始化的操作已经完成一半，测试一下：
 
-<img src="./网络编程：UDP socket.IMG/image-20230430000153690.png" alt="image-20230430000153690" style="zoom:33%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230430000153690.png" alt="image-20230430000153690" style="zoom:33%;" />
 
 ## 运行服务端
 
@@ -485,7 +485,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-<img src="./网络编程：UDP socket.IMG/image-20230430135925106.png" alt="image-20230430135925106" style="zoom:33%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230430135925106.png" alt="image-20230430135925106" style="zoom:33%;" />
 
 注意，只有客户端对服务端进程发送数据，`recvfrom()`函数才会读取成功，返回值才会大于零，处理数据的逻辑才会执行。
 
@@ -710,7 +710,7 @@ void Start()
 
 注意，上面的代码中使用了日志，有的日志级别是`DEBUG`，在测试中可以在编译选项中加上`DDUBUG_SHOW`以更好地观察现象，这是一个自定义预处理命令。
 
-<img src="./网络编程：UDP socket.IMG/屏幕录制 2023-04-30 17.49.17.gif" alt="屏幕录制 2023-04-30 17.49.17" style="zoom:50%;" />
+<img src="./.网络编程：UDP socket.IMG/屏幕录制 2023-04-30 17.49.17.gif" alt="屏幕录制 2023-04-30 17.49.17" style="zoom:50%;" />
 
 注意：首先要将服务端运行起来。通过实验结果来看，简易的回声服务端就被实现了，服务端将会在自己的进程中打印客户端发送的数据，并将数据原封不动地返回给客户端，`server echo#`后面的内容就是客户端返回的数据。
 
@@ -735,11 +735,11 @@ void Start()
 
 可以用这个工具查看刚才的程序对应的网络信息：
 
-<img src="./网络编程：UDP socket.IMG/image-20230430175930009.png" alt="image-20230430175930009" style="zoom:33%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230430175930009.png" alt="image-20230430175930009" style="zoom:33%;" />
 
 再测试一次：
 
-<img src="./网络编程：UDP socket.IMG/image-20230430180151102.png" alt="image-20230430180151102" style="zoom:33%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230430180151102.png" alt="image-20230430180151102" style="zoom:33%;" />
 
 可以看见，两次客户端的端口号都是不一样的，这说明操作系统自动绑定的端口号是不确定的。
 
@@ -757,7 +757,7 @@ void Start()
 
 我的服务器厂商提供的虚拟公网 IP 地址是`8.130.106.177`，那么直接使用刚才的程序：
 
-<img src="./网络编程：UDP socket.IMG/image-20230430185800258.png" alt="image-20230430185800258" style="zoom:50%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230430185800258.png" alt="image-20230430185800258" style="zoom:50%;" />
 
 服务端无法绑定，这是因为提供的 IP 地址不是物理上真正的 IP 地址。客户端一直处于阻塞状态，原因是陷入了`recvfrom()`无法退出（这可以通过在这个函数前后打印语句判断）。
 
@@ -792,7 +792,7 @@ void Start()
 
 以上是将服务器端的 IP 地址绑定到`INADDR_ANY`的一些好处。当然，这种做法也有一些局限性，例如无法限制客户端只能使用特定的 IP 地址来连接服务器。因此，在实际应用中需要根据具体需求来决定是否使用`INADDR_ANY`。
 
-在上面的测试中，被绑定的 IP 地址设置为`0`，查看进程网络信息时就能看到它的 IP 地址的值为 0。<img src="./网络编程：UDP socket.IMG/image-20230430191914226.png" alt="image-20230430191914226" style="zoom:50%;" />
+在上面的测试中，被绑定的 IP 地址设置为`0`，查看进程网络信息时就能看到它的 IP 地址的值为 0。<img src="./.网络编程：UDP socket.IMG/image-20230430191914226.png" alt="image-20230430191914226" style="zoom:50%;" />
 
 因此服务端的逻辑中 IP 地址就不用填充到结构体中了。
 
@@ -814,7 +814,7 @@ void Start()
 
 例如运营商提供给我的私有 IP 是`172.17.177.235`：
 
-<img src="./网络编程：UDP socket.IMG/屏幕录制 2023-04-30 21.43.41.gif" alt="屏幕录制 2023-04-30 21.43.41" style="zoom:50%;" />
+<img src="./.网络编程：UDP socket.IMG/屏幕录制 2023-04-30 21.43.41.gif" alt="屏幕录制 2023-04-30 21.43.41" style="zoom:50%;" />
 
 # 解析命令版
 
@@ -913,7 +913,7 @@ void Start()
 >
 > 如果客户端发送了`rm`或`rmdir`等非法指令，那么客户端将会记录错误信息，并直接返回错误信息。
 >
-> <img src="./网络编程：UDP socket.IMG/image-20230430231042147.png" alt="image-20230430231042147" style="zoom:50%;" />
+> <img src="./.网络编程：UDP socket.IMG/image-20230430231042147.png" alt="image-20230430231042147" style="zoom:50%;" />
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/UdpSocket/SingleProcess_command)--实际上只修改了`UdpServer.hpp`中成员函数`Start()`的逻辑，为了方便编译依然将所有文件打包。（实际上也能打包成一个库以供别人使用，不过这样的话就没办法看到代码中的细节了）
 
@@ -1017,11 +1017,11 @@ void Start()
 
 下面将用 2 个客户端和 1 个服务端进行测试。
 
-<img src="./网络编程：UDP socket.IMG/屏幕录制 2023-05-01 15.14.35.gif" alt="屏幕录制 2023-05-01 15.14.35" style="zoom:50%;" />
+<img src="./.网络编程：UDP socket.IMG/屏幕录制 2023-05-01 15.14.35.gif" alt="屏幕录制 2023-05-01 15.14.35" style="zoom:50%;" />
 
 但是这并不是我们想象中的群聊，这里只有发送信息的客户端才能收到自己发送的消息，而不会立刻显示另一个客户端发送的消息，而是在回显自己发送的几条信息之后才显示。而且我们通过服务端的日志可以看到，实际上客户端是有将每条接收到的数据发送给两个客户端的：
 
-<img src="./网络编程：UDP socket.IMG/image-20230501151941073.png" alt="image-20230501151941073" style="zoom:50%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230501151941073.png" alt="image-20230501151941073" style="zoom:50%;" />
 
 出现这样的情况的原因并非客户端拒绝了服务端进程发送的消息，而是 IO 被阻塞了。在上面的客户端程序中，使用的是`getline()`函数获取用户输入的数据，也就是从标准输入读取数据，那么如果数据没有流向标准输入，`getline()`后面的逻辑都不会被执行，程序将会在`getline()`一直等待标准输入的数据。对于群聊中的每一个客户端，它们接收消息和发送消息应该是互不干扰的，就像我们在群里聊天一样。
 
@@ -1204,7 +1204,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-<img src="./网络编程：UDP socket.IMG/屏幕录制 2023-05-01 19.36.33.gif" alt="屏幕录制 2023-05-01 19.36.33" style="zoom:50%;" />
+<img src="./.网络编程：UDP socket.IMG/屏幕录制 2023-05-01 19.36.33.gif" alt="屏幕录制 2023-05-01 19.36.33" style="zoom:50%;" />
 
 注意：由于使用了`pthread`库，因此要增加编译选项：`-pthread`。
 
@@ -1223,15 +1223,15 @@ int main(int argc, char* argv[])
 
 首先创建两个缓冲区：
 
-<img src="./网络编程：UDP socket.IMG/image-20230501201002778.png" alt="image-20230501201002778" style="zoom:33%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230501201002778.png" alt="image-20230501201002778" style="zoom:33%;" />
 
-<img src="./网络编程：UDP socket.IMG/屏幕录制 2023-05-01 20.15.32.gif" alt="屏幕录制 2023-05-01 20.15.32" style="zoom:33%;" />
+<img src="./.网络编程：UDP socket.IMG/屏幕录制 2023-05-01 20.15.32.gif" alt="屏幕录制 2023-05-01 20.15.32" style="zoom:33%;" />
 
 通过管道作为客户端和服务端之间的缓冲区，就可以实现在专门的模块中输入（右边）和输出（中间），这样就不会像上面一样输入和输出乱成一锅粥了。
 
 这里有一个 bug，就是缓冲区 B 不能收到客户端 A 发送的第一条数据，在测试中也就是“你好，我是客户端 A”这条消息。出现这种情况的原因是没有设计注册的逻辑，这里服务端中添加用户的逻辑是用户端发送第一条消息时判断它是不是新用户，是则添加到哈希表中。因为客户端 A 在发送这条消息时，客户端 B 还没有被添加到表中，因此服务端在群发消息时也就不回将消息发送给客户端 B 了。
 
-<img src="./网络编程：UDP socket.IMG/image-20230501202604922.png" alt="image-20230501202604922" style="zoom:50%;" />
+<img src="./.网络编程：UDP socket.IMG/image-20230501202604922.png" alt="image-20230501202604922" style="zoom:50%;" />
 
 因此如果实现了一个注册功能，在发送信息之前就已经把用户的标识信息保存起来，在实现群聊时，即使用户没有发送过消息也能收到其他成员的消息。
 

@@ -30,7 +30,7 @@ open: true
 
 库中有`main`函数吗？下面会告诉你答案：
 
-<img src="./动静态库.IMG/image-20221129230926526.png" alt="image-20221129230926526" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20221129230926526.png" alt="image-20221129230926526" style="zoom:37%;" />
 
 当有多个不同的源文件中的`main`函数调用这些功能函数时，每次都要重新对这几个函数重复预处理、编译、汇编操作，各自生成`.o`文件，然后再和调用功能函数的源文件（一般是 main 函数）生成的`.o`，最后才生成可执行程序。
 
@@ -81,10 +81,10 @@ clean :
 
 其中，`libc.so.6`就是这个可执行程序依赖的库文件，通过`ll`指令查看这个该路径下这个库文件的属性：
 
-<img src="./动静态库.IMG/image-20230314214414586.png" alt="image-20230314214414586" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230314214414586.png" alt="image-20230314214414586" style="zoom:37%;" />
 
 表明它其实是软链接到同目录下的`libc-2.17.so`文件，通过`file`指令，查看该文件的文件类型：
-<img src="./动静态库.IMG/image-20230314214650195.png" alt="image-20230314214650195" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230314214650195.png" alt="image-20230314214650195" style="zoom:37%;" />
 
 如果一个库文件是 shared object，那么它是一种特殊的目标文件，可以在程序运行时被加载（链接）进来。在 Linux 下，动态链接库（shared object file，共享对象文件）的文件后缀为 .so。使用动态链接库的优点是：程序的可执行文件更小，便于程序的模块化以及更新，同时，有效内存的使用效率更高。
 
@@ -106,7 +106,7 @@ clean :
 gcc -static mylib.c -o mylib-s
 ```
 
-<img src="./动静态库.IMG/image-20230314222100609.png" alt="image-20230314222100609" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230314222100609.png" alt="image-20230314222100609" style="zoom:37%;" />
 
 其中`mylib-s`是静态链接版本生成的可执行程序，可见，动态链接生成的可执行程序的大小比静态链接的小不少。
 
@@ -118,7 +118,7 @@ gcc -static mylib.c -o mylib-s
 
 说明静态链接生成的可执行程序不依赖其他库文件，同样地，用`file`指令查看它的文件类型：
 
-<img src="./动静态库.IMG/image-20230314222501062.png" alt="image-20230314222501062" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230314222501062.png" alt="image-20230314222501062" style="zoom:37%;" />
 
 > 可能出现的错误：
 >
@@ -217,7 +217,7 @@ gcc -c Print.c
 
 > `-c`选项告诉 gcc 只编译源代码，但不进行链接。这会生成一个目标文件（通常以`.o`结尾），该文件包含了编译后的代码，但还不能直接运行。你可以使用`-c`选项来编译多个源文件，然后再使用链接器将它们链接成一个可执行文件或共享库。
 
-生成目标文件：<img src="./动静态库.IMG/image-20230315001036129.png" alt="image-20230315001036129" style="zoom:37%;" />
+生成目标文件：<img src="./.动静态库.IMG/image-20230315001036129.png" alt="image-20230315001036129" style="zoom:37%;" />
 
 > 如果我们只把`.o`和`.h`文件给别人，别人能用吗？
 
@@ -232,7 +232,7 @@ gcc Add.o Print.o main.o -o libtest.out
 ```
 
 运行：
-<img src="./动静态库.IMG/image-20230315002016805.png" alt="image-20230315002016805" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315002016805.png" alt="image-20230315002016805" style="zoom:37%;" />
 
 通过上面的例子我们知道，需要将生成的所有目标文件和 main.o 文件链接才能生成可执行程序，但是除了 main.o 之外的。o 文件都太分散了，用起来很麻烦（当然可以通过 Makefile 简化步骤），给别人使用也不太方便，还容易缺失，所以将它们打包。而将目标文件打包的结果就是一个静态库。
 
@@ -259,7 +259,7 @@ ar -rc libtest.a Add.o Print.o
 ar -tv libtest.a
 ```
 
-<img src="./动静态库.IMG/image-20230315193024083.png" alt="image-20230315193024083" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315193024083.png" alt="image-20230315193024083" style="zoom:37%;" />
 
 3. 将打包成的静态库需要和头文件组织起来。
 
@@ -272,7 +272,7 @@ ar -tv libtest.a
 例如，将所有的头文件（.h）放在一个名为`include`的目录下，将生成的静态库文件（.a）放在一个名为`lib`的目录下。然后将这两个目录都放在名为`libtest`的目录下，这个`libtest`就可以作为一个第三方库被使用。
 
 创建好目录以后，通过`tree`指令查看目录结构：
-<img src="./动静态库.IMG/image-20230315195016522.png" alt="image-20230315195016522" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315195016522.png" alt="image-20230315195016522" style="zoom:37%;" />
 
 ### Makefile 打包
 
@@ -300,23 +300,23 @@ clean :
 
 `make`：生成目标文件，然后打包生成静态库：
 
-<img src="./动静态库.IMG/image-20230315193325441.png" alt="image-20230315193325441" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315193325441.png" alt="image-20230315193325441" style="zoom:37%;" />
 
 `make mylib`：组织静态库文件和头文件：
-<img src="./动静态库.IMG/image-20230315131227842.png" alt="image-20230315131227842" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315131227842.png" alt="image-20230315131227842" style="zoom:37%;" />
 
 查看`mylib`的目录结构：
 
-<img src="./动静态库.IMG/image-20230315195124194.png" alt="image-20230315195124194" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315195124194.png" alt="image-20230315195124194" style="zoom:37%;" />
 
 ## 3.2 使用静态库
 
 仍然使用一开始就写好的 main.c，让它和含有头文件、静态库文件的`libtest`共处同一目录`libuse`下才能调用库中写好的函数。
-<img src="./动静态库.IMG/image-20230315195344554.png" alt="image-20230315195344554" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315195344554.png" alt="image-20230315195344554" style="zoom:37%;" />
 
 试着在该目录下直接编译 main.c：
 
-<img src="./动静态库.IMG/image-20230315194126931.png" alt="image-20230315194126931" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315194126931.png" alt="image-20230315194126931" style="zoom:37%;" />
 
 这个错误说明 gcc 没有找到头文件对应的库文件，下面的操作是让 gcc 看到导入的第三方库。
 
@@ -341,7 +341,7 @@ clean :
 ```
 
 试着编译：
-<img src="./动静态库.IMG/image-20230315191254817.png" alt="image-20230315191254817" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315191254817.png" alt="image-20230315191254817" style="zoom:37%;" />
 
 这是链接时错误，两个函数没有引用，说明编译器已经找到头文件了。
 
@@ -355,7 +355,7 @@ gcc main.c -ltest
 
 运行程序：
 
-<img src="./动静态库.IMG/image-20230315201836609.png" alt="image-20230315201836609" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315201836609.png" alt="image-20230315201836609" style="zoom:37%;" />
 
 但是将头文件和库文件添加到系统目录下是非常不推荐的，因为这样会污染系统库目录，而这就是安装库的过程。
 
@@ -373,7 +373,7 @@ gcc main.c -I./mylib/include -L./mylib/lib -ltest
 ```
 
 编译运行程序：
-<img src="./动静态库.IMG/image-20230315202705672.png" alt="image-20230315202705672" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315202705672.png" alt="image-20230315202705672" style="zoom:37%;" />
 
 > 三个选项后，空格可加可不加。
 
@@ -396,7 +396,7 @@ gcc -fPIC -c Add.c
 gcc -fPIC -c Print.c
 ```
 
-<img src="./动静态库.IMG/image-20230315203425438.png" alt="image-20230315203425438" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315203425438.png" alt="image-20230315203425438" style="zoom:37%;" />
 
 ### 位置无关码
 
@@ -421,13 +421,13 @@ gcc -fPIC -c Print.c
 gcc -shared -o libtest.so Add.o Print.o
 ```
 
-<img src="./动静态库.IMG/image-20230315205332495.png" alt="image-20230315205332495" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315205332495.png" alt="image-20230315205332495" style="zoom:37%;" />
 
 其中，在选项`-shared`后面的是要生成动态库的名称，在它之后是动态库依赖的目标文件。
 
 通过指令`readelf -S`可以查看库的部分详细，如偏移量 offset ：
 
-<img src="./动静态库.IMG/image-20230315213320782.png" alt="image-20230315213320782" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315213320782.png" alt="image-20230315213320782" style="zoom:37%;" />
 
 动态库使用相对地址，是由偏移量和某个参照点找到库的
 
@@ -435,7 +435,7 @@ gcc -shared -o libtest.so Add.o Print.o
 
 同样地，将所有的头文件（.h）放在一个名为`include`的目录下，将生成的静态库文件（.a）放在一个名为`lib`的目录下。然后将这两个目录都放在名为`libtest`的目录下，这个`libtest`就可以作为一个第三方库被使用。
 
-<img src="./动静态库.IMG/image-20230315212848216.png" alt="image-20230315212848216" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315212848216.png" alt="image-20230315212848216" style="zoom:37%;" />
 
 ### 使用 Makefile 打包
 
@@ -465,7 +465,7 @@ clean :
 
 此处将打包的操作命名为`output`。
 
-<img src="./动静态库.IMG/image-20230315215021820.png" alt="image-20230315215021820" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315215021820.png" alt="image-20230315215021820" style="zoom:37%;" />
 
 ## 4.2 动态库的使用
 
@@ -473,7 +473,7 @@ clean :
 
 例如，仍然使用 gcc 的三个选项说明编译 main.c 需要的库文件和头文件，以及应该链接哪个库。注意，此时的工作目录依然是：
 
-<img src="./动静态库.IMG/image-20230315220348256.png" alt="image-20230315220348256" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315220348256.png" alt="image-20230315220348256" style="zoom:37%;" />
 
 ```shell
 gcc main.c -I./mylib/include -L./mylib/lib -ltest
@@ -481,15 +481,15 @@ gcc main.c -I./mylib/include -L./mylib/lib -ltest
 
 这样就能生成可执行程序：
 
-<img src="./动静态库.IMG/image-20230315220543219.png" alt="image-20230315220543219" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315220543219.png" alt="image-20230315220543219" style="zoom:37%;" />
 
 不同于静态库，这里动态库生成的可执行程序并不能运行。
 
-<img src="./动静态库.IMG/image-20230315220501009.png" alt="image-20230315220501009" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315220501009.png" alt="image-20230315220501009" style="zoom:37%;" />
 
 通过`ldd`指令查看可执行程序依赖的动态库的信息：
 
-<img src="./动静态库.IMG/image-20230315220732188.png" alt="image-20230315220732188" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315220732188.png" alt="image-20230315220732188" style="zoom:37%;" />
 
 发现`libtest.so => not found`，这说明系统无法找到动态库文件。
 
@@ -510,7 +510,7 @@ gcc main.c -I./mylib/include -L./mylib/lib -ltest
 sudo cp mylib/lib/libtest.so /lib64
 ```
 
-<img src="./动静态库.IMG/image-20230315221518474.png" alt="image-20230315221518474" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315221518474.png" alt="image-20230315221518474" style="zoom:37%;" />
 
 现在这个动态库就被找到了。
 
@@ -530,13 +530,13 @@ sudo cp mylib/lib/libtest.so /lib64
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/xy/Linux/libtest/libtest/mylib/lib
 ```
 
-<img src="./动静态库.IMG/image-20230315222708991.png" alt="image-20230315222708991" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315222708991.png" alt="image-20230315222708991" style="zoom:37%;" />
 
 现在，程序也可以运行了。
 
 `ldd`查看依赖库信息：
 
-<img src="./动静态库.IMG/image-20230315222835217.png" alt="image-20230315222835217" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315222835217.png" alt="image-20230315222835217" style="zoom:37%;" />
 
 注意要用`:`隔开，否则会覆盖原来的环境变量。但是这个方法是临时的，因为这个环境变量是内存级别的环境变量，机器会在下次登录时清理。
 
@@ -554,7 +554,7 @@ echo /home/xy/Linux/libtest/libtest/mylib/lib > libtest.conf
 
 这样，当前目录下就会出现刚才创建的文件：
 
-<img src="./动静态库.IMG/image-20230315223614680.png" alt="image-20230315223614680" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315223614680.png" alt="image-20230315223614680" style="zoom:37%;" />
 
 2. 将`.conf`文件拷贝到`/etc/ld.so.conf.d/`下。
 
@@ -562,7 +562,7 @@ echo /home/xy/Linux/libtest/libtest/mylib/lib > libtest.conf
 sudo cp libtest.conf /etc/ld.so.conf.d/
 ```
 
-`ldd`一下：<img src="./动静态库.IMG/image-20230315220732188.png" alt="image-20230315220732188" style="zoom:37%;" />
+`ldd`一下：<img src="./.动静态库.IMG/image-20230315220732188.png" alt="image-20230315220732188" style="zoom:37%;" />
 
 系统还是没有找到 a.out 依赖的动态库，原因是此时的系统的数据库还未更新，使用命令`ldconfig`更新配置文件：
 ```shell
@@ -571,11 +571,11 @@ sudo ldconfig
 
 `ldd`一下：
 
-<img src="./动静态库.IMG/image-20230315221518474.png" alt="image-20230315221518474" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315221518474.png" alt="image-20230315221518474" style="zoom:37%;" />
 
 成功链接，运行一下：
 
-<img src="./动静态库.IMG/image-20230315224101059.png" alt="image-20230315224101059" style="zoom:37%;" />
+<img src="./.动静态库.IMG/image-20230315224101059.png" alt="image-20230315224101059" style="zoom:37%;" />
 
 # 5. 补充
 

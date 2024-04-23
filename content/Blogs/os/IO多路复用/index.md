@@ -465,7 +465,7 @@ select 函数的作用是监听一组文件描述符的 I/O 事件是否就绪�
 
 测试：
 
-<img src="./IO 多路复用.IMG/image-20230930190854327.png" alt="image-20230930190854327" style="zoom:50%;" />
+<img src="./.IO 多路复用.IMG/image-20230930190854327.png" alt="image-20230930190854327" style="zoom:50%;" />
 
 注意，处理完连接后，我们不应该立即调用 recv、read 这样传统的阻塞式 I/O 接口，为什么呢？因为即使建立了连接，用户进程是无法的值客户端什么时候会发送数据的，极端地说，如果有恶意客户端只连接不发送，会造成服务端阻塞，这样就前功尽弃了。但这个场景依然是我们熟悉的，我们第一次处理阻塞式 Accept() 函数也是类似的，那就再用一次 select 函数，只不过这次连接已经建立了，那么任务变成了：监测客户端是否发送数据，有数据说明读事件应该就绪，通知用户进程读取；反之则否。这样读取时用户进程就可以避免因为不知道客户端什么时候发送数据而导致的阻塞了。
 
@@ -1225,7 +1225,7 @@ struct epitem {
 >
 > 实际上，结构体除了红黑树和就绪队列以外，还有锁（lock、mtx）和等待队列（wq，wait queue），以保证并发安全和异步通知。
 
-<img src="./IO 多路复用.IMG/008eGmZEly1gpc5cdhrr0j310f0u0djf.jpg" alt="img" style="zoom:50%;" />
+<img src="./.IO 多路复用.IMG/008eGmZEly1gpc5cdhrr0j310f0u0djf.jpg" alt="img" style="zoom:50%;" />
 
 图片来源：[linux 内核 Epoll 实现原理 ](https://www.jxhs.me/2021/04/08/linux%E5%86%85%E6%A0%B8Epoll-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/)
 
@@ -1706,7 +1706,7 @@ epoll 使用内核文件系统（eventpollfs）来存储事件列表，并通过
 
 作为一个拖延症严重的人，快递小哥 A 的方式肯定是比较温和的，但是一个人每天工作的时间是有限的，如果老是遇到像小明这样的人，一天肯定送不完；反之快递小哥的方式虽然简单粗暴，但是他的效率会更高。
 
-<img src="./IO 多路复用.IMG/Level-triggering.png" alt="img" style="zoom:50%;" />
+<img src="./.IO 多路复用.IMG/Level-triggering.png" alt="img" style="zoom:50%;" />
 
 图片来源：[**Edge Triggering and Level Triggering** ](https://www.geeksforgeeks.org/edge-triggering-and-level-triggering/)
 
