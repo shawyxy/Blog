@@ -3,6 +3,7 @@ title: 表的连接
 weight: 10
 open: true
 ---
+
 # 什么是连接
 
 数据库的连接是指在数据库系统中，两个或多个数据表之间建立的关联关系，使它们可以进行数据的交互和操作。连接通常基于某种**共同**的字段或条件，用于将相关数据组合在一起。
@@ -29,7 +30,7 @@ open: true
 > - 返回匹配的记录，以及表 B 多余的记录，这叫右连接（right join）。
 > - 返回匹配的记录，以及表 A 和表 B 各自的多余记录，这叫全连接（full join）。
 
-<img src="./表的连接。IMG/bg2019011506.jpg" alt="img" style="zoom:40%;" />
+<img src="./.表的连接.IMG/bg2019011506.jpg" alt="img" style="zoom:40%;" />
 
 上图中，表 A 的记录是 123，表 B 的记录是 ABC，颜色表示匹配关系。返回结果中，如果另一张表没有匹配的记录，则用 null 填充。
 
@@ -37,11 +38,11 @@ open: true
 
 此外，还存在一种特殊的连接，叫做"交叉连接"（cross join），指的是表 A 和表 B 不存在关联字段，这时表 A（共有 n 条记录）与表 B （共有 m 条记录）连接后，会产生一张包含 n x m 条记录的新表（见下图）。
 
-<img src="./表的连接。IMG/bg2019011507.png" alt="img" style="zoom:40%;" />
+<img src="./.表的连接.IMG/bg2019011507.png" alt="img" style="zoom:40%;" />
 
 # 测试表
 
-<img src="./表的连接。IMG/image-20240223173257335.png" alt="image-20240223173257335" style="zoom:40%;" />
+<img src="./.表的连接.IMG/image-20240223173257335.png" alt="image-20240223173257335" style="zoom:40%;" />
 
 # 内连接
 
@@ -55,7 +56,7 @@ SELECT ... FROM t1 INNER JOIN t2 ON 连接条件 [INNER JOIN t3 ON 连接条件]
 
 - 对上表做内连接。
 
-<img src="./表的连接。IMG/image-20240223173643272.png" alt="image-20240223173643272" style="zoom:40%;" />
+<img src="./.表的连接.IMG/image-20240223173643272.png" alt="image-20240223173643272" style="zoom:40%;" />
 
 SQL 的构造顺序是：
 
@@ -79,7 +80,7 @@ SELECT ... FROM t1 LEFT JOIN t2 ON 连接条件 [LEFT JOIN t3 ON 连接条件] .
 
 - 对上表做左外连接。
 
-<img src="./表的连接。IMG/image-20240223174317091.png" alt="image-20240223174317091" style="zoom:40%;" />
+<img src="./.表的连接.IMG/image-20240223174317091.png" alt="image-20240223174317091" style="zoom:40%;" />
 
 这意味着即使香蕉没有价格，也会将它的所有信息显示，因为香蕉存在于左表中的记录。其中左表不存在的属性，将会以 NULL 值填充。
 
@@ -91,11 +92,11 @@ SELECT ... FROM t1 RIGHT JOIN t2 ON 连接条件 [RIGHT JOIN t3 ON 连接条件]
 
 在右表中插入一条 ID 不存在于左表的记录：
 
-<img src="./表的连接。IMG/image-20240223174950933.png" alt="image-20240223174950933" style="zoom:40%;" />
+<img src="./.表的连接.IMG/image-20240223174950933.png" alt="image-20240223174950933" style="zoom:40%;" />
 
 - 对上表进行右外连接。
 
-<img src="./表的连接。IMG/image-20240223175255978.png" alt="image-20240223175255978" style="zoom:40%;" />
+<img src="./.表的连接.IMG/image-20240223175255978.png" alt="image-20240223175255978" style="zoom:40%;" />
 
 和左外连接类似地，右外连接会将右表存在而左表不存在的记录添加到返回值中，不存在的字段依然用 NULL 值填充。
 
@@ -111,7 +112,7 @@ SELECT ... FROM t1 FULL JOIN t2
 
 全外连接相当于对两个集合做加法，得到的是所有情况。
 
-<img src="./表的连接。IMG/image-20240223180041495.png" alt="image-20240223180041495" style="zoom:40%;" />
+<img src="./.表的连接.IMG/image-20240223180041495.png" alt="image-20240223180041495" style="zoom:40%;" />
 
 # 自然连接
 
@@ -121,7 +122,7 @@ SELECT ... FROM t1 FULL JOIN t2
 SELECT ... FROM t1 NATURAL JOIN t2;
 ```
 
-<img src="./表的连接。IMG/image-20240223180340075.png" alt="image-20240223180340075" style="zoom:40%;" />
+<img src="./.表的连接.IMG/image-20240223180340075.png" alt="image-20240223180340075" style="zoom:40%;" />
 
 这条 SQL 语句将会自动根据两个表中相同列名进行连接，返回结果中将包含这些相同列名的数据，并且自动过滤掉重复的列。
 
@@ -137,7 +138,7 @@ SELECT ... FROM t1 NATURAL JOIN t2;
 SELECT ... FROM t1 CROSS JOIN t2;
 ```
 
-<img src="./表的连接。IMG/image-20240223180535693.png" alt="image-20240223180535693" style="zoom:40%;" />
+<img src="./.表的连接.IMG/image-20240223180535693.png" alt="image-20240223180535693" style="zoom:40%;" />
 
 返回 table1 和 table2 的所有可能组合，即 table1 中每一行与 table2 中每一行的组合。
 

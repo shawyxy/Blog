@@ -28,6 +28,7 @@ mysql> create table default_test(
 ```
 
 查看表结构：
+
 <img src="./.表的约束.IMG/image-20231026175520595.png" alt="image-20231026175520595" style="zoom:40%;" />
 
 插入一条没有 name 属性的记录：
