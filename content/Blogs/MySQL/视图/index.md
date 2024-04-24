@@ -22,13 +22,13 @@ WHERE condition;
 
 测试表：
 
-<img src="./.视图.IMG/image-20240227161226311.png" alt="image-20240227161226311" style="zoom:50%;" />
+<img src="./.视图.IMG/image-20240227161226311.png" alt="image-20240227161226311" style="zoom:40%;" />
 
 ## 创建视图
 
 创建视图首先会执行 SELECT 语句，用查询返回的结果作为视图的内容。
 
-<img src="./.视图.IMG/image-20240227161844683.png" alt="image-20240227161844683" style="zoom:50%;" />
+<img src="./.视图.IMG/image-20240227161844683.png" alt="image-20240227161844683" style="zoom:40%;" />
 
 用 SELECT 的返回值作为视图的数据，通过`show tables`可以查看视图是否被创建。
 
@@ -43,7 +43,7 @@ SELECT * FROM view_name;
 ## 更新视图
 视图可以被更新（取决于视图的定义和所涉及的表）。如果视图定义允许，可以通过`INSERT`、`UPDATE`、`DELETE`操作来更改视图，这些更改会反映到底层的表中。但是，并非所有视图都是可更新的。
 
-<img src="./.视图.IMG/image-20240227162559507.png" alt="image-20240227162559507" style="zoom:50%;" />
+<img src="./.视图.IMG/image-20240227162559507.png" alt="image-20240227162559507" style="zoom:40%;" />
 
 修改视图后，原表中的记录也会随之被修改。反之也是如此。
 
@@ -51,7 +51,7 @@ SELECT * FROM view_name;
 
 在`/var/lib/mysql/数据库名`路径下，视图只有一个`.frm`文件，它值包含表结构的定义，而数据保存在`.ibd`文件中。这说明视图和原表共用同一份数据文件。这保证了数据一致性，视图往往用于显示和操作热数据。
 
-<img src="./.视图.IMG/image-20240227163118091.png" alt="image-20240227163118091" style="zoom:50%;" />
+<img src="./.视图.IMG/image-20240227163118091.png" alt="image-20240227163118091" style="zoom:40%;" />
 
 ## 删除视图
 

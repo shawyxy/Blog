@@ -57,9 +57,9 @@ MySQL 不像 C/C++等编程语言一样 （虽然它是 C++实现的），允许
 
 在 t1 表中测试：
 
-<img src="./.数据类型.IMG/image-20231022204731751.png" alt="image-20231022204731751" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231022204731751.png" alt="image-20231022204731751" style="zoom:40%;" />
 
-<img src="./.数据类型.IMG/image-20231022204749031.png" alt="image-20231022204749031" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231022204749031.png" alt="image-20231022204749031" style="zoom:40%;" />
 
 当用户插入 128 或 -129 时，MySQL 检查到数值不在 1 字节的范围，报错。无符号也是一样的。
 
@@ -79,7 +79,7 @@ INT(N) 中的 N 表示显示宽度，它只用于显示，并不能限制取值�
 
 例如创建一个表，不指定 INT 的显示长度，然后再用`show`命令查看：
 
-<img src="./.数据类型.IMG/image-20231023201847488.png" alt="image-20231023201847488" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023201847488.png" alt="image-20231023201847488" style="zoom:40%;" />
 
 ## BIT
 
@@ -124,7 +124,7 @@ mysql> create table t2(
     -> );
 ```
 
-<img src="./.数据类型.IMG/image-20231022210908555.png" alt="image-20231022210908555" style="zoom:33%;" />
+<img src="./.数据类型.IMG/image-20231022210908555.png" alt="image-20231022210908555" style="zoom:40%;" />
 
 如果像第二条这样直接插入一个整数，而不是一个用`b''`包含的二进制序列，那么 MySQL 会将这个十进制整数转为二进制，也就是 10 转成二进制 1010。
 
@@ -134,10 +134,10 @@ mysql> create table t2(
 
 如果插入值为 65，97 的整数：
 
-<img src="./.数据类型.IMG/image-20231022215321646.png" alt="image-20231022215321646" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231022215321646.png" alt="image-20231022215321646" style="zoom:40%;" />
 
 按十进制的 ASCII 值打印，按二进制存储：
-<img src="./.数据类型.IMG/image-20231022215422607.png" alt="image-20231022215422607" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231022215422607.png" alt="image-20231022215422607" style="zoom:40%;" />
 
 bit 类型可以用来存储状态值，比如真、假或是、否等。例如，我们可以用 bit 类型来表示一个人是否在工作：
 
@@ -151,7 +151,7 @@ Query OK, 0 rows affected (0.02 sec)
 
 一个 bit 的范围只有 0 和 1，超出这个范围的值，不被 MySQL 允许插入：
 
-<img src="./.数据类型.IMG/image-20231022215821097.png" alt="image-20231022215821097" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231022215821097.png" alt="image-20231022215821097" style="zoom:40%;" />
 
 那么 bit 的范围就取决于 m 的大小，即 m 位二进制序列对应的十进制的范围。
 
@@ -184,7 +184,7 @@ ERROR 1427 (42000): For float(M,D), double(M,D) or decimal(M,D), M must be >= D 
 
 值得注意的是，MySQL 检查的是这个数值的绝对值在四舍五入（即向零取整）后的结果：
 
-<img src="./.数据类型.IMG/image-20231023000010232.png" alt="image-20231023000010232" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023000010232.png" alt="image-20231023000010232" style="zoom:40%;" />
 
 > 向零取整：想象一下有负数和正数的数轴，对数值的绝对值做四舍五入，就是向中间的 0 取整。这里的整数是对于规定的 M 而言的，例如 M 是 2，也就是规定小数保留 2 位，那么取整时就保留 2 位。
 
@@ -201,7 +201,7 @@ mysql> create table t5(
     -> );
 ```
 
-<img src="./.数据类型.IMG/image-20231023185747509.png" alt="image-20231023185747509" style="zoom:33%;" />
+<img src="./.数据类型.IMG/image-20231023185747509.png" alt="image-20231023185747509" style="zoom:40%;" />
 
 浮点数存储有精度损失，根本原因是二进制无法精确表示浮点数。
 
@@ -230,7 +230,7 @@ mysql> create table t6(
     -> );
 ```
 
-<img src="./.数据类型.IMG/image-20231023191945707.png" alt="image-20231023191945707" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023191945707.png" alt="image-20231023191945707" style="zoom:40%;" />
 
 注意，SQL 的规定是用一对单引号表示字符串，但是用双引号也是被语法允许的。如果单引号和双引号是字符串的一部分，使用`\`转义。
 
@@ -247,7 +247,7 @@ mysql> create table t7(
     -> );
 ```
 
-<img src="./.数据类型.IMG/image-20231023193446088.png" alt="image-20231023193446088" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023193446088.png" alt="image-20231023193446088" style="zoom:40%;" />
 
 > VARCHAR 和 CHAR 在插入记录时不是都遵守同样的规则吗？VARCHAR 的“变长”体现在哪里？
 
@@ -321,10 +321,10 @@ TEXT 类型的数据不会被自动截断，也不会删除或填充空格。TEX
 - `NULL` 需要占用额外的空间来记录其状态，而 `''` 不占用空间。
 
 实际上，select 这个 MySQL 命令可以求表达式的值，例如：
-<img src="./.数据类型.IMG/image-20231023225336080.png" alt="image-20231023225336080" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023225336080.png" alt="image-20231023225336080" style="zoom:40%;" />
 
 下面可以对 NULL 和''做测试：
-<img src="./.数据类型.IMG/image-20231023225503087.png" alt="image-20231023225503087" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023225503087.png" alt="image-20231023225503087" style="zoom:40%;" />
 
 由此可见，`NULL` 表示“什么都没有”，也就是“无”；而`''`表示一个空字符串。注意，==在 MySQL 中，`''`会被转化为转化为一个浮点数`0.0`==，所以对它做乘法的结果是 0，假如你用另一个浮点数和它做运算，也是会出现浮点数精度误差的。
 
@@ -350,13 +350,13 @@ mysql> create table t8(
 
 查看表结构：
 
-<img src="./.数据类型.IMG/image-20231023203527157.png" alt="image-20231023203527157" style="zoom:33%;" />
+<img src="./.数据类型.IMG/image-20231023203527157.png" alt="image-20231023203527157" style="zoom:40%;" />
 
 其中，timestamp 列属性不允许为 NULL，并且默认值为 CURRENT_TIMESTAMP，它的含义是：如果你在创建一个时间字段时，使用了 DEFAULT CURRENT_TIMESTAMP 或者 ON UPDATE CURRENT_TIMESTAMP，那么数据库会自动维护这个字段的值，不需要你手动指定。
 
 下面是一个例子，着重理解第三个时间戳列属性：
 
-<img src="./.数据类型.IMG/image-20231023204347892.png" alt="image-20231023204347892" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023204347892.png" alt="image-20231023204347892" style="zoom:40%;" />
 
 在插入时没有指定时间戳，那么 MySQL 会自动插入当前的时间戳。
 
@@ -371,11 +371,11 @@ mysql> create table t9(
 );
 ```
 
-<img src="./.数据类型.IMG/image-20231023205313860.png" alt="image-20231023205313860" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023205313860.png" alt="image-20231023205313860" style="zoom:40%;" />
 
 当用户对评论进行修改，实际上就是 MySQL 对这条记录修改：
 
-<img src="./.数据类型.IMG/image-20231023205516313.png" alt="image-20231023205516313" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023205516313.png" alt="image-20231023205516313" style="zoom:40%;" />
 
 # ENUM 和 SET
 
@@ -397,15 +397,15 @@ mysql> create table t10(
     -> );
 ```
 
-<img src="./.数据类型.IMG/image-20231023231225841.png" alt="image-20231023231225841" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023231225841.png" alt="image-20231023231225841" style="zoom:40%;" />
 
-<img src="./.数据类型.IMG/image-20231023231836903.png" alt="image-20231023231836903" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023231836903.png" alt="image-20231023231836903" style="zoom:40%;" />
 
 请注意在插入 SET 的多个参数时，只需要用英文逗号隔开，被包含在一对单引号中。
 
 MySQL 为了存储的效率，它将 SET 中的一组预定义的字符串视为一组二进制位。当用户查询或插入 SET 值时，可以使用字符串（上面的做法）或者（十进制）数字来表示，但是 MySQL 实际上是用二进制位来存储和比较的。
 
-<img src="./.数据类型.IMG/image-20231023232134162.png" alt="image-20231023232134162" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231023232134162.png" alt="image-20231023232134162" style="zoom:40%;" />
 
 在这个例子中，插入 SET 记录使用的是十进制的整数，整数的合法性取决于 SET 的长度，例如在 SET['音乐', '电影', '游泳', '足球'] 中，这 4 个字符串对应的二进制权值位分别是 [1, 2, 4, 8](SET 最多能够存储 64 个字符串)，总共 15，即最大值是 15。所以当插入 123 时，是不合法的。
 
@@ -423,7 +423,7 @@ MySQL 为了存储的效率，它将 SET 中的一组预定义的字符串视为
 
 例如在上面这个表中：
 
-<img src="./.数据类型.IMG/image-20231024000015668.png" alt="image-20231024000015668" style="zoom:50%;" />
+<img src="./.数据类型.IMG/image-20231024000015668.png" alt="image-20231024000015668" style="zoom:40%;" />
 
 - find_in_set 函数只能用于字符串类型的列，如果列的类型是 set，那么它会被转换成字符串再进行比较。
 - find_in_set 函数只能用于单个值的查找，如果要查找多个值，需要用多个 find_in_set 函数并用 AND 或 OR 连接。

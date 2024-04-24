@@ -28,7 +28,7 @@ open: true
 ps aux
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750897.png" alt="image-20220926135002984" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750897.png" alt="image-20220926135002984" style="zoom:40%;" />
 
 在「认识系统」中我们知道，操作系统管理进程实质上是对结构体双链表的增删查改。进程信息被放在一个叫做进程控制块的数据结构中，可以理解为进程属性的集合。称之为 PCB(process control block)，Linux 下的 PCB 是：`task_struct`。
 
@@ -58,15 +58,15 @@ task_struct 就是 Linux 当中的进程控制块，task_struct 当中主要包�
 
 查看根目录下名为/proc 的系统文件夹：
 
-<img src="./.Linux进程概念.IMG/MD202210011750898.png" alt="image-20220926155758704" style="zoom:37%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750898.png" alt="image-20220926155758704" style="zoom:40%;" />
 
 该文件夹中包含大量进程的信息，有些子目录的目录名为数字：
 
-<img src="./.Linux进程概念.IMG/MD202210011750899.png" alt="image-20220926155918064" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750899.png" alt="image-20220926155918064" style="zoom:40%;" />
 
 这些数字是，某一进程的 PID（稍后会介绍），可以认为它是进程的编号，如果想查 PID=10 的进程信息，可以进入该文件夹查看：
 
-<img src="./.Linux进程概念.IMG/MD202210011750900.png" alt="image-20220926160121869" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750900.png" alt="image-20220926160121869" style="zoom:40%;" />
 
 ####  通过 ps 命令查看
 
@@ -75,7 +75,7 @@ task_struct 就是 Linux 当中的进程控制块，task_struct 当中主要包�
 ps aux
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750901.png" alt="image-20220926160404418" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750901.png" alt="image-20220926160404418" style="zoom:40%;" />
 
 如果只需要打印某一进程的信息，可与 grep 指令搭配使用：
 
@@ -85,7 +85,7 @@ ps aux | head -1 && ps aux | grep proc | grep -v grep
 
 其中`proc`是指定的进程名称或关键字。
 
-<img src="./.Linux进程概念.IMG/MD202210011750902.png" alt="image-20220926160859050" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750902.png" alt="image-20220926160859050" style="zoom:40%;" />
 
 ###  通过系统调用获取进程标识符
 
@@ -108,15 +108,15 @@ int main()
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750903.png" alt="image-20220926162044409" style="zoom:25%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750903.png" alt="image-20220926162044409" style="zoom:40%;" />
 
 把这段代码改成死循环，目的是让这个进程一直运行，我们使用上面的 ps 打印 PID 和 PPID：
 
-<img src="./.Linux进程概念.IMG/MD202210011750904.png" alt="image-20220926162847203" style="zoom: 25%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750904.png" alt="image-20220926162847203" style="zoom:40%;" />
 
 另外开一个窗口，使用 ps 命令，查看名为`proc`的进程的 PID：
 
-<img src="./.Linux进程概念.IMG/MD202210011750905.png" alt="image-20220926162907893" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750905.png" alt="image-20220926162907893" style="zoom:40%;" />
 
 可以看到，ps 指令确实可以通过可执行程序的名字找到对应的进程。
 
@@ -142,7 +142,7 @@ int main()
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750906.png" alt="image-20220926164149912" style="zoom:37%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750906.png" alt="image-20220926164149912" style="zoom:40%;" />
 
 其中，30140 出现了两次，第一次是 PID，第二次是 PPID。说明这个 fork 函数创建的进程是该进程的子进程。第一次是该进程的信息，第二次是 fork 创建的进程的信息。
 
@@ -170,11 +170,11 @@ fork 之后，代码是父子进程共享的，但是创建子进程的初衷不
 
 在 fork 上面增加一条打印语句：
 
-<img src="./.Linux进程概念.IMG/MD202210011750907.png" alt="image-20220926165227459" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750907.png" alt="image-20220926165227459" style="zoom:40%;" />
 
 运行结果：
 
-<img src="./.Linux进程概念.IMG/MD202210011750908.png" alt="image-20220926175637100" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750908.png" alt="image-20220926175637100" style="zoom:40%;" />
 
 在 fork 函数被调用之前的代码被父进程执行，fork 之后的代码默认情况下父子进程都可以执行。虽然代码是父子进程共享的，但是父子进程是各自开辟内存空间的。
 
@@ -212,7 +212,7 @@ int main()
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750909.png" alt="image-20220926190557196" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750909.png" alt="image-20220926190557196" style="zoom:40%;" />
 
 在 C 中，这两个死循环是不会同时执行的，而在系统层面上，fork 创建子进程后，子进程会进入到 if 语句打印，父进程会进入 else if 语句打印。这与语言无关，只与系统有关。
 
@@ -244,13 +244,13 @@ static const char * const task_state_array[] = {
 ps aux
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750910.png" alt="image-20220926215319332" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750910.png" alt="image-20220926215319332" style="zoom:40%;" />
 
 ```shell
 ps axj
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750911.png" alt="image-20220926215353790" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750911.png" alt="image-20220926215353790" style="zoom:40%;" />
 
 两种方式略显不同，但是都有我们要查看的进程状态。下面介绍几种不同的进程状态。
 
@@ -258,11 +258,11 @@ ps axj
 
 - 前台进程：+：可以被 Ctrl+c 终止
 
-  <img src="./.Linux进程概念.IMG/MD202210011750912.png" alt="image-20220926220631620" style="zoom: 33%;" />
+  <img src="./.Linux进程概念.IMG/MD202210011750912.png" alt="image-20220926220631620" style="zoom:40%;" />
 
   当运行上面代码（增加了 getpid 和 getppid），然后再查看进程状态：
 
-  <img src="./.Linux进程概念.IMG/MD202210011750913.png" alt="image-20220926220638736" style="zoom:33%;" />
+  <img src="./.Linux进程概念.IMG/MD202210011750913.png" alt="image-20220926220638736" style="zoom:40%;" />
 
   可以发现这个 29009 的进程 S 后面是有一个「+」，说明它是一个前台进程，是可以通过 Ctrl+c 终止的。
 
@@ -338,7 +338,7 @@ int main()
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750914.png" alt="image-20220929083514952" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750914.png" alt="image-20220929083514952" style="zoom:40%;" />
 
 当分支结束后，便不再打印子进程的信息，只剩下父进程。保持此进程运行，新建一个窗口，使用下面的指令查看子进程的信息：
 
@@ -346,7 +346,7 @@ int main()
 while :; do ps axj | head -1 && ps axj | grep proc | grep -v grep;echo "######################";sleep 1;done
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750916.png" alt="image-20220929083417221" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750916.png" alt="image-20220929083417221" style="zoom:40%;" />
 
 可以看到，PID 为 27272 是 PID27271 的子进程，这个子进程的状态就是 Z。（后面有加号，表示它是前台进程，上面有提到）注意后面有个标识符`<defunct>`，“无效的”。
 
@@ -396,7 +396,7 @@ int main()
 } 
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750917.png" alt="image-20220929091648816" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750917.png" alt="image-20220929091648816" style="zoom:40%;" />
 
 可以看到，当父进程退出后，子进程就变成了孤儿进程，它被 1 号进程领养。
 
@@ -426,7 +426,7 @@ int main()
 ps -l
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750918.png" alt="image-20220929092850662" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750918.png" alt="image-20220929092850662" style="zoom:40%;" />
 
 其中：
 
@@ -452,25 +452,25 @@ PRI 一般默认 80，所以需要有 nice 来修正优先级，OS 会根据新�
 
 top 命令相当于 Windows 系统中的任务管理器，它能动态显示系统中进程资源占用情况。
 
-<img src="./.Linux进程概念.IMG/MD202210011750919.png" alt="image-20220929100424181" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750919.png" alt="image-20220929100424181" style="zoom:40%;" />
 
 输入 top 指令后，键入`r`，输入要修改 nice 值的进程的 PID
 
-<img src="./.Linux进程概念.IMG/MD202210011750920.png" alt="image-20220929100529412" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750920.png" alt="image-20220929100529412" style="zoom:40%;" />
 
 任意运行一个进程（我运行了刚才的死循环），查看 proc 进程的 PID：
 
-<img src="./.Linux进程概念.IMG/MD202210011750921.png" alt="image-20220929101153363" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750921.png" alt="image-20220929101153363" style="zoom:40%;" />
 
 键入 14536 后：
 
-<img src="./.Linux进程概念.IMG/MD202210011750922.png" alt="image-20220929101255105" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750922.png" alt="image-20220929101255105" style="zoom:40%;" />
 
 提醒要输入的 nice 值：键入`10`，回车后，输入`q+回车`退出。
 
 重新查看 proc 进程的 PRI：
 
-<img src="./.Linux进程概念.IMG/MD202210011750923.png" alt="image-20220929101507915" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750923.png" alt="image-20220929101507915" style="zoom:40%;" />
 
 可以看到 proc 进程的优先级已经被修改为 90 了。
 
@@ -490,7 +490,7 @@ renice [newNI] [PID]
 
 依然运行上面的死循环。修改 nice 值为 10。
 
-<img src="./.Linux进程概念.IMG/MD202210011750924.png" alt="image-20220929102803567" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750924.png" alt="image-20220929102803567" style="zoom:40%;" />
 
 同样地，若 nice 值为负值，需要 sudo 或 root 权限。
 
@@ -574,7 +574,7 @@ echo $NAME
 echo $PATH
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750925.png" alt="image-20220929164027799" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750925.png" alt="image-20220929164027799" style="zoom:40%;" />
 
 可以看到，环境变量的路径由`:`分隔开，现在查看`ls`命令所在在目录：
 
@@ -582,11 +582,11 @@ echo $PATH
 which ls
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750926.png" alt="image-20220929163923505" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750926.png" alt="image-20220929163923505" style="zoom:40%;" />
 
 注意到命令`ls`所在的路径和环境变量 PATH 第二个路径是一样的，现在 cd 到这个路径看看：
 
-<img src="./.Linux进程概念.IMG/MD202210011750927.png" alt="image-20220929164220599" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750927.png" alt="image-20220929164220599" style="zoom:40%;" />
 
 这个目录下的所有程序都是系统命令，就如我们之前使用过的 nano。如果往下翻，ls、vim 都在其中。OS 是通过环境变量 PATH 来找到各种系统程序的，我们才可以把这些程序当成指令使用
 
@@ -602,7 +602,7 @@ which ls
 
 - 将可执行程序所在的目录路径放在环境变量中，就像我们配置 Java 环境、Python 环境、go 环境一样。这种方法也是配置前面这些语言环境常用的方法。
 
-  <img src="./.Linux进程概念.IMG/MD202210011750928.png" alt="image-20220929182813501" style="zoom:33%;" />
+  <img src="./.Linux进程概念.IMG/MD202210011750928.png" alt="image-20220929182813501" style="zoom:40%;" />
 
   ```
   export PATH=$PATH:/home/xy/test
@@ -613,9 +613,9 @@ which ls
 每个用户登录系统时都有自己的家目录，环境变量 HOME 保存的就是当前用户的家目录。
 
 - 普通用户：
-  <img src="./.Linux进程概念.IMG/MD202210011750929.png" alt="image-20220929183204328" style="zoom:33%;" />
+  <img src="./.Linux进程概念.IMG/MD202210011750929.png" alt="image-20220929183204328" style="zoom:40%;" />
 
-- 超级用户：	<img src="./.Linux进程概念.IMG/MD202210011750930.png" alt="image-20220929184150686" style="zoom:33%;" />
+- 超级用户：	<img src="./.Linux进程概念.IMG/MD202210011750930.png" alt="image-20220929184150686" style="zoom:40%;" />
 
 > 除了查看自己的 HOME 判断普通用户和超级用户之外，还可以看命令之前是美元符号还是今号判断。
 
@@ -623,11 +623,11 @@ which ls
 
 我们在 Linux 中敲的各种指令实际上需要由「命令行解释器」进行解释，而在 Linux 当中有许多种命令行解释器（例如 bash、sh），我们可以通过查看环境变量 SHELL 来知道自己当前所用的命令行解释器的种类。
 
-<img src="./.Linux进程概念.IMG/MD202210011750931.png" alt="image-20220929184733639" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750931.png" alt="image-20220929184733639" style="zoom:40%;" />
 
 也就是我们通常所说的 shell 外壳（上面也有提到），它是系统启动的第一个进程，相当于给众多程序（进程）指导的服务人员（就像银行大厅的工作人员一样）。
 
-<img src="./.Linux进程概念.IMG/MD202210011750932.png" alt="image-20220929185005383" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750932.png" alt="image-20220929185005383" style="zoom:40%;" />
 
 ###  7.3.4 补充
 
@@ -652,7 +652,7 @@ which ls
 
 实际上，环境变量的值是保存在一个数组中的：
 
-<img src="./.Linux进程概念.IMG/MD202210011750933.png" alt="image-20220929191538529" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750933.png" alt="image-20220929191538529" style="zoom:40%;" />
 
 每个程序都会收到一张环境变量表，环境表是一个字符指针数组，每个指针指向一个以’\0’结尾的环境字符串，最后一个字符指针为空。
 
@@ -700,7 +700,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750934.png" alt="image-20220930142921905" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750934.png" alt="image-20220930142921905" style="zoom:40%;" />
 
 可以看到，第一次运行 proc 程序没有传入选项，那么 argv 这个指针数组就只会存储这个程序本身的名字；第二次运行 proc 程序传入了四个选项，那么 grgv 指针数组就会储存这四个选项对应的字符串的头指针。
 
@@ -722,7 +722,7 @@ int main(int argc, char* argv[], char* envp[])
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750935.png" alt="image-20220930144100376" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750935.png" alt="image-20220930144100376" style="zoom:40%;" />
 
 可以看到打印出来的都是各种环境变量的值，有许多在上面的表中都已经提到过。
 
@@ -743,7 +743,7 @@ int main(int argc, char* argv[], char* envp[])
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750936.png" alt="image-20220930144646653" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750936.png" alt="image-20220930144646653" style="zoom:40%;" />
 
 通过调用这个系统接口，可以查看指定环境变量的值。
 
@@ -769,7 +769,7 @@ int main(int argc, char* argv[], char* envp[])
 
 然后通过`ps`指令查找所有含有这个 PPID 的进程信息：
 
-<img src="./.Linux进程概念.IMG/MD202210011750937.png" alt="image-20220930150642464" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750937.png" alt="image-20220930150642464" style="zoom:40%;" />
 
 最后可以看到，刚刚的进程是继承自 bash 的（可以认为它是系统本身）。
 
@@ -803,7 +803,7 @@ int main()
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750938.png" alt="image-20220930152406118" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750938.png" alt="image-20220930152406118" style="zoom:40%;" />
 
 > 因为 fork 后，父子进程执行的先后顺序是取决于内核版本的，所以在这里我让父进程 sleep 了 3 秒，意在让子进程先执行，当然也可以让子进程 sleep。
 >
@@ -825,7 +825,7 @@ int main()
 
 ##  8.2 程序地址空间布局
 
-<img src="./.Linux进程概念.IMG/MD202210011750939.png" alt="img" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750939.png" alt="img" style="zoom:40%;" />
 
 ​	图：32 位系统下进程地址空间默认布局（左）和进程地址空间经典布局（右）
 
@@ -833,7 +833,7 @@ int main()
 
 在 C/C++程序员眼中，内存布局是这样的：
 
-<img src="./.Linux进程概念.IMG/MD202210011750940.png" alt="image-20221001105557203" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750940.png" alt="image-20221001105557203" style="zoom:40%;" />
 
 下面通过代码验证：
 
@@ -874,7 +874,7 @@ int main(int argc, char* argv[], char *envp[])
 }
 ```
 
-<img src="./.Linux进程概念.IMG/MD202210011750941.png" alt="image-20221001111002640" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750941.png" alt="image-20221001111002640" style="zoom:40%;" />
 
 仅仅通过地址的长度就可以知道：它们的布局是符合上图的。
 
@@ -926,7 +926,7 @@ int main(int argc, char* argv[], char *envp[])
 
 实际上，划分这些区域就是管理这些区域，那么回到操作系统的核心：「先描述，后组织」，先定义出一种数据结构，用这种数据结构管理区域。实际上，Linux 中进程地址空间由 mm_struct 结构体划分，它的结构是这样的：
 
-<img src="./.Linux进程概念.IMG/MD202210011750942.png" alt="image-20221001125617337" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750942.png" alt="image-20221001125617337" style="zoom:40%;" />
 
 每个结构体都有 start 和 end 成员以划定区域的边界。
 
@@ -945,7 +945,7 @@ int main(int argc, char* argv[], char *envp[])
 
 页表的作用就是将虚拟地址和物理地址映射起来：
 
-<img src="./.Linux进程概念.IMG/MD202210011750943.png" alt="image-20221001134505983" style="zoom:33%;" />
+<img src="./.Linux进程概念.IMG/MD202210011750943.png" alt="image-20221001134505983" style="zoom:40%;" />
 
 只要保证每个进程的页表，映射的是物理内存的不同区域，就能保证进程之间不会互相干扰，进而保证进程的独立性。
 

@@ -86,9 +86,9 @@ MySQL 没有默认的校验规则是因为不同的字符集和场景可能需�
 
 查看数据库支持的字符集或校验规则：
 
-<img src="./.库的操作.IMG/image-20231021204414068.png" alt="image-20231021204414068" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231021204414068.png" alt="image-20231021204414068" style="zoom:40%;" />
 
-<img src="./.库的操作.IMG/image-20231021204442691.png" alt="image-20231021204442691" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231021204442691.png" alt="image-20231021204442691" style="zoom:40%;" />
 
 ## 例子
 
@@ -246,7 +246,7 @@ show create database <database_name>;
 
 在前面增加`show`关键字，可以查看数据库是如何执行 SQL 来创建数据库的。
 
-<img src="./.库的操作.IMG/image-20231021224654599.png" alt="image-20231021224654599" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231021224654599.png" alt="image-20231021224654599" style="zoom:40%;" />
 
 虽然我们输入时是用小写的关键字，但是 MySQL 会自动对用户输入的 SQL 做语法优化，将小写的关键字用大写字母代替，而且数据库的名字会用`（反引号，在 esc 下面）来包含，这么做是方式数据库的名称和关键字冲突。
 
@@ -254,11 +254,11 @@ show create database <database_name>;
 
 例如上面在创建表时，为了可读性，用了多行输入，但 MySQL 会优化如下：
 
-<img src="./.库的操作.IMG/image-20231021225313795.png" alt="image-20231021225313795" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231021225313795.png" alt="image-20231021225313795" style="zoom:40%;" />
 
 另外，MySQL 也有记忆指令的功能：
 
-<img src="./.库的操作.IMG/image-20231021225242469.png" alt="image-20231021225242469" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231021225242469.png" alt="image-20231021225242469" style="zoom:40%;" />
 
 注意，`/*!40100 DEFAULT CHARACTER SET utf8 */`不是注释，它表示当前 MySQL 版本如果大于 4.10，则执行后面的 SQL 语句。
 
@@ -281,7 +281,7 @@ ALTER DATABASE db_name [[DEFAULT] CHARSET=character_name] [[DEFAULT] COLLATE=col
 
 例如，将`person_test1`数据库的字符集改成 gbk，校验规则改为 gbk_bin：
 
-<img src="./.库的操作.IMG/image-20231021231421456.png" alt="image-20231021231421456" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231021231421456.png" alt="image-20231021231421456" style="zoom:40%;" />
 
 # 删除数据库
 
@@ -313,7 +313,7 @@ mysql> show databases;
 9 rows in set (0.00 sec)
 ```
 
-<img src="./.库的操作.IMG/image-20231021234835215.png" alt="image-20231021234835215" style="zoom:33%;" />
+<img src="./.库的操作.IMG/image-20231021234835215.png" alt="image-20231021234835215" style="zoom:40%;" />
 
 删除它：
 
@@ -382,7 +382,7 @@ mysql> insert into student values (12, '小陈');
 Query OK, 1 row affected (0.00 sec)
 ```
 
-<img src="./.库的操作.IMG/image-20231022000031989.png" alt="image-20231022000031989" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231022000031989.png" alt="image-20231022000031989" style="zoom:40%;" />
 
 在 Linux 命令行中（MySQL 是我创建的一个目录）：
 
@@ -391,7 +391,7 @@ Query OK, 1 row affected (0.00 sec)
 ```
 
 这个文件保存了对数据库和表的所有 SQL 操作以及数据本身，并且是做了优化的：
-<img src="./.库的操作.IMG/image-20231022000808169.png" alt="image-20231022000808169" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231022000808169.png" alt="image-20231022000808169" style="zoom:40%;" />
 
 ## 恢复
 
@@ -406,7 +406,7 @@ source 数据库备份存储的文件路径
 mysql> source /home/xy/MySQL/back.sql;
 ```
 
-<img src="./.库的操作.IMG/image-20231022001255857.png" alt="image-20231022001255857" style="zoom:50%;" />
+<img src="./.库的操作.IMG/image-20231022001255857.png" alt="image-20231022001255857" style="zoom:40%;" />
 
 这样数据库中的所有内容都恢复了。
 

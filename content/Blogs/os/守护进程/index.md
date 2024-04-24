@@ -68,15 +68,15 @@ int main()
 }
 ```
 
-<img src="./.守护进程.IMG/image-20230602134314785.png" alt="image-20230602134314785" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602134314785.png" alt="image-20230602134314785" style="zoom:40%;" />
 
 将 test1 和 test2 放到后台运行（在末尾加上`&`）：
 
-<img src="./.守护进程.IMG/image-20230602134413985.png" alt="image-20230602134413985" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602134413985.png" alt="image-20230602134413985" style="zoom:40%;" />
 
 将 test3 和 test4 放到前台运行：
 
-<img src="./.守护进程.IMG/image-20230602134456513.png" alt="image-20230602134456513" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602134456513.png" alt="image-20230602134456513" style="zoom:40%;" />
 
 可以看到，将进程置于后台运行时，它会返回一个提示信息，例如这里的：
 
@@ -94,23 +94,23 @@ int main()
 ps axj|head -1&&ps axj|grep test
 ```
 
-<img src="./.守护进程.IMG/image-20230602135548861.png" alt="image-20230602135548861" style="zoom: 50%;" />
+<img src="./.守护进程.IMG/image-20230602135548861.png" alt="image-20230602135548861" style="zoom:40%;" />
 
 细节：前台运行的进程的状态标识后有`+`符号；后台运行的进程没有。
 
 当前台进程退出以后：
 
-<img src="./.守护进程.IMG/image-20230602135634252.png" alt="image-20230602135634252" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602135634252.png" alt="image-20230602135634252" style="zoom:40%;" />
 
 当使用`kill -9 [PID]`来杀掉两个后台进程时：
 
-<img src="./.守护进程.IMG/image-20230602140326398.png" alt="image-20230602140326398" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602140326398.png" alt="image-20230602140326398" style="zoom:40%;" />
 
 会出现如图所示的提示字样。这表示终止了一个后台作业。`[1]+`表示这是第一个后台作业，`Killed`表示这个作业被 SIGKILL 信号终止了，`./test1 | ./test2`表示这个作业由两个通过管道连接的命令组成。
 
 可以用同一组进程（如 test1 和 test2）多次作为进程组在后台运行：
 
-<img src="./.守护进程.IMG/image-20230602143018424.png" alt="image-20230602143018424" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602143018424.png" alt="image-20230602143018424" style="zoom:40%;" />
 
 值得注意的是，当关闭了本次会话，相当于执行了“注销”操作，那么这个会话运行的所有进程都会退出。在新会话中，不会存在之前正在运行的后台进程（可以用脚本验证）。
 
@@ -122,7 +122,7 @@ ps axj|head -1&&ps axj|grep test
 
 使用`jobs`命令，可以查看当前会话中的作业情况：
 
-<img src="./.守护进程.IMG/image-20230602151702714.png" alt="image-20230602151702714" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602151702714.png" alt="image-20230602151702714" style="zoom:40%;" />
 
 `[1]-`和`[2]+`表示这是第一个和第二个后台作业，Killed 表示这些作业被 SIGKILL 信号终止了。+和-表示这些作业在 shell 中的相对位置。+表示当前作业，或者说最近被调到前台的作业，-表示当前作业的前一个作业。
 
@@ -132,35 +132,35 @@ ps axj|head -1&&ps axj|grep test
 
 将 1 号作业提至前台运行：
 
-<img src="./.守护进程.IMG/image-20230602151751838.png" alt="image-20230602151751838" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602151751838.png" alt="image-20230602151751838" style="zoom:40%;" />
 
 可以看到，1 号进程组的两个进程的状态后面多了符号`+`，表示前台进程。
 
 值得注意的是，每一个 shell 都是不同的会话，在这里单独在一个 shell 运行进程，另一个用来打印信息，而作业运行的进程在同一个 shell 中运行才会使作业编号依次增加，也就是说，每一个 shell 窗口都对应着不同的作业。例如下面分别在两个 shell 窗口中让进程组作为作业在后台运行：
 
-<img src="./.守护进程.IMG/image-20230602152625590.png" alt="image-20230602152625590" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602152625590.png" alt="image-20230602152625590" style="zoom:40%;" />
 
 > 使用工具远程连接至服务器或者本地主机时，本质都是先创建一个 shell 进程（通常是 bash、zsh、fish 等），称之为会话，也就是我们打开的窗口。在这个窗口中创建的进程都是这个 shell 进程的子进程。所有运行的进程都在这个会话中进行。
 
 将提至前台运行的进程用 Ctrl + Z 停止：
 
-<img src="./.守护进程.IMG/image-20230602152846468.png" alt="image-20230602152846468" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602152846468.png" alt="image-20230602152846468" style="zoom:40%;" />
 
 ### bg
 
 使用`bg`（begin）命令可以让停止的作业在后台继续运行（Running），本质是给该作业的进程组的每个进程发 SIGCONT 信号：
 
-<img src="./.守护进程.IMG/image-20230602153022540.png" alt="image-20230602153022540" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602153022540.png" alt="image-20230602153022540" style="zoom:40%;" />
 
 ### ps
 
 `ps`命令已经很熟悉了，如果带上`-o`选项，可以查看==本会话==的进程信息：
 
-<img src="./.守护进程.IMG/image-20230602153452104.png" alt="image-20230602153452104" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602153452104.png" alt="image-20230602153452104" style="zoom:40%;" />
 
 如上所说，每次“登录”的操作就是创建 bash 进程的操作，即新建一个会话。同一个会话中的所有进程的 SESS 都是相同的。例如我在另一个 shell 中输入同样的指令：
 
-<img src="./.守护进程.IMG/image-20230602153635846.png" alt="image-20230602153635846" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230602153635846.png" alt="image-20230602153635846" style="zoom:40%;" />
 
 注意到这两个会话的 SESS 值是不一样的。
 
@@ -196,7 +196,7 @@ ps axj|head -1&&ps axj|grep test
 - `p`：指定要显示的进程 ID。
 
 可以使用`ps axj`查看系统中的进程：
-<img src="./.守护进程.IMG/image-20230603202315269.png" alt="image-20230603202315269" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230603202315269.png" alt="image-20230603202315269" style="zoom:40%;" />
 
 其中，TPGID 为-1 表示没有控制终端的进程，即守护进程。
 
@@ -273,19 +273,19 @@ int main()
 
 通过 ps 指令查看该进程的信息（应该是 daemon 而不是 deamon）：
 
-<img src="./.守护进程.IMG/image-20230603205218514.png" alt="image-20230603205218514" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230603205218514.png" alt="image-20230603205218514" style="zoom:40%;" />
 
 注意它的 PID 和 PGID 以及 SID 不同，说明它既不是进程组首进程也不是会话首进程。实际上，它的 SID 和 bash 进程的 SID 也不相同，表示不属于同一个会话。
 
 通过`ls /proc/PID -al`查看：
 
-<img src="./.守护进程.IMG/image-20230603205654403.png" alt="image-20230603205654403" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230603205654403.png" alt="image-20230603205654403" style="zoom:40%;" />
 
 说明该进程的工作目录成功地被修改为根目录。
 
 通过`ls /proc/PID/fd -al`查看：
 
-<img src="./.守护进程.IMG/image-20230603210015099.png" alt="image-20230603210015099" style="zoom:50%;" />
+<img src="./.守护进程.IMG/image-20230603210015099.png" alt="image-20230603210015099" style="zoom:40%;" />
 
 说明该进程的标准输入和标准输入及标准错误成功重定向到了`/dev/null`。
 

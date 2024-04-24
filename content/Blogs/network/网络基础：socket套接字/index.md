@@ -308,7 +308,7 @@ bind(sockfd, (struct sockaddr *)&addr, sizeof(addr));
 
 ---
 
-<img src="./.网络基础：socket 套接字.IMG/image-20230429161434528.png" alt="image-20230429161434528" style="zoom: 33%;" />
+<img src="./.网络基础：socket 套接字.IMG/image-20230429161434528.png" alt="image-20230429161434528" style="zoom:40%;" />
 
 为了统一使用接口，Linux 内核用结构体的前 2 个字节标定套接字的类型。即即套接字的类型。sa_family 字段是一个 sa_family_t 类型（无符号整型）的变量，通常占用两个字节。
 

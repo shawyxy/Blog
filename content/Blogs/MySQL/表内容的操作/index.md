@@ -38,26 +38,26 @@ mysql> create table students(
     -> );
 ```
 
-<img src="./.表内容的操作.IMG/image-20231030141126948.png" alt="image-20231030141126948" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030141126948.png" alt="image-20231030141126948" style="zoom:40%;" />
 
 指定列插入：
 
-<img src="./.表内容的操作.IMG/image-20231030141330864.png" alt="image-20231030141330864" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030141330864.png" alt="image-20231030141330864" style="zoom:40%;" />
 
 如果插入的是所有列，那么可以省略列名：
 
-<img src="./.表内容的操作.IMG/image-20231030141453258.png" alt="image-20231030141453258" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030141453258.png" alt="image-20231030141453258" style="zoom:40%;" />
 
 如果将 id 列的属性设置为自增，那么自增的值将是当前 id 的最大值+1，即 3。这允许插入时不指定 id 的值：
-<img src="./.表内容的操作.IMG/image-20231030142703270.png" alt="image-20231030142703270" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030142703270.png" alt="image-20231030142703270" style="zoom:40%;" />
 
-<img src="./.表内容的操作.IMG/image-20231030142738265.png" alt="image-20231030142738265" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030142738265.png" alt="image-20231030142738265" style="zoom:40%;" />
 
 也就是说，只要表的约束允许插入列值时可以为空，那么在插入时就可以不指定列名，不过需要注意列名和列值位置和数量上的对应。
 
 上面是每次插入一条数据，也可以在指定列名后，插入多条记录的列值：
 
-<img src="./.表内容的操作.IMG/image-20231030143253181.png" alt="image-20231030143253181" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030143253181.png" alt="image-20231030143253181" style="zoom:40%;" />
 
 ## 插入冲突则更新记录
 
@@ -69,11 +69,11 @@ INSERT INTO table_name (column1, column2,..) VALUES (value1, value2,..) ON DUPLI
 
 例如将上表中 id=5 的记录修改为：
 
-<img src="./.表内容的操作.IMG/image-20231030145410028.png" alt="image-20231030145410028" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030145410028.png" alt="image-20231030145410028" style="zoom:40%;" />
 
 如果插入了一条不存在的记录，那么相当于直接插入：
 
-<img src="./.表内容的操作.IMG/image-20231030145613304.png" alt="image-20231030145613304" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030145613304.png" alt="image-20231030145613304" style="zoom:40%;" />
 
 它们的不同之处在于 MySQL 打印的日志信息，前者是`2 rows affected`，表示这条已存在的记录中数据有冲突（先删除后插入）；后者是`1 rows affected`，表示没有数据冲突（直接插入）。如果是`0 rows affected`，则说明插入的和原来的记录相同。
 
@@ -83,12 +83,12 @@ INSERT INTO table_name (column1, column2,..) VALUES (value1, value2,..) ON DUPLI
 
 替换的记录有冲突，实际上是先删除这条记录，然后再插入：
 
-<img src="./.表内容的操作.IMG/image-20231030150028381.png" alt="image-20231030150028381" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030150028381.png" alt="image-20231030150028381" style="zoom:40%;" />
 
 所以 MySQL 会提示有 2 行被影响。
 
 如果不存在这条记录，相当于直接插入：
-<img src="./.表内容的操作.IMG/image-20231030150147812.png" alt="image-20231030150147812" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030150147812.png" alt="image-20231030150147812" style="zoom:40%;" />
 
 # Retrieve（查找）
 
@@ -112,7 +112,7 @@ mysql> create table en_exam(
     -> );
 ```
 
-<img src="./.表内容的操作.IMG/image-20231030152116596.png" alt="image-20231030152116596" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030152116596.png" alt="image-20231030152116596" style="zoom:40%;" />
 
 插入若干数据以测试：
 
@@ -123,10 +123,10 @@ mysql> insert into en_exam
 ```
 
 查询表中指定列名的值：
-<img src="./.表内容的操作.IMG/image-20231030152605413.png" alt="image-20231030152605413" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030152605413.png" alt="image-20231030152605413" style="zoom:40%;" />
 
 通过通配符`*`来查询全列信息：
-<img src="./.表内容的操作.IMG/image-20231030152703550.png" alt="image-20231030152703550" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030152703550.png" alt="image-20231030152703550" style="zoom:40%;" />
 
 在测试时表的结构简单，通常用全列查询。但实际上数据库的一张表中就可能维护着成千上万条记录，这么做不但可读性差，而且如果是通过网络连接到 MySQL 服务器，可能对 MySQL 客户端的性能产生影响。
 
@@ -136,7 +136,7 @@ mysql> insert into en_exam
 
 例如计算上面这张表中所有人的总分和平均分：
 
-<img src="./.表内容的操作.IMG/image-20231030153556040.png" alt="image-20231030153556040" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030153556040.png" alt="image-20231030153556040" style="zoom:40%;" />
 
 关于更多类似的做法，将会在下面介绍。
 
@@ -148,13 +148,13 @@ SELECT column [AS] alias_name [...] FROM table_name;
 
 在上面这个例子中，计算总分和平均分这个表达式在 select 语句中相当于一个列，相比于其他列而言，直接将表达式作为列名可读性较差，可以为这个表达式的返回值取一个别名。
 
-<img src="./.表内容的操作.IMG/image-20231030153920065.png" alt="image-20231030153920065" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231030153920065.png" alt="image-20231030153920065" style="zoom:40%;" />
 
 ## 为结果去重
 
 在 select 关键字后加上 DISTINCT 关键字以对表指定的列值去重：
 
-<img src="./.表内容的操作.IMG/image-20231031150016331.png" alt="image-20231031150016331" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031150016331.png" alt="image-20231031150016331" style="zoom:40%;" />
 
 ## WHERE 子句
 
@@ -191,54 +191,54 @@ WHERE 子句用于从表中选择满足指定条件的数据。用户可以使�
 ### 条件查询
 
 在 en_exam 表中，做一下条件查询：
-<img src="./.表内容的操作.IMG/image-20231031155349033.png" alt="image-20231031155349033" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031155349033.png" alt="image-20231031155349033" style="zoom:40%;" />
 
 查询听力在 6 分以下的人的姓名：
 
-<img src="./.表内容的操作.IMG/image-20231031160029065.png" alt="image-20231031160029065" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031160029065.png" alt="image-20231031160029065" style="zoom:40%;" />
 
 WHERE 子句中的条件并没有标准来规范格式，所以不需要添加空格。
 
 在查询时，可以指定表中存在的任意列名。例如查询听力为 9 分的人的姓名和写作成绩：
 
-<img src="./.表内容的操作.IMG/image-20231031160414195.png" alt="image-20231031160414195" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031160414195.png" alt="image-20231031160414195" style="zoom:40%;" />
 
 ### 区间查询
 
 查询口语成绩在 5~8 分之间的人的姓名：
 
-<img src="./.表内容的操作.IMG/image-20231031160808261.png" alt="image-20231031160808261" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031160808261.png" alt="image-20231031160808261" style="zoom:40%;" />
 
 也可以使用 BETWEEN a AND b 来查询 [a, b] 这个区间的值：
 
-<img src="./.表内容的操作.IMG/image-20231031160914606.png" alt="image-20231031160914606" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031160914606.png" alt="image-20231031160914606" style="zoom:40%;" />
 
 查询听力成绩在 6~8 分之间**或者**口语成绩大于 6 分的人的写作成绩：
 
-<img src="./.表内容的操作.IMG/image-20231031161215464.png" alt="image-20231031161215464" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031161215464.png" alt="image-20231031161215464" style="zoom:40%;" />
 
 在练习时可以以行（回车）来划分不同的关键字。
 
 查询听力成绩比口语成绩更好的人的姓名：
 
-<img src="./.表内容的操作.IMG/image-20231031161917185.png" alt="image-20231031161917185" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031161917185.png" alt="image-20231031161917185" style="zoom:40%;" />
 
 查询听力成绩为 5 分或者 7 分或者 9 分的人的姓名：
 
-<img src="./.表内容的操作.IMG/image-20231031161500964.png" alt="image-20231031161500964" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031161500964.png" alt="image-20231031161500964" style="zoom:40%;" />
 
 也可以用 xx IN (...) 来判断 xx 是否存在于后面这个集合中：
-<img src="./.表内容的操作.IMG/image-20231031161640157.png" alt="image-20231031161640157" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031161640157.png" alt="image-20231031161640157" style="zoom:40%;" />
 
 由于 WHERE 子句在 SELECT 语句之前执行，所以不能在 WHERE 子句中使用在 SELECT 语句中定义的别名。
 
 例如查找总成绩大于 21 分的人的姓名和总分：
 
-<img src="./.表内容的操作.IMG/image-20231031163209001.png" alt="image-20231031163209001" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031163209001.png" alt="image-20231031163209001" style="zoom:40%;" />
 
 因为 SELECT 语句在 WHERE 子句之后执行，所以在前者中定义的别名对于后者是未知值。
 
-<img src="./.表内容的操作.IMG/image-20231031163307803.png" alt="image-20231031163307803" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231031163307803.png" alt="image-20231031163307803" style="zoom:40%;" />
 
 ### 模糊查询
 
@@ -250,33 +250,33 @@ mysql> insert into en_exam values (8, '孙大勇', 5, 7, 8, 1), (9, '森破', 6,
 
 模糊查询：查询孙某某同学和森某同学的记录：
 
-<img src="./.表内容的操作.IMG/image-20231115131254099.png" alt="image-20231115131254099" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231115131254099.png" alt="image-20231115131254099" style="zoom:40%;" />
 
 注意下划线的数量要和字符的个数匹配。
 
 如果要查找姓孙和姓森的记录，只需要匹配第一个字符：
 
-<img src="./.表内容的操作.IMG/image-20231120142112678.png" alt="image-20231120142112678" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120142112678.png" alt="image-20231120142112678" style="zoom:40%;" />
 
 ### 空值查询
 
 现在表的内容：
 
-<img src="./.表内容的操作.IMG/image-20231115131508706.png" alt="image-20231115131508706" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231115131508706.png" alt="image-20231115131508706" style="zoom:40%;" />
 
 其中只有 8,9 号的 school 非空。
 
 查询学校为空的记录：
 
-<img src="./.表内容的操作.IMG/image-20231115131735384.png" alt="image-20231115131735384" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231115131735384.png" alt="image-20231115131735384" style="zoom:40%;" />
 
 查询学校不为空的记录：
 
-<img src="./.表内容的操作.IMG/image-20231115131803759.png" alt="image-20231115131803759" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231115131803759.png" alt="image-20231115131803759" style="zoom:40%;" />
 
 也可以用运算符`<=>`查询空值，但是其他运算符`<>`、`!=`等都不能与 NULL 比较。这是因为在数据库中 NULL 值表示遗漏或位置的数据，它和任何值都不相等，它是一个空的占位符，没有实际值，因此不能用常规方式比较。所以除了`<=>`外的常规运算符，都不是“NULL 安全的”。
 
-<img src="./.表内容的操作.IMG/image-20231115132319120.png" alt="image-20231115132319120" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231115132319120.png" alt="image-20231115132319120" style="zoom:40%;" />
 
 ## 对结果排序
 
@@ -288,23 +288,23 @@ SELECT ... FROM table_name [WHERE ...] ORDER BY column [ASC | DESC] [, ...];
 
 查询口语成绩，分别按升序和降序排序：
 
-<img src="./.表内容的操作.IMG/image-20231120140255098.png" alt="image-20231120140255098" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120140255098.png" alt="image-20231120140255098" style="zoom:40%;" />
 
 查询学校编号，分别按升序排序：
 
-<img src="./.表内容的操作.IMG/image-20231120140406328.png" alt="image-20231120140406328" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120140406328.png" alt="image-20231120140406328" style="zoom:40%;" />
 
 NULL 值表示为空，虽然它参与运算没有意义，但是在排序时视为比任何值都要小。
 
 除了对一列属性进行排序之外，还可以对多列进行排序：
 
-<img src="./.表内容的操作.IMG/image-20231120141126348.png" alt="image-20231120141126348" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120141126348.png" alt="image-20231120141126348" style="zoom:40%;" />
 
 注意只需要一个 order by 关键字，要排序的列属性之间用逗号隔开。
 
 order by 子句的执行在 select 语句之后，所以在 order by 子句中也可以使用 select 中指定的别名：
 
-<img src="./.表内容的操作.IMG/image-20231120141833754.png" alt="image-20231120141833754" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120141833754.png" alt="image-20231120141833754" style="zoom:40%;" />
 
 但是排序的前提是要有数据。
 
@@ -312,7 +312,7 @@ order by 子句的执行在 select 语句之后，所以在 order by 子句中�
 
 对于这个查询，首先要找到要查询的记录，然后再对它们排序。
 
-<img src="./.表内容的操作.IMG/image-20231120142447279.png" alt="image-20231120142447279" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120142447279.png" alt="image-20231120142447279" style="zoom:40%;" />
 
 ## 筛选分页结果
 
@@ -343,7 +343,7 @@ SELECT ... FROM table_name [WHERE ...] [ORDER BY ...] LIMIT n OFFSET s;
 
 按 id 进行分页，每页 3 条记录，分别显示第 1、2、3 页：
 
-<img src="./.表内容的操作.IMG/image-20231120143214156.png" alt="image-20231120143214156" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120143214156.png" alt="image-20231120143214156" style="zoom:40%;" />
 
 这些查询记录的子句，每一步都相当于从原表中摘出来的一张新的子表，后执行的语句都是在这张子表的基础上进行的。
 
@@ -360,12 +360,12 @@ UPDATE table_name SET column1=expr1 [, column2=expr2] ... [WHERE ...] [ORDER BY 
 
 将姓孙的同学的写作成绩改为 7：
 
-<img src="./.表内容的操作.IMG/image-20231120144000854.png" alt="image-20231120144000854" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120144000854.png" alt="image-20231120144000854" style="zoom:40%;" />
 
 修改子句总是最后才执行的，因为前面的子句都是查询。
 
 将口语成绩前 3 的同学的口语成绩全部+3 分：
-<img src="./.表内容的操作.IMG/image-20231120144521647.png" alt="image-20231120144521647" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120144521647.png" alt="image-20231120144521647" style="zoom:40%;" />
 
 不论是多复杂的查询，总是要先得到查询后的这张子表，在子表中修改属性的值。另外注意 MySQL 不支持诸如+=这样的运算符。前 3 名+3 分后仍然是前三，但是如果是倒数 3 名+3 分后，可能就不是了。
 
@@ -380,15 +380,15 @@ DELETE FROM table_name [WHERE ...] [ORDER BY ...] [LIMIT ...];
 和修改数记录一样，删除记录的前提是这条记录存在。所以 delete 子句也是在找到最终这张子表之后进行的。
 
 删除孙大勇的记录：
-<img src="./.表内容的操作.IMG/image-20231120145205253.png" alt="image-20231120145205253" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120145205253.png" alt="image-20231120145205253" style="zoom:40%;" />
 
 删除表：
 
-<img src="./.表内容的操作.IMG/image-20231120145825939.png" alt="image-20231120145825939" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120145825939.png" alt="image-20231120145825939" style="zoom:40%;" />
 
 对于这张表，id 是一个自增属性，尝试删除它。
 
-<img src="./.表内容的操作.IMG/image-20231120145959466.png" alt="image-20231120145959466" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120145959466.png" alt="image-20231120145959466" style="zoom:40%;" />
 
 删除后这张表中就没有记录了，再向它插入几条不指定 id 的记录，可见自增变量即使在删除表以后仍然是删除前的最大值。
 
@@ -409,15 +409,15 @@ truncate 子句的作用类似于没有 where 条件的 delete 语句，或者�
 
 对于同样的一张表：
 
-<img src="./.表内容的操作.IMG/image-20231120150519782.png" alt="image-20231120150519782" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120150519782.png" alt="image-20231120150519782" style="zoom:40%;" />
 
 执行 truncate 操作，会将表中的数据清空，包括自增长属性。
 
-<img src="./.表内容的操作.IMG/image-20231120150635623.png" alt="image-20231120150635623" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120150635623.png" alt="image-20231120150635623" style="zoom:40%;" />
 
 由于 truncate 不对数据操作，而是直接 drop 表，所以执行截断操作后影响行数为 0。
 
-<img src="./.表内容的操作.IMG/image-20231120150809508.png" alt="image-20231120150809508" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120150809508.png" alt="image-20231120150809508" style="zoom:40%;" />
 
 截断表后再插入记录，从 1 开始自增。
 
@@ -427,23 +427,23 @@ truncate 子句的作用类似于没有 where 条件的 delete 语句，或者�
 
 下面这张表中有两份重复记录：
 
-<img src="./.表内容的操作.IMG/image-20231120152312258.png" alt="image-20231120152312258" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120152312258.png" alt="image-20231120152312258" style="zoom:40%;" />
 
 首先创建一个结构和原表一样的临时表：
 
-<img src="./.表内容的操作.IMG/image-20231120152436598.png" alt="image-20231120152436598" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120152436598.png" alt="image-20231120152436598" style="zoom:40%;" />
 
 可以使用 like 关键字来创建。
 
 还记得上面我们说不论多复杂的查询，每一步都是在已有表的基础上，得到一张新的子表吗？这里我们可以在原表中查询出一张没有重复记录的子表，然后将这个子表插入到临时表中。
 
-<img src="./.表内容的操作.IMG/image-20231120152736444.png" alt="image-20231120152736444" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120152736444.png" alt="image-20231120152736444" style="zoom:40%;" />
 
 这样临时表中的记录就不会重复了。
 
 最后可以将旧表删除，将临时表的名字改为旧表的名字。或者改为 xx_backup，表示它是原表的一个备份。
 
-<img src="./.表内容的操作.IMG/image-20231120153004759.png" alt="image-20231120153004759" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120153004759.png" alt="image-20231120153004759" style="zoom:40%;" />
 
 # 聚合函数
 
@@ -460,38 +460,38 @@ truncate 子句的作用类似于没有 where 条件的 delete 语句，或者�
 
 在这张表中测试聚合函数：
 
-<img src="./.表内容的操作.IMG/image-20231120215840516.png" alt="image-20231120215840516" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120215840516.png" alt="image-20231120215840516" style="zoom:40%;" />
 
 统计这张表中总共有多少条记录：
-<img src="./.表内容的操作.IMG/image-20231120220626042.png" alt="image-20231120220626042" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120220626042.png" alt="image-20231120220626042" style="zoom:40%;" />
 
 分别用`*`和表达式`1`作为参数，得到的结果是一样的。这是因为后者这种写法相当于在查询时在原表中新增了一个值为 1 的列，然后 count 函数就会计算出有多少行值为 1 的列。
 
 实际上 count(1) 数的是这一列：
 
-<img src="./.表内容的操作.IMG/image-20231120220937996.png" alt="image-20231120220937996" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120220937996.png" alt="image-20231120220937996" style="zoom:40%;" />
 
 统计这张表中有学校信息的记录：
 
-<img src="./.表内容的操作.IMG/image-20231120221040375.png" alt="image-20231120221040375" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120221040375.png" alt="image-20231120221040375" style="zoom:40%;" />
 
 如果 count 函数的参数是一个确定的列名，那么 count 函数将会忽略该列中的 NULL 值。
 
 统计这次考试中口语成绩的所有情况的个数，即口语成绩去重后的结果：
 
-<img src="./.表内容的操作.IMG/image-20231120221229567.png" alt="image-20231120221229567" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120221229567.png" alt="image-20231120221229567" style="zoom:40%;" />
 
 统计口语成绩的总分：
 
-<img src="./.表内容的操作.IMG/image-20231120221544826.png" alt="image-20231120221544826" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120221544826.png" alt="image-20231120221544826" style="zoom:40%;" />
 
 统计所有成绩的平均分：
 
-<img src="./.表内容的操作.IMG/image-20231120221706037.png" alt="image-20231120221706037" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120221706037.png" alt="image-20231120221706037" style="zoom:40%;" />
 
 找到写作成绩的最高分和最低分：
 
-<img src="./.表内容的操作.IMG/image-20231120221805974.png" alt="image-20231120221805974" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120221805974.png" alt="image-20231120221805974" style="zoom:40%;" />
 
 # 分组查询
 
@@ -624,31 +624,31 @@ insert into salgrade (grade, losal, hisal) values (5, 3001, 9999);
 
 这些 SQL 将保存在一个以`.sql`结尾的文件中，然后再 MySQL 中使用 source 命令执行它：
 
-<img src="./.表内容的操作.IMG/image-20231120224457885.png" alt="image-20231120224457885" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120224457885.png" alt="image-20231120224457885" style="zoom:40%;" />
 
-<img src="./.表内容的操作.IMG/image-20231120224535610.png" alt="image-20231120224535610" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120224535610.png" alt="image-20231120224535610" style="zoom:40%;" />
 
 部门表的结构和内容：
 
-<img src="./.表内容的操作.IMG/image-20231120224615277.png" alt="image-20231120224615277" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120224615277.png" alt="image-20231120224615277" style="zoom:40%;" />
 
 员工表的结构和内容：
 
-<img src="./.表内容的操作.IMG/image-20231120224654193.png" alt="image-20231120224654193" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120224654193.png" alt="image-20231120224654193" style="zoom:40%;" />
 
 工资等级表的结构和内容：
 
-<img src="./.表内容的操作.IMG/image-20231120224735460.png" alt="image-20231120224735460" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120224735460.png" alt="image-20231120224735460" style="zoom:40%;" />
 
 显示每个部门的平均工资和最高工资：
 
-<img src="./.表内容的操作.IMG/image-20231120224838846.png" alt="image-20231120224838846" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120224838846.png" alt="image-20231120224838846" style="zoom:40%;" />
 
 首先按照部门号分组，然后在各自的组内做聚合查询，得到各个组的平均和最高工资。
 
 显示每个部门的每种岗位的平均工资和最低工资：
 
-<img src="./.表内容的操作.IMG/image-20231120225022199.png" alt="image-20231120225022199" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120225022199.png" alt="image-20231120225022199" style="zoom:40%;" />
 
 注意：group by 子句中可以指明按照多个字段进行分组，各个字段之间使用逗号隔开，分组优先级与书写顺序相同。当两条记录的部门号相同时，将会继续按照岗位进行分组。
 
@@ -679,4 +679,4 @@ having 子句和 where 子句的区别：
 
 显示平均工资低于 2500 的部门和它的平均工资：
 
-<img src="./.表内容的操作.IMG/image-20231120230751534.png" alt="image-20231120230751534" style="zoom:50%;" />
+<img src="./.表内容的操作.IMG/image-20231120230751534.png" alt="image-20231120230751534" style="zoom:40%;" />

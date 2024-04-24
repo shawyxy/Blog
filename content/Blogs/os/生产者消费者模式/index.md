@@ -86,7 +86,7 @@ Blocking Queue 常用于生产者消费者模型中，作为生产者和消费�
 - 当 Blocking Queue 已满时，生产者线程将会被阻塞；
 - 当 Blocking Queue 为空时，消费者线程将会被阻塞。
 
-<img src="./.生产者消费者模式.IMG/producer-consumer.png" alt="producer_consumer" style="zoom:37%;" />
+<img src="./.生产者消费者模式.IMG/producer-consumer.png" alt="producer_consumer" style="zoom:40%;" />
 
 > 图片来源于：https://math.hws.edu/eck/cs124/javanotes7/c12/producer-consumer.png
 
@@ -359,13 +359,13 @@ void* consumer(void* args)
 
 ### 测试 1
 
-<img src="./.生产者消费者模式.IMG/image-20230416224223010.png" alt="image-20230416224223010" style="zoom:37%;" />
+<img src="./.生产者消费者模式.IMG/image-20230416224223010.png" alt="image-20230416224223010" style="zoom:40%;" />
 
 这是一个最简单的生产者消费者模式的实现示例，当内部的 queue 的 size 还未到规定的容量时（5 个），队列未满，因为没有用 sleep 限制 push，所以生产者线程就会瞬间生产 5 个数据（实际上这是生产者线程在单次被调用时就完成的）；队列满时，就会触发 push 中的`if(isQueueFull()) `分支，使生产者线程阻塞，然后消费者线程函数被线程运行时，由于队列不为空，直接 pop，此时队列元素个数为 4。那么下次再调用生产者线程时，就会继续 push 一个数据，循环往复。
 
 这就是图中首先生产 5 个数据，然后循环消费一个生产一个的原因。可以通过 sleep 控制生产和消费的速度：
 
-<img src="./.生产者消费者模式.IMG/image-20230416224601955.png" alt="image-20230416224601955" style="zoom:37%;" />
+<img src="./.生产者消费者模式.IMG/image-20230416224601955.png" alt="image-20230416224601955" style="zoom:40%;" />
 
 但是这样的效率太低了，每次生产或取出数据才几个，如果是快递，那么快递费就太高了。万一业务中队列的容量可能很大，所以可以让消费者在容量为一半以上时才消费：
 ```cpp
@@ -376,7 +376,7 @@ if(_bq.size() >= _capacity / 2)
 }
 ```
 
-<img src="./.生产者消费者模式.IMG/image-20230416225036869.png" alt="image-20230416225036869" style="zoom:37%;" />
+<img src="./.生产者消费者模式.IMG/image-20230416225036869.png" alt="image-20230416225036869" style="zoom:40%;" />
 
 从这个结果看，这个策略成功控制了生产和消费的行为。
 
@@ -523,7 +523,7 @@ void* consumer(void* args)
 }
 ```
 
-<img src="./.生产者消费者模式.IMG/image-20230417001217718.png" alt="image-20230417001217718" style="zoom:37%;" />
+<img src="./.生产者消费者模式.IMG/image-20230417001217718.png" alt="image-20230417001217718" style="zoom:40%;" />
 
 值得注意的是，调用函数的方法的同时需要传入参数`sol[opt](t._x, t._y)`。
 
@@ -586,6 +586,6 @@ private:
 
 为了方便观察现象，增加了一个字符串成员函数，用于在线程函数中传入提示信息。那么 push 和 pop 就能简洁一点，主要是申请锁和释放锁的操作是符合规范的。
 
-<img src="./.生产者消费者模式.IMG/image-20230417004633139.png" alt="image-20230417004633139" style="zoom:37%;" />
+<img src="./.生产者消费者模式.IMG/image-20230417004633139.png" alt="image-20230417004633139" style="zoom:40%;" />
 
 通过结果可以看到，加解锁都是成对出现的。在定义对象时调用构造函数加锁，退出代码块，会调用析构函数，释放锁。
