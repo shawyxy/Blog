@@ -32,7 +32,7 @@ menu:
       pageRef: /about
       weight: 2
     - name: Contact ↗
-      url: "https://img-blog.csdnimg.cn/7deb340b1c95414d9dc25a89d1cb1f32.png"
+      url: "/contact/微信好友二维码.pic.jpg"
       weight: 3
     - name: Search
       weight: 4
