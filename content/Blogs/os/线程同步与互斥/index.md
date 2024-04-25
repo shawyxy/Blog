@@ -807,7 +807,7 @@ void* getTickets(void* args)
 
 通过 ps 命令查看进程的状态：
 
-<img src="../../../Application Support/typora-user-images/image-20230414131715204.png" alt="image-20230414131715204" style="zoom:40%;" />
+<img src="线程同步与互斥.IMG/image-20230414131715204.png" alt="image-20230414131715204" style="zoom:40%;" />
 
 `Sl+`中的`l`是 lock，表示这个进程处于死锁状态。
 

@@ -23,7 +23,7 @@
     src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Medium.otf') format('opentype'),
 } */
 body {
-    font-family: "PingFangTC-Medium", "Times New Roman", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    font-family: "PingFangTC-Medium", "Microsoft Sans Serif";
     /* color: rgb(200, 200, 200); */
    /* line-height: 1.6;
     font-size: 0.94; */
