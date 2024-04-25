@@ -59,7 +59,7 @@ open: true
 # 版本支持
 
 `show engines`查看数据库引擎：
-<img src="./.事务.IMG/image-20240226104351842.png" alt="image-20240226104351842" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226104351842.png" alt="image-20240226104351842" style="zoom:40%;" />
 
 其中：
 
@@ -78,7 +78,7 @@ open: true
 
 通过查看全局变量中的`autocommit`判断：
 
-<img src="./.事务.IMG/image-20240226104912231.png" alt="image-20240226104912231" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226104912231.png" alt="image-20240226104912231" style="zoom:40%;" />
 
 通过`set autocommit=1 或 0`来设置自动提交或手动提交。
 
@@ -103,11 +103,11 @@ set global transaction isolation level read uncommitted;
 
 但是此次修改仅在当前会话有效，重启当前会话，重新连接 MySQL，查看隔离级别：
 
-<img src="./.事务.IMG/image-20240226105410622.png" alt="image-20240226105410622" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226105410622.png" alt="image-20240226105410622" style="zoom:40%;" />
 
 创建账户表：
 
-<img src="./.事务.IMG/image-20240226123245027.png" alt="image-20240226123245027" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226123245027.png" alt="image-20240226123245027" style="zoom:40%;" />
 
 下面的演示将会用两个会话模拟并发情况。
 
@@ -115,13 +115,13 @@ set global transaction isolation level read uncommitted;
 
 使用`start transaction`或`begin`启动一个事务。
 
-<img src="./.事务.IMG/image-20240226124456358.png" alt="image-20240226124456358" />
+<img src="事务.IMG/image-20240226124456358.png" alt="image-20240226124456358" />
 
 在右事务查看表中信息，还未插入记录。
 
 左事务插入记录的同时在右事务查看表内容：
 
-<img src="./.事务.IMG/image-20240226124800827.png" alt="image-20240226124800827" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226124800827.png" alt="image-20240226124800827" style="zoom:40%;" />
 
 之所以右事务能够实时看到左事务改变了表的内容，是因为隔离级别事先被设置为“读未提交”，即左事务的事务在 commit 之前，右事务也能看到其修改的内容。
 
@@ -129,7 +129,7 @@ set global transaction isolation level read uncommitted;
 
 使用`savepoint point_name`创建一个保存点，以用于回滚。
 
-<img src="./.事务.IMG/image-20240226125552226.png" alt="image-20240226125552226" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226125552226.png" alt="image-20240226125552226" style="zoom:40%;" />
 
 创建保存点不影响隔离级别。
 
@@ -137,23 +137,23 @@ set global transaction isolation level read uncommitted;
 
 使用`rollback to 保存点名`回滚到保存点，这样会失去保存点之后的记录。
 
-<img src="./.事务.IMG/image-20240226125809193.png" alt="image-20240226125809193" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226125809193.png" alt="image-20240226125809193" style="zoom:40%;" />
 
 使用`rollback`回滚在事务的起点，这样会失去所有记录。
 
-<img src="./.事务.IMG/image-20240226125916208.png" alt="image-20240226125916208" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226125916208.png" alt="image-20240226125916208" style="zoom:40%;" />
 
 ## 提交
 
 重新开始一个事务，然后插入两条数据。
 
-<img src="./.事务.IMG/image-20240226130424689.png" alt="image-20240226130424689" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226130424689.png" alt="image-20240226130424689" style="zoom:40%;" />
 
 当客户端断开连接后（quit），表中内容将被清空。原因是启动了事务却没有提交，在这种情况下 MySQL 会将表回滚到事务启动之前的样子。
 
 在插入记录后 commit，并尝试回滚和断开连接：
 
-<img src="./.事务.IMG/image-20240226131857469.png" alt="image-20240226131857469" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226131857469.png" alt="image-20240226131857469" style="zoom:40%;" />
 
 可见，只要 commit 后，数据将被持久化到数据库中，而回滚或断开连接都不会影响。这体现了事务的原子性，要么全都做，要么全不做，这由 commit 控制。
 
@@ -216,21 +216,21 @@ COMMIT;
 
 通过`select @@global.tx_isolation`查看全局隔离级别：
 
-<img src="./.事务.IMG/image-20240226133815358.png" alt="image-20240226133815358" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226133815358.png" alt="image-20240226133815358" style="zoom:40%;" />
 
 通过`set global transaction isolation level 隔离级别`设置全局隔离级别。
 
-<img src="./.事务.IMG/image-20240226134011027.png" alt="image-20240226134011027" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226134011027.png" alt="image-20240226134011027" style="zoom:40%;" />
 
 注意当前会话的隔离级别仍然是原来的（见下），需要重启会话才能生效。
 
 通过`select @@session.tx_isolation`或`select @@tx_isolation`查看当前会话隔离级别。
 
-<img src="./.事务.IMG/image-20240226134122025.png" alt="image-20240226134122025" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226134122025.png" alt="image-20240226134122025" style="zoom:40%;" />
 
 通过`set session transaction isolation level 隔离级别`设置当前会话隔离级别。
 
-<img src="./.事务.IMG/image-20240226134304489.png" alt="image-20240226134304489" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226134304489.png" alt="image-20240226134304489" style="zoom:40%;" />
 
 注意会话隔离级别的修改只对此次会话有效，其他会话仍使用全局隔离级别的设置。
 
@@ -238,7 +238,7 @@ COMMIT;
 
 设置两个会话的隔离级别都为“读未提交”，然后左右会话各自启动一个事务，只要其中一个事务对表内容做修改，其他事务能立即查看修改后的内容。
 
-<img src="./.事务.IMG/image-20240226141516789.png" alt="image-20240226141516789" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226141516789.png" alt="image-20240226141516789" style="zoom:40%;" />
 
 > 如果并未达到类似效果，可以重新连接 MySQL 尝试。
 
@@ -273,7 +273,7 @@ COMMIT;
 
 设置两个会话的隔离级别都为“读已提交”，然后左右会话各自启动一个事务，只有事务在修改后 commit，其他事务才能查看修改后的内容。 
 
-<img src="./.事务.IMG/image-20240226143216694.png" alt="image-20240226143216694" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226143216694.png" alt="image-20240226143216694" style="zoom:40%;" />
 
 读已提交（Read Committed）提供了比读未提交（Read Uncommitted）更严格的数据一致性保证。在读已提交隔离级别下，一个事务只能看到其他事务已经提交的更改。这个级别主要用来避免脏读（Dirty Reads），但仍可能遇到不可重复读（Non-repeatable Reads）和幻读（Phantom Reads）的问题。以下是读已提交隔离级别的关键特点：
 
@@ -309,7 +309,7 @@ COMMIT;
 
 设置两个会话的隔离级别都为“可重复读”，然后左右会话各自启动一个事务，只有当两个事务都 commit 后，才能查看修改后的内容。 
 
-<img src="./.事务.IMG/image-20240226144056257.png" alt="image-20240226144056257" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226144056257.png" alt="image-20240226144056257" style="zoom:40%;" />
 
 可重复读（Repeatable Read）提供比读已提交更强的数据一致性保证。在可重复读隔离级别下，一个事务在其整个执行过程中多次读取同一数据集的结果将保持一致，即使其他事务在这期间提交了更新那些数据的操作。这个级别主要用来解决脏读（Dirty Reads）和不可重复读（Non-repeatable Reads）的问题。以下是可重复读隔离级别的几个关键特点：
 
@@ -341,15 +341,15 @@ COMMIT;
 
 当两个事务都尝试读取表中内容时，事务不会被阻塞，可以并发执行。
 
-<img src="./.事务.IMG/image-20240226145257363.png" alt="image-20240226145257363" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226145257363.png" alt="image-20240226145257363" style="zoom:40%;" />
 
 当任意一个事务尝试写操作，它会被立即阻塞，直到其他所有事务都 commit 后才会被唤醒。
 
-<img src="./.事务.IMG/image-20240226145602058.png" alt="image-20240226145602058" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226145602058.png" alt="image-20240226145602058" style="zoom:40%;" />
 
 另一个事务 commit。
 
-<img src="./.事务.IMG/image-20240226145629332.png" alt="image-20240226145629332" style="zoom:40%;" />
+<img src="事务.IMG/image-20240226145629332.png" alt="image-20240226145629332" style="zoom:40%;" />
 
 串行化（Serializable）提供了最严格的事务隔离。在串行化隔离级别下，事务将会被顺序执行，以避免事务之间的干扰，从而防止脏读（Dirty Reads）、不可重复读（Non-repeatable Reads）和幻读（Phantom Reads）。这个级别通过完全串行化事务的执行来确保数据的绝对一致性，模拟了一个用户在任意时刻都是独占数据库的情况。以下是串行化隔离级别的几个关键特点：
 
@@ -453,7 +453,7 @@ MVCC 特别适用于读操作远多于写操作的应用场景，例如在线事
 
 例如有一张空的信息表，插入第一条记录后：
 
-<img src="./.事务.IMG/916b50e1c04c4f8d935ecabfd9383e56.png" alt="在这里插入图片描述" style="zoom:40%;" />
+<img src="事务.IMG/916b50e1c04c4f8d935ecabfd9383e56.png" alt="在这里插入图片描述" style="zoom:40%;" />
 
 图片来源（包括后文）：https://blog.csdn.net/chenlong_cxy/article/details/128919989
 
@@ -532,7 +532,7 @@ MySQL 会为上述三大日志开辟对应的缓冲区，用于存储日志相�
 
 修改后的示意图如下：
 
-<img src="./.事务.IMG/050066b571fe4652ad60a85ef2dab524.png" alt="在这里插入图片描述" style="zoom:40%;" />
+<img src="事务.IMG/050066b571fe4652ad60a85ef2dab524.png" alt="在这里插入图片描述" style="zoom:40%;" />
 
 现在又有一个事务 ID 为 11 的事务，要将刚才学生表中的那条记录的学生年龄改为 38：
 
@@ -543,7 +543,7 @@ MySQL 会为上述三大日志开辟对应的缓冲区，用于存储日志相�
 
 修改后的示意图如下：
 
-<img src="./.事务.IMG/275efc6dc02d46d8b1f3c49da5d5fb53.png" alt="在这里插入图片描述" style="zoom:40%;" />
+<img src="事务.IMG/275efc6dc02d46d8b1f3c49da5d5fb53.png" alt="在这里插入图片描述" style="zoom:40%;" />
 
 此时我们就有了一个基于链表记录的历史版本链，而 undo log 中的一个个的历史版本就称为一个个的快照。
 
@@ -629,7 +629,7 @@ private:
 - 事务 ID 大于等于 m_low_limit_id 的事务，一定是生成 Read View 时还没有启动的事务，因为 m_low_limit_id 是生成 Read View 时刻，系统尚未分配的下一个事务 ID。
 - 事务 ID 位于 m_up_limit_id 和 m_low_limit_id 之间的事务，在生成 Read View 时可能正处于活跃状态，也可能已经提交了，这时需要通过判断事务 ID 是否存在于 m_ids 中来判断该事务是否已经提交。
 
-<img src="./.事务.IMG/2ce601ea8fe14f05bae00dd42180c394.png" alt="在这里插入图片描述" style="zoom:40%;" />
+<img src="事务.IMG/2ce601ea8fe14f05bae00dd42180c394.png" alt="在这里插入图片描述" style="zoom:40%;" />
 
 - 一个事务在进行读操作时，只应该看到自己或已经提交的事务所作的修改，因此我们可以根据 Read View 来判断当前事务能否看到另一个事务所作的修改。
 - 版本链中的每个版本的记录都有自己的 DB_TRX_ID，即创建或最近一次修改该记录的事务 ID，因此可以依次遍历版本链中的各个版本，通过 Read View 来判断当前事务能否看到这个版本，如果不能则继续遍历下一个版本。
@@ -688,11 +688,11 @@ bool changes_visible(trx_id_t id, const table_name_t& name) const
 
 如果此时在右会话中使用`select * from table_name lock in share mode`以共享锁的方式，进行当前读，就能查看到修改后的数据。
 
-<img src="./.事务.IMG/MD202403110136684.png" alt="image-20240226164532416" style="zoom:40%;" />
+<img src="事务.IMG/MD202403110136684.png" alt="image-20240226164532416" style="zoom:40%;" />
 
 实验二：在启动两边的事务后，（注意顺序）直接左事务中修改并提交。然后再右事务中查看表的内容，然而修改后的数据直接被呈现出来了。
 
-<img src="./.事务.IMG/image-20240226165650309.png" alt="image-20240226165650309" />
+<img src="事务.IMG/image-20240226165650309.png" alt="image-20240226165650309" />
 
 造成两种方式不一样的直接原因是 SQL 在不同事务中执行的顺序不同，实验一的右事务在数据修改之前访问了表数据，这相当于进行了一次快照读，创建了 Read View；实验二的右事务没有，也就没有快照。由于是可重复读级别，所以要求读取的内容要一致，因此第一次进行快照读的地方决定了该事务后续快照读结果的能力。
 

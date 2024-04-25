@@ -41,7 +41,7 @@ int main()
 
 运行以上代码，查看 PID 和 PPID：
 
-<img src="./.进程控制.IMG/MD202210160957803.png" alt="image-20221011145029255" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957803.png" alt="image-20221011145029255" style="zoom:40%;" />
 
 可以看到，fork 之前的代码只执行了一次，fork 之后的代码执行了两次。说明 fork 之后的代码父子进程都会执行。
 
@@ -61,7 +61,7 @@ fork 之后的代码中，包括最后的 return 语句，由于 fork 之后的�
 
 在任意一方未进行写入数据的操作时，父子进程是共享代码和数据的。只要当任意一方写入数据，这时才会拷贝一份，然后修改部分代码和数据，得到属于各自的代码和数据。
 
-<img src="./.进程控制.IMG/MD202210160957805.png" alt="image-20221015224451321" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957805.png" alt="image-20221015224451321" style="zoom:40%;" />
 
 > 为什么不在创建子进程的一开始就进行数据拷贝、修改等操作？
 
@@ -106,11 +106,11 @@ fork 之后的代码中，包括最后的 return 语句，由于 fork 之后的�
 
 使用指令`echo $?`查看上一个进程的退出码：
 
-<img src="./.进程控制.IMG/MD202210160957806.png" alt="image-20221011153156008" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957806.png" alt="image-20221011153156008" style="zoom:40%;" />
 
 对于程序员，我们只看返回码是无法知道是什么错误的，所以每个返回码都有对应的错误表。就像 ls 指令打印出的错误一样（后面的选项是随便打的）。
 
-<img src="./.进程控制.IMG/MD202210160957807.png" alt="image-20221011165724441" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957807.png" alt="image-20221011165724441" style="zoom:40%;" />
 
 实际上，退出码都是有映射到各种不同的字符串的，这些字符串就像上面 ls 的报错一样。
 
@@ -129,7 +129,7 @@ int main()
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957808.png" alt="image-20221011165252122" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957808.png" alt="image-20221011165252122" style="zoom:40%;" />
 
 可以看到，上面 ls 的错误就是退出码为 2 映射的字符串。
 
@@ -170,7 +170,7 @@ int main()
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957809.png" alt="image-20221012102514768" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957809.png" alt="image-20221012102514768" style="zoom:40%;" />
 
 在这段代码中，exit 会在进程终止前将缓冲区中的数据刷新出来。
 
@@ -194,11 +194,11 @@ int main()
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957810.png" alt="image-20221012102759630" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957810.png" alt="image-20221012102759630" style="zoom:40%;" />
 
 但是如果在打印语句中加上换行符呢：
 
-<img src="./.进程控制.IMG/MD202210160957811.png" alt="image-20221012103032709" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957811.png" alt="image-20221012103032709" style="zoom:40%;" />
 
 结果却可以打印，为什么？
 
@@ -210,7 +210,7 @@ int main()
 
 > 「系统调用」，是 system calls 的直译，可以简单地理解为 OS 提供给上层的接口，是系统级别的函数。
 
-<img src="./.进程控制.IMG/MD202210160957812.png" alt="image-20221016092213384" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957812.png" alt="image-20221016092213384" style="zoom:40%;" />
 
 重新回看那个、n 的问题，因为 exit 会冲刷缓冲，所以就算不加、n 最后也会打印出来，而没有收尾操作的、_exit，就没办法打印。这就说明「缓冲区」一定不在 OS 内部，而是 C 标准库为我们维护的。如果是 OS 维护，_exit 也可以将缓冲区中的内容刷新出来。
 
@@ -237,11 +237,11 @@ int main()
 
 进程的 status 参数是一个 int 类型参数，但是它的不同范围的比特位储存着不同的信息（此处只研究低 16 位）。
 
-<img src="./.进程控制.IMG/MD202210160957813.png" alt="image-20221016093024660" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957813.png" alt="image-20221016093024660" style="zoom:40%;" />
 
 在 status 的低 16 比特位当中，高 8 位表示进程的退出状态，即退出码。进程若是被信号所杀，则低 7 位表示终止信号，第 8 位比特位是 core dump 标志。
 
-<img src="./.进程控制.IMG/MD202210160957814.png" alt="image-20221016093543146" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957814.png" alt="image-20221016093543146" style="zoom:40%;" />
 
 在头文件`<sys/wait.h>`中，提供了一些宏简化位运算操作：
 
@@ -328,14 +328,14 @@ int main()
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957815.png" alt="image-20221013102331096" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957815.png" alt="image-20221013102331096" style="zoom:40%;" />
 
 在进程运行时，在另一个终端用下面的脚本监控系统进程的情况：
 ```shell
 while :; do ps axj | head -1 && ps axj | grep proc | grep -v grep;echo "#####################";sleep 1;done
 ```
 
-<img src="./.进程控制.IMG/MD202210160957817.png" alt="image-20221013102527447" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957817.png" alt="image-20221013102527447" style="zoom:40%;" />
 
 从监控结果可以看到，子进程结束以后被父进程回收，不会变成僵尸进程。
 
@@ -486,7 +486,7 @@ execl 中的 l，可以看作 list 的缩写。
 
 - 第一个参数是要替换的程序的路径，需要包括程序名。下面用常用的 ls 程序为例，所以先用 which 指令查看它所在的路径：
 
-<img src="./.进程控制.IMG/MD202210160957818.png" alt="image-20221013155501247" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957818.png" alt="image-20221013155501247" style="zoom:40%;" />
 
 - 第二个参数实际上也是有顺序的：第一个参数是程序名，中间的是选项，以字符串形式传入，最后以 NULL 结尾。也就是在命令行是怎么写的，这里就怎么传，下面的示例也是一样的。
 
@@ -502,7 +502,7 @@ int main()
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957819.png" alt="image-20221013155807156" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957819.png" alt="image-20221013155807156" style="zoom:40%;" />
 
 可以看到 execl 函数确实成功在这个路径下调用成功了 ls 程序，但是 execl 后面的打印语句没有执行。
 
@@ -560,7 +560,7 @@ int main()
 
 > 把字符串强转为 char*，只是为了取消警告（类型匹配）。
 
-<img src="./.进程控制.IMG/MD202210160957820.png" alt="image-20221014103514819" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957820.png" alt="image-20221014103514819" style="zoom:40%;" />
 
 ###  execlp
 
@@ -604,7 +604,7 @@ int main()
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957821.png" alt="image-20221014104428416" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957821.png" alt="image-20221014104428416" style="zoom:40%;" />
 
 效果同上。当然，如果要用它执行自己写的程序，就要将这个程序的路径添加到环境变量 PATH 中。
 
@@ -689,7 +689,7 @@ int main()
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957822.png" alt="image-20221014112309733" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957822.png" alt="image-20221014112309733" style="zoom:40%;" />
 
 可以看到，proc2 的子进程成功调用了自己写的 mycmd 程序。
 
@@ -771,7 +771,7 @@ int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 
 编译运行 proc2
 
-<img src="./.进程控制.IMG/MD202210160957823.png" alt="image-20221014113858582" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957823.png" alt="image-20221014113858582" style="zoom:40%;" />
 
 结果表明，proc2 的环境变量传给了 mycmd。
 
@@ -779,15 +779,15 @@ int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 
 这就是环境变量具有全局属性，可以被子进程继承的原因。实际上，在子进程内部调用 execle 函数时，传入 main 函数接收的环境变量 env 就可以让子进程继承父进程的环境变量。
 
-<img src="./.进程控制.IMG/MD202210160957824.png" alt="image-20221014131740932" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957824.png" alt="image-20221014131740932" style="zoom:40%;" />
 
 将 mycmd.c 的 getenv 函数的参数改成"PATH"：
 
-<img src="./.进程控制.IMG/MD202210160957825.png" alt="image-20221014133422436" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957825.png" alt="image-20221014133422436" style="zoom:40%;" />
 
 编译运行 proc2：
 
-<img src="./.进程控制.IMG/MD202210160957826.png" alt="image-20221014132324930" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957826.png" alt="image-20221014132324930" style="zoom:40%;" />
 
 这就是 main 函数接收的系统环境变量 PATH。
 
@@ -817,7 +817,7 @@ int execve(const char * path,char * const argv[],char * const envp[]);
 | execvp |   数组   |     是     |           是           |
 | execve |   数组   |     否     | 否，需自己组装环境变量 |
 
-<img src="./.进程控制.IMG/MD202210160957827.png" alt="image-20221016094523442" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957827.png" alt="image-20221016094523442" style="zoom:40%;" />
 
 # 5. 自制简易 shell
 
@@ -829,7 +829,7 @@ int execve(const char * path,char * const argv[],char * const envp[]);
 
 > 外壳程序（shell）就像银行的指导人员，OS 相当于银行内部，命令行解释器（shell）对用户输入到终端的命令进行解析，调用对应的执行程序。（回忆我们使用命令行输入命令时，shell 做的工作）
 
-<img src="./.进程控制.IMG/MD202210160957828.png" alt="image-20221016095719900" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957828.png" alt="image-20221016095719900" style="zoom:40%;" />
 
 ##  5.2 模拟实现
 
@@ -847,7 +847,7 @@ int execve(const char * path,char * const argv[],char * const envp[]);
 
 ###  打印提示信息
 
-每次输入命令之前，都有这样的提示信息（具体视连接工具和平台而异）：<img src="./.进程控制.IMG/MD202210160957829.png" alt="image-20221014140842559" style="zoom:40%;" />
+每次输入命令之前，都有这样的提示信息（具体视连接工具和平台而异）：<img src="进程控制.IMG/MD202210160957829.png" alt="image-20221014140842559" style="zoom:40%;" />
 
 可以通过打印事先写好的字符串达到这种效果：
 
@@ -907,7 +907,7 @@ printf("echo:%s\n", cmd_line);
 
 测试一下，输入"ls -a -l"，回车：
 
-<img src="./.进程控制.IMG/MD202210160957830.png" alt="image-20221014144153287" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957830.png" alt="image-20221014144153287" style="zoom:40%;" />
 
 但是回显指令后，会多空一行，原因是：
 
@@ -919,7 +919,7 @@ cmd_line[strlen(cmd_line) - 1] = '\0';//除去、n
 
 测试一下：
 
-<img src="./.进程控制.IMG/MD202210160957831.png" alt="image-20221014145612943" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957831.png" alt="image-20221014145612943" style="zoom:40%;" />
 
 现在有模有样的，就差解析命令和程序替换（就是让子进程调用命令的程序）了。
 
@@ -959,7 +959,7 @@ for(int i = 0; g_argv[i]; i++)
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957832.png" alt="image-20221014161702599" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957832.png" alt="image-20221014161702599" style="zoom:40%;" />
 
 删掉它，继续。解析命令行参数的操作完成了，下面就是创建子进程和用子进程调用指定程序了。
 
@@ -1090,13 +1090,13 @@ int main()
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957833.png" alt="image-20221014165453097" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957833.png" alt="image-20221014165453097" style="zoom:40%;" />
 
 **补充**
 
 但是如果试图使用 cd 指令回退到上级目录呢？
 
-<img src="./.进程控制.IMG/MD202210160957834.png" alt="image-20221014170431611" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957834.png" alt="image-20221014170431611" style="zoom:40%;" />
 
 上面的程序对 cd 指令是无效的。
 
@@ -1126,7 +1126,7 @@ if(strcmp(g_argv[0], "cd") == 0)
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957835.png" alt="image-20221014172903429" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957835.png" alt="image-20221014172903429" style="zoom:40%;" />
 
 当然可以把“子进程开始运行”和“退出码”这两个语句删掉，让它更像 shell。
 
@@ -1147,7 +1147,7 @@ if(strcmp(g_argv[0], "ll") == 0)
 }
 ```
 
-<img src="./.进程控制.IMG/MD202210160957836.png" alt="image-20221014192649622" style="zoom:40%;" />
+<img src="进程控制.IMG/MD202210160957836.png" alt="image-20221014192649622" style="zoom:40%;" />
 
 come on，有内味了。
 

@@ -2,6 +2,7 @@
 title: Reactor 模式
 weight: 18
 open: true
+
 ---
 
 前导：本文是 I/O 多路复用的升级和实践，如果想实现一个类似的服务器的话，需要事先学习 epoll 服务器的编写。
@@ -24,7 +25,7 @@ Reactor 模式是一种基于事件驱动的设计模式，它是 I/O 多路复�
 
 - **使用事件驱动模型**：事件驱动模型可以让系统更加灵活和可扩展。
 
-<img src="./.Reactor 模式.IMG/MD202310080037415.png" alt="image-20231005151352480" style="zoom:40%;"/>
+<img src="Reactor 模式.IMG/MD202310080037415.png" alt="image-20231005151352480" style="zoom:40%;" />
 
 图片来源：http://www.dre.vanderbilt.edu/~schmidt/PDF/reactor-siemens.pdf
 
@@ -43,15 +44,15 @@ Reactor 模式是一种基于事件驱动的设计模式，它是 I/O 多路复�
 
 我们知道一个服务器在接收数据后，要对这个数据进行解码，反序列化，处理，有必要的话还要序列化，然后将处理后的数据返回给客户端。这些操作可以抽象为一个个模块，交给线程去做。
 
-<img src="./.Reactor 模式.IMG/MD202310080037417.png" alt="image-20231005154104276" style="zoom:40%;" />
+<img src="Reactor 模式.IMG/MD202310080037417.png" alt="image-20231005154104276" style="zoom:40%;" />
 
 首先是单线程 Reator 模型，Reactor 模型会利用给定的 selectionKeys 进行派发操作，派发到给定的 Handler，之后当有客户端连接上来的时候，Acceptor 会调用接口 accept()，之后将接收到的连接和之前派发的 Handler 进行组合并启动。
 
-<img src="./.Reactor 模式.IMG/MD202310080037418.png" alt="image-20231005154226516" style="zoom:40%;" />
+<img src="Reactor 模式.IMG/MD202310080037418.png" alt="image-20231005154226516" style="zoom:40%;" />
 
 然后是接入线程池的 Reactor 模型，此模型将读操作和写操作解耦了出来，当底层有数据就绪时，将原本 Handler 的操作交给线程队列的头部线程来进行，极大地提到了整体的吞吐量和处理速度。
 
-<img src="./.Reactor 模式.IMG/MD202310080037419.png" alt="image-20231005154526596" style="zoom:40%;" />
+<img src="Reactor 模式.IMG/MD202310080037419.png" alt="image-20231005154526596" style="zoom:40%;" />
 
 图片来源：https://gee.cs.oswego.edu/dl/cpjslides/nio.pdf
 
@@ -451,7 +452,7 @@ void Recver(Connection *conn)
 
 简单测试一下：
 
-<img src="./.Reactor 模式.IMG/MD202310080037420.gif" alt="屏幕录制 2023-10-06 16.01.23" style="zoom:40%;" />
+<img src="Reactor 模式.IMG/MD202310080037420.gif" alt="屏幕录制 2023-10-06 16.01.23" style="zoom:40%;" />
 
 现在可以保证接收数据的逻辑基本没有问题，但是有个小细节，当客户端断开连接以后，这个文件描述符并没有关闭，这是因为没有在出错时进行差错处理，而是交给 Excepter 函数去做，只不过现在还没有实现它。
 
@@ -899,7 +900,7 @@ void Excepter(Connection *conn)
 
 ## 4.3 测试
 
-<img src="./.Reactor 模式.IMG/MD202310080037421.gif" alt="屏幕录制 2023-10-06 19.58.44" style="zoom:40%;" />
+<img src="Reactor 模式.IMG/MD202310080037421.gif" alt="屏幕录制 2023-10-06 19.58.44" style="zoom:40%;" />
 
 ## 4.4 扩展 1
 

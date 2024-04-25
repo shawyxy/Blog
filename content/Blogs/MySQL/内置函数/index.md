@@ -31,15 +31,15 @@ MySQL 的内置函数主要分为以下几种：
 
 current_date 函数、current_time 函数、current_timestamp 函数和 now 函数：获取当前日期、时间、时间戳以及当前日期时间：
 
-<img src="./.内置函数.IMG/image-20231126162905547.png" alt="image-20231126162905547" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231126162905547.png" alt="image-20231126162905547" style="zoom:40%;" />
 
 date 函数：获取获取 datetime 参数的日期部分：
 
-<img src="./.内置函数.IMG/image-20231126163204482.png" alt="image-20231126163204482" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231126163204482.png" alt="image-20231126163204482" style="zoom:40%;" />
 
 在已有日期的基础上添加日期或时间：
 
-<img src="./.内置函数.IMG/image-20231126163427798.png" alt="image-20231126163427798" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231126163427798.png" alt="image-20231126163427798" style="zoom:40%;" />
 
 操作的单位可以是日期或时间，根据原有的日期或时间而可以精确到秒数。
 
@@ -47,25 +47,25 @@ date_sub 函数的功能完全相同，只是它对已有日期或时间操作�
 
 获取两个日期的差，单位是天：
 
-<img src="./.内置函数.IMG/image-20231126163913008.png" alt="image-20231126163913008" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231126163913008.png" alt="image-20231126163913008" style="zoom:40%;" />
 
 日期和时间是数据的一种属性，例如在网上发表评论，需要用日期和时间标记。
 
 评论测试表：
 
-<img src="./.内置函数.IMG/image-20231126165005903.png" alt="image-20231126165005903" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231126165005903.png" alt="image-20231126165005903" style="zoom:40%;" />
 
 插入记录并查询：
 
-<img src="./.内置函数.IMG/image-20231126165034820.png" alt="image-20231126165034820" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231126165034820.png" alt="image-20231126165034820" style="zoom:40%;" />
 
 用户可能不需要这么精确的日期或时间，对于比较久远的评论，可以只精确到天：
 
-<img src="./.内置函数.IMG/image-20231126165239802.png" alt="image-20231126165239802" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231126165239802.png" alt="image-20231126165239802" style="zoom:40%;" />
 
 如果要查询 2 分钟之前的评论，就可能需要用若干函数组合来查询了：
 
-<img src="./.内置函数.IMG/image-20231126165737087.png" alt="image-20231126165737087" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231126165737087.png" alt="image-20231126165737087" style="zoom:40%;" />
 
 # 字符串函数
 
@@ -89,51 +89,51 @@ charset 函数用来返回指定字符串的字符集。字符集是一种给定
 
 例如查看这张员工雇佣表中名字这一列的字符集：
 
-<img src="./.内置函数.IMG/image-20231128141857258.png" alt="image-20231128141857258" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128141857258.png" alt="image-20231128141857258" style="zoom:40%;" />
 
 concat 函数：按参数顺序连接字符串。例如将上面的雇佣表的列属性按照如下方式连接成一个字符串。
 
-<img src="./.内置函数.IMG/image-20231128142250417.png" alt="image-20231128142250417" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128142250417.png" alt="image-20231128142250417" style="zoom:40%;" />
 
 instr 函数：获取一个字符串在另一个字符串中首次出现的位置，如果没有出现则返回 0。
 
-<img src="./.内置函数.IMG/image-20231128142353993.png" alt="image-20231128142353993" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128142353993.png" alt="image-20231128142353993" style="zoom:40%;" />
 
 ucase 函数：获取转换成大写后的字符串。
 
-<img src="./.内置函数.IMG/image-20231128142434264.png" alt="image-20231128142434264" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128142434264.png" alt="image-20231128142434264" style="zoom:40%;" />
 
 lcase 函数：获取转换成小写后的字符串。
 
-<img src="./.内置函数.IMG/image-20231128142516985.png" alt="image-20231128142516985" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128142516985.png" alt="image-20231128142516985" style="zoom:40%;" />
 
 left 函数：从字符串的左边开始，向后截取指定个数的字符。
 
-<img src="./.内置函数.IMG/image-20231128142712051.png" alt="image-20231128142712051" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128142712051.png" alt="image-20231128142712051" style="zoom:40%;" />
 
 length 函数：获取字符串占用的字节数。
 
-<img src="./.内置函数.IMG/image-20231128142758258.png" alt="image-20231128142758258" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128142758258.png" alt="image-20231128142758258" style="zoom:40%;" />
 
 值得注意的是这个函数返回的是字节数而不是字符数，如果是汉字，utf8 占 3 个字节，gbk 占 2 个字节。
 
 replace 函数：将字符串中的指定子字符串替换成另一个字符串。
 
-<img src="./.内置函数.IMG/image-20231128143010442.png" alt="image-20231128143010442" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128143010442.png" alt="image-20231128143010442" style="zoom:40%;" />
 
 strcmp 函数：逐字符按照 ASCII 码比较两个字符串的大小，两个字符串大小相等返回 0，前者大返回 1，后者大返回 - 1。且不区分大小写。
 
-<img src="./.内置函数.IMG/image-20231128143205001.png" alt="image-20231128143205001" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128143205001.png" alt="image-20231128143205001" style="zoom:40%;" />
 
 substring 函数：从字符串的指定位置开始，向后截取指定个数的字符。
 
-<img src="./.内置函数.IMG/image-20231128143253039.png" alt="image-20231128143253039" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128143253039.png" alt="image-20231128143253039" style="zoom:40%;" />
 
 trim 函数：去除字符串的前后空格。
 
 ltrim 和 rtrim 函数：去除字符串的前空格和后空格。
 
-<img src="./.内置函数.IMG/image-20231128143542322.png" alt="image-20231128143542322" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128143542322.png" alt="image-20231128143542322" style="zoom:40%;" />
 
 以首字母小写的方式显示员工表中所有员工的姓名：
 
@@ -141,7 +141,7 @@ ltrim 和 rtrim 函数：去除字符串的前空格和后空格。
 2. substring 函数截取员工姓名的第二个字符及其后续字符。
 3. concat 函数用于连接上面获得的两个字符串。
 
-<img src="./.内置函数.IMG/image-20231128143820702.png" alt="image-20231128143820702" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128143820702.png" alt="image-20231128143820702" style="zoom:40%;" />
 
 # 数学函数
 
@@ -161,48 +161,48 @@ ltrim 和 rtrim 函数：去除字符串的前空格和后空格。
 
 abs 函数：获取参数绝对值。
 
-<img src="./.内置函数.IMG/image-20231128144934588.png" alt="image-20231128144934588" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128144934588.png" alt="image-20231128144934588" style="zoom:40%;" />
 
 bin 函数和 hex 函数：将参数转换为二进制或十六进制：
-<img src="./.内置函数.IMG/image-20231128145011445.png" alt="image-20231128145011445" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145011445.png" alt="image-20231128145011445" style="zoom:40%;" />
 
 conv 函数：进制转换。
 
-<img src="./.内置函数.IMG/image-20231128145049121.png" alt="image-20231128145049121" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145049121.png" alt="image-20231128145049121" style="zoom:40%;" />
 
 ceiling 函数：对参数向上取整。
 
-<img src="./.内置函数.IMG/image-20231128145147136.png" alt="image-20231128145147136" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145147136.png" alt="image-20231128145147136" style="zoom:40%;" />
 
 floor 函数：对参数向下取整。
 
-<img src="./.内置函数.IMG/image-20231128145231947.png" alt="image-20231128145231947" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145231947.png" alt="image-20231128145231947" style="zoom:40%;" />
 
 format 函数：对参数格式化，以四舍五入的方式保留指定位数的小数。
 
-<img src="./.内置函数.IMG/image-20231128145317310.png" alt="image-20231128145317310" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145317310.png" alt="image-20231128145317310" style="zoom:40%;" />
 
 rand 函数：生成 0.0 到 1.0 的随机浮点数。
 
-<img src="./.内置函数.IMG/image-20231128145344356.png" alt="image-20231128145344356" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145344356.png" alt="image-20231128145344356" style="zoom:40%;" />
 
 如果想要生成 0 到 100 的随机数，可以用生成的随机浮点数乘以 100，然后再取整。
 
-<img src="./.内置函数.IMG/image-20231128145421317.png" alt="image-20231128145421317" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145421317.png" alt="image-20231128145421317" style="zoom:40%;" />
 
 mod 函数：对参数求余。
 
-<img src="./.内置函数.IMG/image-20231128145514818.png" alt="image-20231128145514818" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145514818.png" alt="image-20231128145514818" style="zoom:40%;" />
 
 # 信息函数
 
 user 函数：获取 MySQL 连接的当前用户名和主机名。
 
-<img src="./.内置函数.IMG/image-20231128145718504.png" alt="image-20231128145718504" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145718504.png" alt="image-20231128145718504" style="zoom:40%;" />
 
 md5 函数：对一个字符串进行 md5 摘要，摘要后得到一个 32 位字符串。
 
-<img src="./.内置函数.IMG/image-20231128145735586.png" alt="image-20231128145735586" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128145735586.png" alt="image-20231128145735586" style="zoom:40%;" />
 
 md5 是一种密码散列函数，它可以将任意长度的信息映射为固定长度（通常为 32bit）的哈希值。它具有不可逆性、唯一性和抗碰撞性。并且由于哈希算法的雪崩效应，即使被加密的信息发生了一个很微小的改动，也会使得最后的哈希值变得完全不同。这是因为密码哈希算法通常采用对轮迭代和复杂的非线性变换，使得输入的每一位都会影响输出的每一位（信息安全专业的同学应该会比较了解）。
 
@@ -212,17 +212,17 @@ md5 是一种密码散列函数，它可以将任意长度的信息映射为固�
 
 database 函数：显示当前正在使用的数据库。
 
-<img src="./.内置函数.IMG/image-20231128150651038.png" alt="image-20231128150651038" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128150651038.png" alt="image-20231128150651038" style="zoom:40%;" />
 
 password 函数：对用户数据进行加密。
 
-<img src="./.内置函数.IMG/image-20231128150639319.png" alt="image-20231128150639319" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128150639319.png" alt="image-20231128150639319" style="zoom:40%;" />
 
 另外，像 password 这样涉及用户隐私的函数，它不会被保存在 MySQL 的历史命令中（键盘上下方向键查看）。
 
 ifnull 函数接受两个参数，如果第一个参数不为 null 则返回第一个参数值，否则返回第二个参数值。
 
-<img src="./.内置函数.IMG/image-20231128150733468.png" alt="image-20231128150733468" style="zoom:40%;" />
+<img src="内置函数.IMG/image-20231128150733468.png" alt="image-20231128150733468" style="zoom:40%;" />
 
 # 参考资料
 

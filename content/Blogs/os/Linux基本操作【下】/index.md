@@ -43,7 +43,7 @@ cat [选项] [文件]
 more test.txt
 ```
 
-<img src="./.Linux基本操作【下】.IMG/IMGimage-20220810170523776.png" alt="image-20220810170523776" style="zoom:40%;" />
+<img src="Linux基本操作【下】.IMG/IMGimage-20220810170523776.png" alt="image-20220810170523776" style="zoom:40%;" />
 
 指令会将文本内容占满终端窗口，同时在最底部的一行显示进度。按下回车键会往下读取一行，直到进度 100%。或直接按下 q 然后回车，也会停止显示。
 
@@ -96,7 +96,7 @@ less [选项] [参数]
 less -N test.txt
 ```
 
-<img src="./.Linux基本操作【下】.IMG/IMGimage-20220810172758025.png" alt="image-20220810172758025" style="zoom:40%;" />
+<img src="Linux基本操作【下】.IMG/IMGimage-20220810172758025.png" alt="image-20220810172758025" style="zoom:40%;" />
 
 按 PageUp（↑）和 PageDown（↓）翻页，在文件末尾时会提示如图的（end），按下 q+回车退出。
 
@@ -581,7 +581,7 @@ grep [选项] [字符串/关键字] [文件]
 grep 5 file.txt
 ```
 
-<img src="./.Linux基本操作【下】.IMG/IMGimage-20220810194637275.png" alt="image-20220810194637275" style="zoom:40%;" />
+<img src="Linux基本操作【下】.IMG/IMGimage-20220810194637275.png" alt="image-20220810194637275" style="zoom:40%;" />
 
 查找并在管道中查看内容
 
@@ -589,7 +589,7 @@ grep 5 file.txt
 grep "5" file.txt | cat
 ```
 
-<img src="./.Linux基本操作【下】.IMG/IMGimage-20220810194700491.png" alt="image-20220810194700491" style="zoom:40%;" />
+<img src="Linux基本操作【下】.IMG/IMGimage-20220810194700491.png" alt="image-20220810194700491" style="zoom:40%;" />
 
 当然也可以用 tac 反向显示行内容。
 
@@ -614,7 +614,7 @@ cat tmp.txt
 grep -n "5" file.txt
 ```
 
-<img src="./.Linux基本操作【下】.IMG/IMGimage-20220810195201933.png" alt="image-20220810195201933" style="zoom:40%;" />
+<img src="Linux基本操作【下】.IMG/IMGimage-20220810195201933.png" alt="image-20220810195201933" style="zoom:40%;" />
 
 #  10. zip/unzip 指令
 
@@ -818,4 +818,4 @@ drwxrwxr-x 4 xy xy 4096 Aug  9 21:58 Code
 -rw-rw-r-- 1 xy xy   70 Aug  9 23:04 test1.txt
 ```
 
-<img src="./.Linux基本操作【下】.IMG/IMGimage-20220811002458031-7617072.png" alt="image-20220811002458031" style="zoom:40%;" />
+<img src="Linux基本操作【下】.IMG/IMGimage-20220811002458031-7617072.png" alt="image-20220811002458031" style="zoom:40%;" />

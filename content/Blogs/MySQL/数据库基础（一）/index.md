@@ -152,11 +152,11 @@ mysql> create database test_db
 
 在这个目录下会增加一个同名目录：
 
-<img src="./.数据库基础（一）.IMG/image-20231021184729051.png" alt="image-20231021184729051" style="zoom:40%;" />
+<img src="数据库基础（一）.IMG/image-20231021184729051.png" alt="image-20231021184729051" style="zoom:40%;" />
 
 这个目录下有一个`db.log`文件，它记录这个数据库的默认字符集和字符校验规则：
 
-<img src="./.数据库基础（一）.IMG/image-20231021184915551.png" alt="image-20231021184915551" style="zoom:40%;" />
+<img src="数据库基础（一）.IMG/image-20231021184915551.png" alt="image-20231021184915551" style="zoom:40%;" />
 
 如果在这个数据库中创建一个表：
 ```mysql
@@ -168,7 +168,7 @@ mysql> create table test_table( # 创建表
 ```
 
 在上面这个目录下会增加两个同名的文件：
-<img src="./.数据库基础（一）.IMG/image-20231021185500839.png" alt="image-20231021185500839" style="zoom:40%;" />
+<img src="数据库基础（一）.IMG/image-20231021185500839.png" alt="image-20231021185500839" style="zoom:40%;" />
 
 .frm 和 .ibd 是两种不同类型的文件：
 
@@ -234,7 +234,7 @@ MySQL 默认有四个数据库，每个数据库都有其特定的用途：
 
 show processlist 命令可以显示当前连接到 MySQL 服务器的线程的信息，可以使用这个命令来监控服务器的性能，排查问题，或者终止某些线程。
 
-<img src="./.数据库基础（一）.IMG/image-20231022004024786.png" alt="image-20231022004024786" style="zoom:40%;" />
+<img src="数据库基础（一）.IMG/image-20231022004024786.png" alt="image-20231022004024786" style="zoom:40%;" />
 
 其中：
 

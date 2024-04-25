@@ -33,9 +33,9 @@ HTTP 协议是无状态的，即每次请求都是独立的，服务器不会保
 
 例如使用抓包工具就能很方便地获取包含在 HTTP 请求和响应报文中的用户隐私信息，例如：
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102106812.png" alt="image.png" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102106812.png" alt="image.png" style="zoom:40%;" />
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102107101.png" alt="image.png" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102107101.png" alt="image.png" style="zoom:40%;" />
 
 ### 通信方可能被伪装
 
@@ -55,13 +55,13 @@ HTTP 协议的实现本身非常简单，因此不确认通信方，会存在以
 
 HTTP 协议无法证明通信报文的完整性，因此，在请求或响应送出之后直到对方接收之前的这段时间内，即使请求或响应的内容遭到篡改，也没有办法获悉。所谓“无法证明”，是因为报文的发出者只管发出报文，而接收方只管接收报文，因此不论是报文的接收方还是发出方，都无法知晓报文最终或最初是什么样的。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102143009.jpg" alt="Image00139.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102143009.jpg" alt="Image00139.jpg" style="zoom:40%;" />
 
 比如，从某个 Web 网站上下载内容，是无法确定客户端下载的文件和服务器上存放的文件是否前后一致的。文件内容在传输途中可能已经被篡改为其他的内容。即使内容真的已改变，作为接收方的客户端和作为发出方的服务端都是觉察不到的。
 
 像这样，请求或响应在传输途中，遭攻击者拦截并篡改内容的攻击称为中间人攻击（Man-in-the-Middle attack，MITM）。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102143924.jpg" alt="Image00140.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102143924.jpg" alt="Image00140.jpg" style="zoom:40%;" />
 
 ## 2.1 弥补 HTTP 的缺点（概述）
 
@@ -83,7 +83,7 @@ HTTP 协议中没有加密机制，但可以通过和 SSL（Secure Socket Layer�
 
 在这种情况下，客户端需要对 HTTP 报文进行加密处理后再发送请求。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/202306111614384.jpg" alt="Image00136.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/202306111614384.jpg" alt="Image00136.jpg" style="zoom:40%;" />
 
 诚然，**为了做到有效的内容加密，前提是要求客户端和服务器同时具备加密和解密机制**。主要应用在 Web 服务中。有一点必须引起注意，由于该方式不同于 SSL 或 TLS 将整个通信线路加密处理，所以内容仍有被篡改的风险。
 
@@ -93,7 +93,7 @@ HTTP 协议对请求来之不拒，那么过滤掉不合理的请求就显得十
 
 证书由**值得信任的第三方机构**颁发，用以证明服务器和客户端是实际存在的。另外，伪造证书从技术角度来说是异常困难的一件事。所以只要能够确认通信方（服务器或客户端）持有的证书，即可判断通信方的真实意图。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102156811.jpg" alt="Image00138.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102156811.jpg" alt="Image00138.jpg" style="zoom:40%;" />
 
 通过使用证书，以证明通信方就是意料中的服务器。这对使用者个人来讲，也减少了个人信息泄露的危险性。证书就像政府颁发的说明一样，具有权威性，前提是这个机构是绝对权威的。通俗地说，服务器或客户端想要获取证书，都是要法人“实名制”的。在网络上只要实名制，人们就会听话很多：)。
 
@@ -109,7 +109,7 @@ HTTPS 并不是一种全新的应用层协议，而是 HTTP 的安全版本（HT
 
 HTTP + 加密 + 认证 + 完整性校验 = HTTPS：
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102241319.jpg" alt="Image00142.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102241319.jpg" alt="Image00142.jpg" style="zoom:40%;" />
 
 为了体系地认识 HTTPS 协议，首先介绍以下内容的框架：
 
@@ -127,7 +127,7 @@ TLS 协议是 SSL 协议的后续版本，有更高的安全性和更好的兼�
 
 通常，HTTP 运行在 TCP 之上，它直接和 TCP 通信。当使用 SSL 时，则演变成先和 SSL 通信，再由 SSL 和 TCP 通信了。简言之，所谓 HTTPS，其实就是身披 SSL 协议这层外壳的 HTTP。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102257829.jpg" alt="Image00144.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102257829.jpg" alt="Image00144.jpg" style="zoom:40%;" />
 
 在采用 SSL/TLS 后，HTTP 就拥有了 HTTPS 的加密、证书和完整性保护这些功能。
 
@@ -141,11 +141,11 @@ SSL 采用一种叫做公开密钥（yuè）加密（Public-key cryptography）�
 
 加密和解密同用一个密钥的方式称为共享密钥加密（Common key crypto system），也被叫做对称密钥加密。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102301870.jpg" alt="Image00145.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102301870.jpg" alt="Image00145.jpg" style="zoom:40%;" />
 
 以共享密钥方式加密时必须将密钥也发给对方。可==问题是==究竟怎样才能安全地转交？在互联网上转发密钥时，密钥本身也是报文的一部分，如果通信被监听那么密钥就可会落入攻击者之手，同时也就失去了加密的意义。另外还得设法安全地保管接收到的密钥。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102301311.jpg" alt="Image00146.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102301311.jpg" alt="Image00146.jpg" style="zoom:40%;" />
 
 - 优点：
 	- 加密速度快，适合对大量数据进行加密。例如，在文件压缩软件中，用户可以设置一个密码来对压缩文件进行加密，这样就可以防止其他人随意打开或修改文件。
@@ -163,7 +163,7 @@ SSL 采用一种叫做公开密钥（yuè）加密（Public-key cryptography）�
 
 >另外，要想根据密文和公开密钥，恢复到信息原文是异常困难的，因为解密过程就是在对离散对数进行求值，这并非轻而易举就能办到。因此以现在的技术从成本上可以认为这些哈希算法都是不可逆的。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102310694.jpg" alt="Image00147.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102310694.jpg" alt="Image00147.jpg" style="zoom:40%;" />
 
 - 优点：
 	- 可以避免密钥的传输和泄露问题，提高了安全性。例如，在电子邮件中，用户可以使用收件人的公钥来对邮件内容进行加密，然后发送给收件人，收件人再使用自己的私钥来解密邮件内容，这样就可以保证邮件内容只有收件人能够看到。
@@ -179,7 +179,7 @@ SSL 采用一种叫做公开密钥（yuè）加密（Public-key cryptography）�
 
 HTTPS 充分利用两者各自的优势，将多种方法组合起来用于通信。在交换密钥环节使用公开密钥加密方式，之后的建立通信交换报文阶段则使用共享密钥加密方式。
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102315629.jpg" alt="Image00148.jpg" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102315629.jpg" alt="Image00148.jpg" style="zoom:40%;" />
 
 总结：
 
@@ -205,11 +205,11 @@ HTTPS 充分利用两者各自的优势，将多种方法组合起来用于通�
 >这个问题类似对称加密，让我们回到通信协议（Protocol）加密的本质：通信方按照实现约定的规则通信，那么前提是通信方在通信之前就已经知晓了规则。好在这些公钥都可以内置在浏览器中，相当于客户端默认具备了通信的前提。
 
 - 多数浏览器开发商发布版本时，会事先在内部植入常用认证机关的公开密钥。
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/202306111611287.png" alt="image.png" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/202306111611287.png" alt="image.png" style="zoom:40%;" />
 
 例如可以在浏览器查看某个网站的证书（一般通过 HTTPS 通信时，网址框旁边会有一个🔐的标志）：
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/MD202306102329795.png" alt="image.png" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/MD202306102329795.png" alt="image.png" style="zoom:40%;" />
 
 证书的一个作用是证明作为通信一方的服务器是否规范（证明公开密钥正确性），除此之外：
 - 证书可以确认对方服务器背后运营的企业是否真实存在。
@@ -242,7 +242,7 @@ SSL/TLS 协议的基本过程：
 
 下面介绍"握手阶段"的具体过程：
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/202306111340181.png" alt="image.png" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/202306111340181.png" alt="image.png" style="zoom:40%;" />
 
 >RSA 加密算法是一种非对称加密算法，在公开密钥加密和电子商业中被广泛使用。RSA 是由 **R**on Rivest、Adi **S**hamir 和 Leonard **A**dleman 一起提出的。
 >
@@ -312,7 +312,7 @@ SSL/TLS 协议的基本过程：
 
 下面是一个 HTTPS 通信的例子：
 
-<img src="./.HTTP 和 HTTPS 协议原理.IMG/202306111527511.png" alt="image.png" style="zoom:40%;" />
+<img src="HTTP 和 HTTPS 协议原理.IMG/202306111527511.png" alt="image.png" style="zoom:40%;" />
 
 1. 客户端向服务端==发起请求==：
 	- 客户端通过发送 Client Hello ==报文==开始 SSL/TLS 通信。报文中包含客户端支持的 SSL 的指定版本、加密组件（Cipher Suite）列表（所使用的==加密算法==及密钥长度等）。

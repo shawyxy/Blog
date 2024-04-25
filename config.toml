@@ -1,0 +1,77 @@
+---
+archetypedir:               "archetype" # 架构目录
+# 主机名（及根路径），例如 http://spf13.com/
+baseURL:                    ""
+# 包含标记为草稿的内容
+buildDrafts:                false
+# 包含发布日期在未来的内容
+buildFuture:                false
+# 启用此选项使所有相对 URL 相对于内容根目录。请注意，这不影响绝对 URL。
+relativeURLs:               false
+canonifyURLs:               false
+# 配置文件（默认是 path/config.yaml|json|toml）
+config:                     "config.toml"
+contentdir:                 "content" # 内容目录
+dataDir:                    "data" # 数据目录
+defaultExtension:           "html" # 默认扩展名
+defaultLayout:              "post" # 默认布局
+disableLiveReload:          false # 禁用实时重载
+# 不生成 RSS 文件
+disableRSS:                 false
+# 不生成站点地图文件
+disableSitemap:             false
+# 如果提供，用此编辑器编辑新内容
+editor:                     ""
+footnoteAnchorPrefix:       "" # 脚注锚点前缀
+footnoteReturnLinkContents: "" # 脚注返回链接内容
+# 谷歌分析跟踪 ID
+googleAnalytics:            ""
+languageCode:               "" # 语言代码
+layoutdir:                  "layouts" # 布局目录
+# 启用日志记录
+log:                        false
+# 日志文件路径（如果设置，自动启用日志记录）
+logFile:                    ""
+# 元数据格式 "yaml", "toml", "json"
+metaDataFormat:             "toml"
+newContentEditor:           "" # 新内容编辑器
+# 不同步文件的修改时间
+noTimes:                    false
+paginate:                   10 # 分页大小
+paginatePath:               "page" # 分页路径
+permalinks:                 # 永久链接配置
+# 使用 inflect 将列表中的标题复数化
+pluralizeListTitles:        true
+# 保留分类名称中的特殊字符（例如 "Gérard Depardieu" 而不是 "Gerard Depardieu"）
+preserveTaxonomyNames:      false
+# 文件系统路径，写入文件到此路径
+publishdir:                 "public" # 发布目录
+# 从此样式派生的高亮色代码
+pygmentsStyle:              "monokai"
+# true: 使用 pygments-css 或 false: 直接使用色码
+pygmentsUseClasses:         false
+# 默认站点地图配置映射
+sitemap:
+# 文件系统路径，从此路径读取文件
+source:                     ""
+staticdir:                  "static" # 静态目录
+# 显示程序不同步骤的内存和时间分析
+stepAnalysis:               false
+# 使用的主题（位于 /doc/themes/THEMENAME/）
+theme:                      ""
+title:                      "" # 标题
+# 如果为 true，使用 /filename.html 而不是 /filename/
+uglyURLs:                   false
+# 不将 URL/路径转换为小写
+disablePathToLower:         false
+# 如果为 true，自动检测内容中的中文/日文/韩文（.Summary 和 .WordCount 可以正常工作）
+hasCJKLanguage              false
+# 详细输出
+verbose:                    false
+# 详细日志
+verboseLog:                 false
+# 监视文件系统变化并根据需要重新创建
+watch:                      true
+ignoreFiles = ["^\\.(?!.*\\.IMG$)"]
+
+---

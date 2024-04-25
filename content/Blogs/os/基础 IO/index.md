@@ -87,7 +87,7 @@ filename 是要打开的文件名，mode 的打开文件要做什么。
 
 我们知道，如果使用 fopen 函数以"w"的方式打开一个文件，如果文件不存在会在==当前路径==下创建文件。那么==当前路径==是哪个路径呢？
 
-<img src="./.基础IO.IMG/MD202211051402368.png" alt="image-20221101114400408" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402368.png" alt="image-20221101114400408" style="zoom:40%;" />
 
 所以当前路径不是可执行程序所在的路径，而是执行可执行程序时，进程所处的路径。文末的「软硬链接」会解释它。
 
@@ -121,7 +121,7 @@ int main()
 
 运行程序，默认在当前目录下创建文件 log.txt，并通过 fwirte 函数写入字符串。
 
-<img src="./.基础IO.IMG/MD202211051402369.png" alt="image-20221101110343186" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402369.png" alt="image-20221101110343186" style="zoom:40%;" />
 
 > 写入上面这个字符串，要把、0 也写到 log.txt 中吗？
 >
@@ -154,7 +154,7 @@ int main()
 }
 ```
 
-<img src="./.基础IO.IMG/MD202211051402370.png" alt="image-20221101111803755" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402370.png" alt="image-20221101111803755" style="zoom:40%;" />
 
 ## 1.4 C 默认打开的三个流
 
@@ -172,7 +172,7 @@ int main()
 man stdout
 ```
 
-<img src="./.基础IO.IMG/MD202211051402371.png" alt="image-20221101140942584" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402371.png" alt="image-20221101140942584" style="zoom:40%;" />
 
 需要注意的是：
 
@@ -189,7 +189,7 @@ man stdout
 
 通过 man 手册查看，`man 2 open`：
 
-<img src="./.基础IO.IMG/MD202211051402372.png" alt="image-20221101141045998" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402372.png" alt="image-20221101141045998" style="zoom:40%;" />
 
 在本文只看 open，忽略 create()。下面主要针对 open() 的三个参数和返回值进行阐述。
 
@@ -231,7 +231,7 @@ man stdout
 
 在/usr/include/bits 路径下，可以找到`fcntl-linux.h`头文件，这里面有表中定义的宏：
 
-<img src="./.基础IO.IMG/MD202211051402373.png" alt="image-20221101145251653" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402373.png" alt="image-20221101145251653" style="zoom:40%;" />
 
 如果你往下翻，可以发现，这些宏的二进制位都在 32 位比特位中的不同位置，所以才能通过或运算将这些标志位组合。
 
@@ -260,7 +260,7 @@ int main()
 }
 ```
 
-<img src="./.基础IO.IMG/MD202211051402374.png" alt="image-20221101154903549" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402374.png" alt="image-20221101154903549" style="zoom:40%;" />
 
 在 C 语言中，我们只需要给 fopen 传一个“r”, 底层封装的 open 其实是这样：
 
@@ -268,7 +268,7 @@ int main()
 int fd = open("log.txt", O_WRONLY | O_CREAT); // 以只读形式打开文件
 ```
 
-<img src="./.基础IO.IMG/MD202211051402375.png" alt="image-20221101163729749" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402375.png" alt="image-20221101163729749" style="zoom:40%;" />
 
 这样就成功创建了。
 
@@ -278,11 +278,11 @@ int fd = open("log.txt", O_WRONLY | O_CREAT); // 以只读形式打开文件
 
 如果不传入第三个参数，那么默认文件访问权限就是只读的，就如上面创建的 log.txt 一样：
 
-<img src="./.基础IO.IMG/MD202211051402376.png" alt="image-20221101170348777" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402376.png" alt="image-20221101170348777" style="zoom:40%;" />
 
 文件权限：
 
-<img src="./.基础IO.IMG/MD202211051402378.png" alt="image-20221101170404209" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402378.png" alt="image-20221101170404209" style="zoom:40%;" />
 
 如果不传入 mode 参数，创建出来的文件对其他用户是不可读写的。
 
@@ -296,7 +296,7 @@ int fd = open("log.txt", O_WRONLY | O_CREAT, 0666);
 
 删掉刚才创建的文件，然后运行：
 
-<img src="./.基础IO.IMG/MD202211051402379.png" alt="image-20221101171027877" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402379.png" alt="image-20221101171027877" style="zoom:40%;" />
 
 然而，权限并不是我们想象的那样（rw-rw-rw-），原因是创建出来的文件会受到 umask（默认文件掩码，默认值是 0002）的影响，最后文件的权限为：mode&(\~umask)，那么就是 0666&(~0002)=0664。
 
@@ -311,7 +311,7 @@ int fd = open("log.txt", O_WRONLY | O_CREAT, 0666); // 以只读形式打开文�
 
 同样，要看到测试的情况，要删掉刚才创建的 log.txt：
 
-<img src="./.基础IO.IMG/MD202211051402380.png" alt="image-20221101171809303" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402380.png" alt="image-20221101171809303" style="zoom:40%;" />
 
 注意：
 
@@ -347,7 +347,7 @@ int main()
 }
 ```
 
-<img src="./.基础IO.IMG/MD202211051402381.png" alt="image-20221101182115770" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402381.png" alt="image-20221101182115770" style="zoom:40%;" />
 
 可以看到，当前目录下不仅多了几个新增的文件，而且 fd 是从 3 开始递增的，0/1/2 去哪了？
 
@@ -381,7 +381,7 @@ int main()
 }
 ```
 
-<img src="./.基础IO.IMG/MD202211051402382.png" alt="image-20221102161325037" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402382.png" alt="image-20221102161325037" style="zoom:40%;" />
 
 # 3. 文件描述符
 
@@ -439,7 +439,7 @@ int main()
 } 
 ```
 
-<img src="./.基础IO.IMG/MD202211051402383.png" alt="image-20221102182949199" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402383.png" alt="image-20221102182949199" style="zoom:40%;" />
 
 因为 stdin、stdout 和 stderr 都是 C 语言的结构体指针，所以可以访问结构体成员。其中_fileno 就是封装了文件描述符的成员。
 
@@ -480,7 +480,7 @@ int main()
 }
 ```
 
-<img src="./.基础IO.IMG/MD202211051402384.png" alt="image-20221102171137953" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402384.png" alt="image-20221102171137953" style="zoom:40%;" />
 
 从结果来看，在最开始关闭了下标为 0 和 2，后来打开的文件的信息把这几个位置都填上了。
 
@@ -488,7 +488,7 @@ int main()
 
 以图示理解进程时如何管理文件的：
 
-<img src="./.基础IO.IMG/MD202211051402385.png" alt="image-20221103135052296" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402385.png" alt="image-20221103135052296" style="zoom:40%;" />
 
 # 4. 重定向
 
@@ -500,7 +500,7 @@ int main()
 echo 重定向测试 > test.txt
 ```
 
-<img src="./.基础IO.IMG/MD202211051402386.png" alt="image-20221102172320361" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402386.png" alt="image-20221102172320361" style="zoom:40%;" />
 
 ## 4.2 重定向的原理
 
@@ -536,7 +536,7 @@ int main()
 
 ```
 
-<img src="./.基础IO.IMG/MD202211051402387.png" alt="image-20221103111251072" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402387.png" alt="image-20221103111251072" style="zoom:40%;" />
 
 ### 原理
 
@@ -552,7 +552,7 @@ int main()
 //close(fd); 注释掉 close 语句
 ```
 
-<img src="./.基础IO.IMG/MD202211051402388.png" alt="image-20221103111539705" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402388.png" alt="image-20221103111539705" style="zoom:40%;" />
 
 这样就完成了重定向，不过有点“歪门邪道”，下面用一种“正统”的方法实现重定向，同样是上面的代码，close 取消注释，然后再它之前添加：
 
@@ -561,7 +561,7 @@ fflush(stdout);
 close(fd);
 ```
 
-<img src="./.基础IO.IMG/MD202211051402389.png" alt="image-20221103112621934" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402389.png" alt="image-20221103112621934" style="zoom:40%;" />
 
 结果同样可以实现数据的重定向。
 
@@ -571,7 +571,7 @@ close(fd);
 
 用图示理解重定向的过程：
 
-<img src="./.基础IO.IMG/MD202211051402390-9397372.png" alt="image-20221103135728943" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402390-9397372.png" alt="image-20221103135728943" style="zoom:40%;" />
 
 从图示可以知道，输出重定向就是打开一个文件的同时，OS 在内核中创建一个 file 对象，让进程的 fd_array[1] 重新指向打开文件的 file 对象。
 
@@ -615,7 +615,7 @@ int main()
 
 ```
 
-<img src="./.基础IO.IMG/MD202211051402391.png" alt="image-20221103142120562" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402391.png" alt="image-20221103142120562" style="zoom:40%;" />
 
 使用系统调用 close(0)，关闭 stdin 标准输入文件，对这个程序而言，就是把键盘文件关闭了。运行程序，C 语言函数 scanf 把 log.txt 中的数据都读取出来了。
 
@@ -632,7 +632,7 @@ int main()
 > }
 > ```
 >
-> <img src="./.基础IO.IMG/MD202211051402392.png" alt="image-20221103142737300" style="zoom:40%;" />
+> <img src="基础IO.IMG/MD202211051402392.png" alt="image-20221103142737300" style="zoom:40%;" />
 
 ### 补充
 
@@ -657,7 +657,7 @@ int main()
 } 
 ```
 
-<img src="./.基础IO.IMG/MD202211051402393.png" alt="image-20221103144943508" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402393.png" alt="image-20221103144943508" style="zoom:40%;" />
 
 > fprintf 是 C 语言文件操作的函数，是专门用于在文件中输出字符串内容的，但是也可以指定它输出的文件。（stdout 和 stderr 也是文件）。
 >
@@ -669,7 +669,7 @@ int main()
 ./main > log.txt
 ```
 
-<img src="./.基础IO.IMG/MD202211051402394.png" alt="image-20221103145210568" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402394.png" alt="image-20221103145210568" style="zoom:40%;" />
 
 结果表明，重定向操作不会把本来要输出到 stderr 文件中的数据输出到 log.txt，只会对 stdout 文件操作。
 
@@ -691,7 +691,7 @@ man 2 dup
 man 2 dup2
 ```
 
-<img src="./.基础IO.IMG/MD202211051402395.png" alt="image-20221103225936774" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402395.png" alt="image-20221103225936774" style="zoom:40%;" />
 
 ### 原型
 
@@ -738,7 +738,7 @@ int main()
 }
 ```
 
-<img src="./.基础IO.IMG/MD202211051402396.png" alt="image-20221103231202242" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402396.png" alt="image-20221103231202242" style="zoom:40%;" />
 
 printf 默认向 stdout 输出，在使用 dup2 重定向后，本应该在显示器上输出的数据被写到了文件 log.txt 中。
 
@@ -748,7 +748,7 @@ printf 默认向 stdout 输出，在使用 dup2 重定向后，本应该在显�
 fprintf(stdout, "hello, world <- fprintf\n");
 ```
 
-<img src="./.基础IO.IMG/MD202211051402397.png" alt="image-20221103231626369" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402397.png" alt="image-20221103231626369" style="zoom:40%;" />
 
 # 6. C 标准库中的 FILE 结构体
 
@@ -861,11 +861,11 @@ int main()
 }
 ```
 
-<img src="./.基础IO.IMG/MD202211051402398.png" alt="image-20221104002202190" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402398.png" alt="image-20221104002202190" style="zoom:40%;" />
 
 显然，都所有输出语句都正常执行了。但是如果要将打印到显示器的内容重定向到一个文件 log.txt 中呢？
 
-<img src="./.基础IO.IMG/MD202211051402399.png" alt="image-20221104002404502" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402399.png" alt="image-20221104002404502" style="zoom:40%;" />
 
 1. 不重定向，直接打印：输出到显示器无异常；
 2. 重定向：C 库函数会被执行两次，系统调用只会被执行一次。
@@ -928,7 +928,7 @@ I/O 过程是最耗费时间的，就像借钱谈话 1 小时，转账 5s 一样
 
 因为 C 语言内部是封装了系统调用的，例如 printf 函数，它会调用系统接口 write，将数据写入到 printf 指定的文件中。对于 fork 以后的父子进程，它们都执行了一次 C 语言打印函数，所以每个 C 语言打印函数都调用了两次系统接口 write。
 
-<img src="./.基础IO.IMG/MD202211051402400.png" alt="image-20221104145519214" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402400.png" alt="image-20221104145519214" style="zoom:40%;" />
 
 其实，在 fork 之后，数据也只是被保存在 C 标准库维护的缓冲区里，fork 做的事就是创建子进程，父进程的数据会发生写时拷贝，只有当进程退出时（执行 return 语句），父进程准备把数据从缓冲区刷新出来了，子进程也要进行同样的操作。请注意，数据不是从 C 标准库维护的缓冲区被直接刷新到文件中，还要经过系统调用将数据暂存到内核的缓冲区，最后数据才会被写入到文件中。（此部分暂且不需要对内核缓冲区作深入研究，只要知道它的存在即可。）
 
@@ -1000,7 +1000,7 @@ char *_IO_save_end; /* Pointer to end of non-current get area. */
 2. 在哪个磁道 (H)
 3. 在哪个扇区 (S)
 
-<img src="./.基础IO.IMG/MD202211051402401.png" alt="image-20221104202216213" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402401.png" alt="image-20221104202216213" style="zoom:40%;" />
 
 > 一般传统的磁盘规定每个扇区的大小是 512 字节。
 
@@ -1008,11 +1008,11 @@ char *_IO_save_end; /* Pointer to end of non-current get area. */
 
 抽象磁盘结构：把这一摞磁盘想象成线性结构。就像磁带卷成一盘一样。
 
-<img src="./.基础IO.IMG/MD202211051402402.jpg" alt="盒式磁带" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402402.jpg" alt="盒式磁带" style="zoom:40%;" />
 
 把磁盘当成磁带，将它拉成线性结构，符合我们对数组的抽象理解：
 
-<img src="./.基础IO.IMG/MD202211051402403.png" alt="image-20221104212520778" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402403.png" alt="image-20221104212520778" style="zoom:40%;" />
 
 在 OS 眼中，这每一个扇区就是一个数组，那么对磁盘的管理也就转变为对数组的管理。比如数组的前 10000 个位置是某个盘的位置，前几百个位置是某个扇区的位置，根据下标的范围，OS 便能管理磁盘不同盘面、不同磁道和不同扇区的数据。
 
@@ -1026,7 +1026,7 @@ char *_IO_save_end; /* Pointer to end of non-current get area. */
 
 对于磁盘中的每个分区，它由块组组成。
 
-<img src="./.基础IO.IMG/MD202211051402404.png" alt="image-20221104230005411" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402404.png" alt="image-20221104230005411" style="zoom:40%;" />
 
 ## 7.3  EXT2 文件系统
 
@@ -1052,7 +1052,7 @@ ext2 中的空间被分成了若干块（blocks），这些块被分到块组（
 
 在本节中，我们着重了解 inode，在此之前，需要把握整体结构。
 
-<img src="./.基础IO.IMG/MD202211051402405.png" alt="image-20221104223839858" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402405.png" alt="image-20221104223839858" style="zoom:40%;" />
 
 由图示可见，每个块组（block group）都由以下几个部分组成：
 
@@ -1090,7 +1090,7 @@ ext2 中的空间被分成了若干块（blocks），这些块被分到块组（
 
 > 在 inode 结构体中，有一个数组 block[]，它维护着每个文件使用的数据块和 inode 结构体之间的映射关系。它的长度为 15，其中前 12 个元素分别对应该文件使用的 12 个数据块，剩余的 3 个元素分别是一级索引、二级索引和三级索引，当该文件使用数据块的个数超过 12 个时，可以用这三个索引进行数据块扩充。--图片来源于 [维基百科](https://en.wikipedia.org/wiki/Ext2#ext2_data_structures)
 >
-> <img src="./.基础IO.IMG/MD202211051402406.png" alt="Estructure" style="zoom:40%;" />
+> <img src="基础IO.IMG/MD202211051402406.png" alt="Estructure" style="zoom:40%;" />
 
 ####  格式化
 
@@ -1148,7 +1148,7 @@ ext2 中的空间被分成了若干块（blocks），这些块被分到块组（
 ls -i
 ```
 
-<img src="./.基础IO.IMG/MD202211051402407.png" alt="image-20221105105612240" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402407.png" alt="image-20221105105612240" style="zoom:40%;" />
 
 > OS 如何找到文件？
 
@@ -1190,7 +1190,7 @@ echo "hello world" > testLink.txt
 ls -li
 ```
 
-<img src="./.基础IO.IMG/MD202211051402408.png" alt="image-20221105110605719" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402408.png" alt="image-20221105110605719" style="zoom:40%;" />
 
 其中，第一列是 inode 编号，第三列是引用计数。
 
@@ -1202,7 +1202,7 @@ ls -li
 ln -s testLink.txt testLink1.txt
 ```
 
-<img src="./.基础IO.IMG/MD202211051402409.png" alt="image-20221105111745332" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402409.png" alt="image-20221105111745332" style="zoom:40%;" />
 
 > ln 指令要求创建的文件在当前目录下没有同名文件。
 
@@ -1212,13 +1212,13 @@ ln -s testLink.txt testLink1.txt
 ln -s main main.txt
 ```
 
-<img src="./.基础IO.IMG/MD202211051402410.png" alt="image-20221105112544587" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402410.png" alt="image-20221105112544587" style="zoom:40%;" />
 
 可以发现，新创建出来的文件 main.txt 相比于 main 可执行程序这个文件，它要小得多。其实，软链接文件中保存的是一个文本字符串，存储的是目标文件（即：链接到的文件）的路径名。类似 Windows 操作系统中的快捷方式。
 
 软链接文件和快捷方式一样，如果删除了被链接的文件，链接文件虽然保留着它的文件名，但是不再能够查看它的内容。
 
-<img src="./.基础IO.IMG/MD202211051402411.png" alt="image-20221105113011647" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402411.png" alt="image-20221105113011647" style="zoom:40%;" />
 
 ## 8.3 硬链接
 
@@ -1228,7 +1228,7 @@ ln -s main main.txt
 ln main mainH
 ```
 
-<img src="./.基础IO.IMG/MD202211051402412.png" alt="image-20221105114104327" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402412.png" alt="image-20221105114104327" style="zoom:40%;" />
 
 由此可见，硬链接和软链接的区别就在于硬链接创建出来的文件的 inode 编号和被链接文件的是相同的。而且，它们的大小都相同。
 
@@ -1243,11 +1243,11 @@ rm main
 ls -li
 ```
 
-<img src="./.基础IO.IMG/MD202211051402413.png" alt="image-20221105114200859" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402413.png" alt="image-20221105114200859" style="zoom:40%;" />
 
 硬链接文件依然存在，没有报错，而且可以正常执行：
 
-<img src="./.基础IO.IMG/MD202211051402414.png" alt="image-20221105114455193" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402414.png" alt="image-20221105114455193" style="zoom:40%;" />
 
 可以看到，文件的引用计数-1。
 
@@ -1259,7 +1259,7 @@ ls -li
 mkdir dir
 ```
 
-<img src="./.基础IO.IMG/MD202211051402415.png" alt="image-20221105115006556" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402415.png" alt="image-20221105115006556" style="zoom:40%;" />
 
 > 为什么一个目录的引用计数是 2？
 
@@ -1272,7 +1272,7 @@ ls -i -d dir
 ls -i -a dir
 ```
 
-<img src="./.基础IO.IMG/MD202211051402416.png" alt="image-20221105115419022" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402416.png" alt="image-20221105115419022" style="zoom:40%;" />
 
 每个目录中，都有两个隐藏文件：`.`和`..`，我们都很熟悉它，经常用 cd 指令在上下级目录中跳转。它们分别表示当前目录和上级目录。那么，当前目录就有了两个名字，一个是`dir`，一个是`.`，所以引用计数是 2，同时，它们的 inode 编号也是一样的。
 
@@ -1280,7 +1280,7 @@ ls -i -a dir
 
 通过`stat`命令可以查看文件的三个时间（ACM）：
 
-<img src="./.基础IO.IMG/MD202211051402417.png" alt="image-20221105135458056" style="zoom:40%;" />
+<img src="基础IO.IMG/MD202211051402417.png" alt="image-20221105135458056" style="zoom:40%;" />
 
 - A（Access）：文件最后被访问的时间；
 - C（Change）：文件内容最后的修改时间；

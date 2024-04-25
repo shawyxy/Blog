@@ -165,7 +165,7 @@ private:
 
   > 这样做是合理的，例如在命令行随意输入一个命令的名字，但没有参数，就会有以下提示：
   >
-  > <img src="./.网络编程：TCP socket.IMG/image-20230507221335105.png" alt="image-20230507221335105" style="zoom:40%;" />
+  > <img src="网络编程：TCP socket.IMG/image-20230507221335105.png" alt="image-20230507221335105" style="zoom:40%;" />
 - 参数类型转换：我们知道，PORT 都是整数，而命令行参数是一个字符串，所以提取出参数以后，要对它们进行类型转换。PORT 使用了`atoi()`函数转换为整数。
 - 以防资源泄露，这里使用了`unique_ptr`智能指针管理服务器的资源，不必在此深究，智能指针的使用就像普通指针一样。这里的程序比较简单，用一对`new`和`delete`也能实现资源的申请与回收。注意调用构造函数的时候需要传递参数。智能指针的头文件是`<memory>`。
 
@@ -261,7 +261,7 @@ public:
 
 简单测试一下：
 
-<img src="./.网络编程：TCP socket.IMG/image-20230507231023100.png" alt="image-20230507231023100" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230507231023100.png" alt="image-20230507231023100" style="zoom:40%;" />
 
 这一步和实现 UDP socket 编程的唯一区别就是使用`socket()`函数的第二个参数不同。
 
@@ -356,7 +356,7 @@ bool initServer()
 
 测试一下：
 
-<img src="./.网络编程：TCP socket.IMG/image-20230507230939233.png" alt="image-20230507230939233" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230507230939233.png" alt="image-20230507230939233" style="zoom:40%;" />
 
 UDP 服务器的实现就到此为止了，所以 UDP 通信的效率很高，但通过实现它的步骤可以知道，这是要付出代价的。
 
@@ -416,7 +416,7 @@ public:
 ```
 
 测试一下：
-<img src="./.网络编程：TCP socket.IMG/image-20230507230930768.png" alt="image-20230507230930768" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230507230930768.png" alt="image-20230507230930768" style="zoom:40%;" />
 
 可以验证，打开的文件描述符是 3 号，说明 0、1 和 2 号文件描述符都是默认被打开的状态。
 
@@ -469,7 +469,7 @@ int main()
 }
 ```
 
-<img src="./.网络编程：TCP socket.IMG/image-20230507232320538.png" alt="image-20230507232320538" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230507232320538.png" alt="image-20230507232320538" style="zoom:40%;" />
 
 ### 获取连接和通信准备
 
@@ -653,7 +653,7 @@ Linux 中的 telnet 是一种远程登录的协议，它可以让用户通过网
 
 ### 测试
 
-<img src="./.网络编程：TCP socket.IMG/telnet1.gif" alt="telnet1" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/telnet1.gif" alt="telnet1" style="zoom:40%;" />
 
 也可以用本地环回地址进行测试。
 
@@ -662,7 +662,7 @@ Linux 中的 telnet 是一种远程登录的协议，它可以让用户通过网
 
 下面再增加一个客户端测试：
 
-<img src="./.网络编程：TCP socket.IMG/telnet2.gif" alt="telnet2" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/telnet2.gif" alt="telnet2" style="zoom:40%;" />
 
 这里的现象不是我们预想的那样，中间的客户端 1 连接成功以后，服务端打印了对应的日志信息，客户端 1 发送信息服务端也能正常回显。但是上面的客户端 2 执行`telnet`命令以后，服务端既没有打印日志信息也没有进行正常的回显操作，但是一旦客户端 1 退出，服务端就会一次性将刚刚没有输出的信息打印出来。
 
@@ -703,7 +703,7 @@ Linux 中的 telnet 是一种远程登录的协议，它可以让用户通过网
 
 文件描述符是表征资源空间的一个下标，它被一个表储存着，它是有限的。如果子进程继承了父进程创建的服务套接字被使用完了，父进程也不关闭它，那么这个文件描述符对应的文件描述符就被浪费了，所以父子进程都要关闭自己不需要的文件描述符。这是文件描述符泄漏，类似内存泄漏。在云服务器中，单进程打开的文件描述符上限是 50000~100000 个。
 
-<img src="./.网络编程：TCP socket.IMG/image-20230509231635852.png" alt="image-20230509231635852" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230509231635852.png" alt="image-20230509231635852" style="zoom:40%;" />
 
 > 如果没有及时关闭文件描述符，那么在测试时会发现文件描述符的编号一直在增加，并且重启机器就会回复原样。
 
@@ -744,13 +744,13 @@ while :; do ps axj | grep TcpServer; sleep 1; echo "#"; done
 ```
 
 依然使用两个`telnet`模拟客户端：
-<img src="./.网络编程：TCP socket.IMG/telnet_fork.gif" style="zoom:50%;" />
+<img src="网络编程：TCP socket.IMG/telnet_fork.gif" style="zoom:50%;" />
 
 两个客户端连接成功以后，可以看到服务端中依次多了两个子进程，它们是被父进程创建用来执行线程函数的，所以可以同时响应多个客户端发送的信息，图中也不会出现单进程服务端一次只能处理一个客户端的情况了。
 
 值得注意的是，当两个子进程都调用`exit(0)`退出以后，它们会变成僵尸进程，这在打印的信息中是可以观察到的：
 
-<img src="./.网络编程：TCP socket.IMG/image-20230509235421602.png" alt="image-20230509235421602" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230509235421602.png" alt="image-20230509235421602" style="zoom:40%;" />
 
 > 在进程列表中，`<defunct>`表示僵尸进程。
 
@@ -800,13 +800,13 @@ void start()
 
 用同样的方式测试一下：
 
-<img src="./.网络编程：TCP socket.IMG/telnet_fork_signal.gif" alt="telnet_fork_signal" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/telnet_fork_signal.gif" alt="telnet_fork_signal" style="zoom:40%;" />
 
 可以看到，由于父进程忽略了子进程退出的信号，所以两个客户端进程退出以后不会变成僵尸进程：
 
-<img src="./.网络编程：TCP socket.IMG/image-20230510225741376.png" alt="image-20230510225741376" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230510225741376.png" alt="image-20230510225741376" style="zoom:40%;" />
 
-<img src="./.网络编程：TCP socket.IMG/image-20230510225849302.png" alt="image-20230510225849302" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230510225849302.png" alt="image-20230510225849302" style="zoom:40%;" />
 
 #### 孙子进程
 
@@ -861,11 +861,11 @@ void start()
 
 用同样的方式和脚本测试一下：
 
-<img src="./.网络编程：TCP socket.IMG/telnet_fork_son.gif" style="zoom:50%;" />
+<img src="网络编程：TCP socket.IMG/telnet_fork_son.gif" style="zoom:50%;" />
 
 由于子进程创建孙子进程以后就立即退出了，那么孙子进程就是孤儿进程，它将被 1 号进程领养，不会出现僵尸进程的问题：
 
-<img src="./.网络编程：TCP socket.IMG/image-20230510235305723.png" alt="image-20230510235305723" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230510235305723.png" alt="image-20230510235305723" style="zoom:40%;" />
 
 # 客户端
 
@@ -1108,9 +1108,9 @@ void start()
 ### 测试
 
 用两个实现的客户端替代之前的`telnet`，进行同样的测试：
-<img src="./.网络编程：TCP socket.IMG/tcp_client_1.gif" style="zoom:50%;" />
+<img src="网络编程：TCP socket.IMG/tcp_client_1.gif" style="zoom:50%;" />
 
-<img src="./.网络编程：TCP socket.IMG/image-20230513151907837.png" alt="image-20230513151907837" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230513151907837.png" alt="image-20230513151907837" style="zoom:40%;" />
 
 通过多次发送信息的测试，效果还是符合预想的。
 
@@ -1263,10 +1263,10 @@ while :; do ps -aL | head -1 && ps -aL | grep TcpServer; sleep 1; echo "#"; done
 
 同样地，用两个客户端测试：
 
-<img src="./.网络编程：TCP socket.IMG/tcp_server_threads1.gif" alt="tcp_server_threads1" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/tcp_server_threads1.gif" alt="tcp_server_threads1" style="zoom:40%;" />
 
 可以看到，当客户端输入“quit”以后，服务端对应的线程也会退出：
-<img src="./.网络编程：TCP socket.IMG/image-20230514191019974.png" alt="image-20230514191019974" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230514191019974.png" alt="image-20230514191019974" style="zoom:40%;" />
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/TcpSocket/Threads)
 
@@ -1399,13 +1399,13 @@ static void service(int service_sockfd, std::string client_ip, uint16_t client_p
 ## 测试
 
 用同样的方式测试：
-<img src="./.网络编程：TCP socket.IMG/tcp_server_threadpool1.gif" alt="tcp_server_threadpool1" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/tcp_server_threadpool1.gif" alt="tcp_server_threadpool1" style="zoom:40%;" />
 
 可以看到，只要客户端一运行起来，就会立即创建出 5 个线程（这是程序员自定义的），然后等待主线程派发任务。注意到服务端为客户端服务的线程的 PORT 是不一样的，也就说明是不同的线程（也可以在日志中增加线程信息）。
 
 例如：
 
-<img src="./.网络编程：TCP socket.IMG/tcp_server_threadpool2.gif" alt="tcp_server_threadpool2" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/tcp_server_threadpool2.gif" alt="tcp_server_threadpool2" style="zoom:40%;" />
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/TcpSocket/ThreadPool)
 
@@ -1625,7 +1625,7 @@ static void enToZh(int service_sockfd, std::string client_ip, uint16_t client_po
 
 ## 测试
 
-<img src="./.网络编程：TCP socket.IMG/image-20230515143556472.png" alt="image-20230515143556472" style="zoom:40%;" />
+<img src="网络编程：TCP socket.IMG/image-20230515143556472.png" alt="image-20230515143556472" style="zoom:40%;" />
 
 通过简单的测试可以实现多线程执行来自客户端的请求。
 
