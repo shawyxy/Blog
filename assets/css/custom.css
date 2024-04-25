@@ -1,18 +1,14 @@
 @font-face {
-    font-family: 'PingFangTC-Light';
-    src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Light.otf') format('opentype'),
-}
-@font-face {
     font-family: 'Microsoft Sans Serif';
-    src: url('/fonts/Microsoft Sans Serif.ttf') format('truetype'),
+    src: url('/fonts/Microsoft Sans Serif.woff2') format('woff2'),
 }
 @font-face {
     font-family: 'PingFangTC-Medium';
-    src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Medium.otf') format('opentype'),
+    src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Medium.woff') format('woff'),
 }
 @font-face {
     font-family: 'Hei';
-    src: url('/fonts/Hei.ttf') format('truetype'),
+    src: url('/fonts/Hei.woff2') format('woff2'),
 }
 /* @font-face {
     font-family: 'PingFangTC-Medium';
