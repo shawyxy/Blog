@@ -1,9 +1,33 @@
-.content {
-    font-family: "PingFangTC-Light", "Times New Roman", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+@font-face {
+    font-family: 'PingFangTC-Light';
+    src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Light.otf') format('opentype'),
+}
+@font-face {
+    font-family: 'Microsoft Sans Serif';
+    src: url('/fonts/Microsoft Sans Serif.ttf') format('truetype'),
+}
+@font-face {
+    font-family: 'PingFangTC-Medium';
+    src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Medium.otf') format('opentype'),
+}
+@font-face {
+    font-family: 'Hei';
+    src: url('/fonts/Hei.ttf') format('truetype'),
+}
+/* @font-face {
+    font-family: 'PingFangTC-Medium';
+    src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Medium.otf') format('opentype'),
+}
+@font-face {
+    font-family: 'PingFangTC-Medium';
+    src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Medium.otf') format('opentype'),
+} */
+body {
+    font-family: "PingFangTC-Medium", "Times New Roman", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
     /* color: rgb(200, 200, 200); */
    /* line-height: 1.6;
     font-size: 0.94; */
-    font-weight: 550;
+    /* font-weight: 600; */
 }
 strong
 {
