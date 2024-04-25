@@ -4,7 +4,7 @@ weight: 15
 open: true
 ---
 
-# 安装 MySQL 库
+## 安装 MySQL 库
 
 在 CentOS7 下，使用命令安装 MySQL：
 
@@ -17,8 +17,8 @@ yum install mysql-devel
 用一个 MySQL 库提供的接口验证 MySQL 库是否安装成功：
 
 ```cpp
-#include <iostream>
-#include <mysql/mysql.h>
+##include <iostream>
+##include <mysql/mysql.h>
 
 using namespace std;
 
@@ -49,9 +49,9 @@ g++ sql.cc -o sql -I/usr/include/mysql -L/usr/lib64/mysql -lmysqlclient
 
 只要正常运行上面的程序，那就表明库的链接没有问题，剩下的就是简单的 API 使用。
 
-# 连接 MySQL
+## 连接 MySQL
 
-## MYSQL 类
+### MYSQL 类
 
 在使用 MySQL 提供的接口之前，需要了解一下这个重要的类。
 
@@ -115,7 +115,7 @@ typedef struct st_mysql
 
 - MYSQL 对象中的 methods 成员是一个结构体变量，该变量里面保存着很多函数指针，这些函数指针将会在数据库连接成功以后的各种数据操作中被调用。
 
-## 创建 MySQL 对象
+### 创建 MySQL 对象
 
 ```cpp
 MYSQL* mysql_init(MYSQL *mysql);
@@ -125,7 +125,7 @@ MYSQL* mysql_init(MYSQL *mysql);
 - 如果传入的参数是 NULL，那么 mysql_init 将自动为你分配一个 MySQL 对象并返回。
 - 如果传入的参数是一个地址，那么 mysql_init 将在该地址处帮你完成初始化。
 
-## 连接数据库
+### 连接数据库
 
 ```cpp
 MYSQL* mysql_real_connect(MYSQL *mysql, const char *host,
@@ -153,7 +153,7 @@ MYSQL* mysql_real_connect(MYSQL *mysql, const char *host,
 - 如果连接数据库成功，则返回一个 MySQL 对象，该对象与第一个参数的值相同。
 - 如果连接数据库失败，则返回 NULL。
 
-## 关闭数据库连接
+### 关闭数据库连接
 
 ```cpp
 void mysql_close(MYSQL *sock);
@@ -164,7 +164,7 @@ void mysql_close(MYSQL *sock);
 - 该函数的参数，就是连接数据库前调用 mysql_init 创建的 MySQL 对象。
 - 如果传入的 MySQL 对象是 mysql_init 自动创建的，那么调用 mysql_close 时就会释放这个对象。
 
-## 示例
+### 示例
 
 在 MySQL 中首先有一个新用户：
 
@@ -177,9 +177,9 @@ grant all on curd_db.* to 'new_user'@'%' identified by '12345';
 在本地测试：
 
 ```cpp
-#include <iostream>
-#include <string>
-#include <mysql/mysql.h>
+##include <iostream>
+##include <string>
+##include <mysql/mysql.h>
 using namespace std;
 
 const string host = "localhost";
@@ -212,7 +212,7 @@ int main()
 
 <img src="C语言连接.IMG/image-20240227190559910.png" alt="image-20240227190559910" style="zoom:40%;" />
 
-# 发送命令
+## 发送命令
 
 ```cpp
 int mysql_query(MYSQL *mysql, const char *stmt_str);
@@ -230,7 +230,7 @@ int mysql_query(MYSQL *mysql, const char *stmt_str);
 - 成功执行时，返回 `0`。
 - 出现错误时，返回非 `0` 值。
 
-# 设置编码格式
+## 设置编码格式
 
 在连接数据库之后，需要统一客户端和服务器的编码格式，避免在数据交互过程中出现乱码，设置编码格式的函数如下：
 
@@ -247,7 +247,7 @@ int mysql_set_character_set(MYSQL *mysql, const char *csname);
 
 - 返回值为 0 表示设置成功，否则表示设置失败。
 
-# 插入、删除或修改记录
+## 插入、删除或修改记录
 
 在 mysql_query 函数中向 MySQL 发送 INSERT SQL：
 
@@ -288,7 +288,7 @@ int main()
 
 <img src="C语言连接.IMG/image-20240227193844242.png" alt="image-20240227193844242" style="zoom:40%;" />
 
-# 查询记录
+## 查询记录
 
 对于 mysql_query 函数而言，插入、删除和修改操作都很简单，只要将 SQL 字符串作为参数传入即可，不需要返回值。但是 SELECT 查询需要返回结果，这需要使用到 MYSQL_RES 对象。
 
@@ -379,7 +379,7 @@ MYSQL_ROW 对象中保存着一行数据，这一行数据中可能包含多个�
 typedef char **MYSQL_ROW;		/* return data as array of strings */
 ```
 
-## 示例
+### 示例
 
 ```cpp
 int main()
@@ -424,7 +424,7 @@ int main()
 
 <img src="C语言连接.IMG/image-20240227195504420.png" alt="image-20240227195504420" style="zoom:40%;" />
 
-# 参考资料
+## 参考资料
 
 - [Linux centos 7/ubantu 下： 用 C 语言连接 MySQL 数据库](https://developer.aliyun.com/article/641363)
 - [MySQL 使用 C 语言连接](https://blog.csdn.net/chenlong_cxy/article/details/129039323)

@@ -1,5 +1,5 @@
 ---
-title: "C++"
+title: "C语言"
 type: folder
 ## cascade:
 ##   _build:

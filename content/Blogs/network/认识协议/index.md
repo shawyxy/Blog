@@ -4,7 +4,7 @@ weight: 4
 open: true
 ---
 
-# 什么是协议
+## 什么是协议
 
 在网络通信中，协议（Protocol）是指计算机或设备之间进行通信的一系列规则的集合。
 
@@ -12,7 +12,7 @@ open: true
 
 协议规定了通信实体之间所交换的消息的格式、意义、顺序以及针对收到信息或发生的事件所采取的动作。协议可以分为不同的层次，每一层负责不同的通信功能。常见的协议有 IP、TCP、HTTP、POP3、SMTP 等，它们属于 TCP/IP 协议族，也就是基于 TCP 和 IP 这两个最初的协议之上的不同的通信协议的大集合。
 
-# 结构化数据
+## 结构化数据
 
 在网络通信时，数据可以分为结构化数据和非结构化数据。
 
@@ -24,27 +24,27 @@ open: true
 
 - 二进制序列流可以认为是字符流，也就是字符串，只要它们遵循一定的编码规则，例如 ASCII、UTF-8 等。不同的编码规则会影响二进制序列和字符之间的对应关系。
 
-也就是说，数据在网络中传输时，都是以二进制序列的形式传输的，无论是结构化数据还是非结构化数据。只是它们的==组织方式不同==，结构化数据有固定的格式和模式，非结构化数据没有预定义的格式和模式。因此，处理和分析这两种类型的数据需要不同的工具和方法。
+也就是说，数据在网络中传输时，都是以二进制序列的形式传输的，无论是结构化数据还是非结构化数据。只是它们的<mark>组织方式不同</mark>，结构化数据有固定的格式和模式，非结构化数据没有预定义的格式和模式。因此，处理和分析这两种类型的数据需要不同的工具和方法。
 
-## 结构化数据
+### 结构化数据
 
 结构化数据是指按照一定的规则、格式和顺序组织的数据，通常以表格、树形结构、图形等形式呈现，可以用数据库二维逻辑表来表现的数据。例如，在一个数据库中，数据以表格的形式存储，每个表格都有固定的字段和数据类型，数据的格式和顺序都是固定的。在网络通信中，结构化数据通常以 XML、JSON、Protocol Buffers 等格式进行传输。
 
 > 简单理解结构化数据：例如我们的身份证 ID，虽然看起来是一串数字，但是不同的位数表示了不同的含义。这和下面的序列化和反序列化息息相关。
 
-## 非结构化数据
+### 非结构化数据
 
 非结构化数据是指没有固定格式和顺序的数据，通常以文本、图像、音频、视频等形式呈现，不方便用数据库二维逻辑表来表现的数据。例如，在一个文本文件中，数据没有固定的格式和顺序，而是由一些字符和换行符组成。在网络通信中，非结构化数据通常以二进制数据流的形式进行传输，例如在 FTP、HTTP 等协议中，文件就是以二进制数据流的形式传输的。
 
 相比于非结构化数据，结构化数据更容易被处理和解析，因为它们有固定的格式和顺序，可以通过解析规则来进行处理。而非结构化数据则需要更强的语义理解和处理能力，因为它们没有固定的格式和顺序，需要通过文本分析、图像处理、音频识别等技术来进行处理。在网络通信中，结构化数据通常用于传输少量的、格式固定的数据，而非结构化数据则用于传输大量的、没有固定格式和顺序的数据，例如图像、音频、视频等。
 
-## 半结构化数据
+### 半结构化数据
 
 半结构化数据是指非关系模型的、有基本固定结构模式的数据，例如日志文件、XML 文档、JSON 文档等。在此暂不考虑。
 
-# 结构化数据的传输
+## 结构化数据的传输
 
-==在网络中传输结构化数据时，通常会将数据转换为字符串的形式进行传输，这样可以方便在网络上传输和解析==。具体地说，结构化数据在网络中传输时，有以下两种情况：
+<mark>在网络中传输结构化数据时，通常会将数据转换为字符串的形式进行传输，这样可以方便在网络上传输和解析</mark>。具体地说，结构化数据在网络中传输时，有以下两种情况：
 
 1. 字符串形式传输：一种常见的方法是将结构化数据转换为字符串格式（也就是说结构化的数据不能拆分地发送），例如 XML、JSON 等格式，然后通过网络协议（如 HTTP、TCP、UDP 等）进行传输。在接收端，可以通过解析字符串，将其还原为结构化数据。
 
@@ -70,7 +70,7 @@ open: true
 
 例如稍后要实现的网络版计算器，操作符和其两侧的操作数就是结构化的数据，它不应该被分散地发送，因为对于一次运算它们是必要的。由于这是一个跨网络的数据传输，因此对于客户端向服务端发送计算请求时，应该将操作符和操作数打包在一起，作为一个整体发送给服务端处理；这样就能保证服务端能够接收到完整的数据。这便是“结构化”的意义。
 
-## 序列化和反序列化
+### 序列化和反序列化
 
 序列化和反序列化是一种在网络传输中处理对象的方法，它们是一对相反的操作。
 
@@ -82,9 +82,9 @@ open: true
 - 实现数据的持久化，通过序列化可以把数据永久地保存到硬盘上（通常存放在文件里）；
 - 利用序列化实现远程通信，即在网络上传送对象的字节序列。
 
-# 网络版计算器概述
+## 网络版计算器概述
 
-## 制定协议
+### 制定协议
 
 协议是通信方事先约定好的规则，由于通信的内容有所不同，对于若干个绑定在一起的数据，通过网络传输会提高风险，因此使用一个类或结构体保存它，然后将它打包通过网络传输。
 
@@ -104,33 +104,33 @@ open: true
 >
 > 服务端大多数机器是 Linux，客户端的操作系统可能是各种各样的。
 
-### 通过字符串传输
+#### 通过字符串传输
 
 很容易想到的一种协议是：客户端发送形如`操作数 1 运算符 操作数 2`这样的字符串给服务端，然后服务端解析这个字符串，取出操作数和运算符，将运算以后的结果返回。但是这样的操作实在太麻烦了。而且服务端响应请求都要执行这样繁琐的操作，大大降低效率。
 
-### 结构化数据+序列化与反序列化
+#### 结构化数据+序列化与反序列化
 
 将操作数和运算符打包为一个结构化数据，放在一个类或结构体中，客户端将属性填充好以后对其进行序列化操作，使之能通过网络传输给对端服务器。当服务器接受到二进制形式的结构化数据后，对其进行反序列化，转换为客户端主机能处理的结构化数据，直接取出结构体或类中的属性，而不需要花费过多资源解析。
 
 简单地说，序列化后的数据是方便机器处理，反序列化后的数据是方便用户层查看。
 
-# 实现计算器
+## 实现计算器
 
-## 网络相关接口
+### 网络相关接口
 
 将 Linux 中的网络操作例如创建套接字、监听、获取连接、连接等操作封装为函数，然后放在类`Sock`中。
 
 ```cpp
-#include <iostream>
-#include <string>
-#include <cerrno>
-#include <cstring>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include "Log.hpp"
+##include <iostream>
+##include <string>
+##include <cerrno>
+##include <cstring>
+##include <sys/types.h>
+##include <sys/socket.h>
+##include <netinet/in.h>
+##include <arpa/inet.h>
+##include <unistd.h>
+##include "Log.hpp"
 
 class Sock
 {
@@ -216,9 +216,9 @@ public:
 };
 ```
 
-## 框架
+### 框架
 
-### 服务端
+#### 服务端
 
 目前的服务端并未使用线程池，只是每获取一个客户端请求后，创建一个线程执行线程函数。
 
@@ -234,12 +234,12 @@ public:
 
 ```cpp
 // CalServer.hpp
-#pragma once
+##pragma once
 
-#include <pthread.h>
-#include <functional>
-#include <vector>
-#include "Sock.hpp"
+##include <pthread.h>
+##include <functional>
+##include <vector>
+##include "Sock.hpp"
 
 namespace ns_tcpserver
 {
@@ -324,9 +324,9 @@ namespace ns_tcpserver
 
 ```cpp
 // CalServer.cc
-#include <iostream>
-#include <memory>
-#include "CalServer.hpp"
+##include <iostream>
+##include <memory>
+##include "CalServer.hpp"
 
 using namespace ns_tcpserver;
 
@@ -355,13 +355,13 @@ int main(int argc, char *argv[])
 
 目前的代码能编译通过，后续只要在这个基础上修改即可。
 
-### 客户端
+#### 客户端
 
 由于 TCP 面向连接，客户端无需手动绑定，实现起来比服务端更简单。
 
 ```cpp
 // CalClient.hpp
-#include "Sock.hpp"
+##include "Sock.hpp"
 
 namespace ns_tcpclient
 {
@@ -406,9 +406,9 @@ namespace ns_tcpclient
 
 ```cpp
 // CalClient.cc
-#include <iostream>
-#include <memory>
-#include "CalClient.hpp"
+##include <iostream>
+##include <memory>
+##include "CalClient.hpp"
 
 using namespace ns_tcpclient;
 
@@ -431,7 +431,7 @@ int main(int argc, char *argv[])
 }
 ```
 
-## 制定协议
+### 制定协议
 
 指定协议相关的逻辑将在`Protocol.hpp`中实现。
 
@@ -448,7 +448,7 @@ int main(int argc, char *argv[])
 
 > 实际上，为保证效率和稳定性，一般会采用成熟的方案，而不会自己订制协议。在此只是为了演示。
 
-### 请求
+#### 请求
 
 **序列化：**
 
@@ -464,8 +464,8 @@ int main(int argc, char *argv[])
 // Protocol.hpp
 namespace ns_protocol
 {
-#define SPACE " "
-#define SPACE_LEN strlen(SPACE)
+##define SPACE " "
+##define SPACE_LEN strlen(SPACE)
     // 请求
     class Request
     {
@@ -520,7 +520,7 @@ namespace ns_protocol
 
 同样地，它将在命名空间`ns_protocol`中被定义。
 
-### 响应
+#### 响应
 
 响应的对象是请求，即处理请求。那么它应该包含两个操作数和一个运算符，用`_result`保存结果。
 
@@ -530,10 +530,10 @@ namespace ns_protocol
 // Protocol.hpp
 namespace ns_protocol
 {
-#define SPACE " "
-#define SPACE_LEN strlen(SPACE)
-#define SEP "\r\n"
-#define SEP_LEN strlen(SEP)    
+##define SPACE " "
+##define SPACE_LEN strlen(SPACE)
+##define SEP "\r\n"
+##define SEP_LEN strlen(SEP)    
 	// 响应
     class Response
     {
@@ -600,7 +600,7 @@ namespace ns_protocol
 }
 ```
 
-### 发送和接收数据
+#### 发送和接收数据
 
 服务端处理获取请求，需要从网络中获取；服务端处理请求以后，可能需要将结果回传给客户端，因此需要将数据发送到网络中。客户端同理。
 
@@ -637,7 +637,7 @@ std::string Recv(int sockfd)
 
 需要注意响应`Response`和请求`Request`中序列化和反序列化的参数及返回值。
 
-## 计算逻辑
+### 计算逻辑
 
 服务端首先从网络中获被客户端序列化的字符串，然后定义一个`Request`类型的对象`req`，使用它来将其反序列化。
 
@@ -688,7 +688,7 @@ void calculator(int sockfd)
 }
 ```
 
-## 测试
+### 测试
 
 回顾之前定义的`BindService()`函数，它的作用是将函数的地址 push_back 到数组中，以供线程调用。
 
@@ -736,7 +736,7 @@ namespace ns_tcpclient
 
 简单测试几个功能，注意到当除数为 0 时，错误码是刚刚设置的 1。
 
-## 存在的问题
+### 存在的问题
 
 1. 当前的逻辑当客户端断开连接时，服务端会直接退出。
 2. 服务端获取序列化的字符串不应该为空，否则后续的 Send() 函数会出现问题。例如常见的问题是一端在写入时，另一端直接关闭了。
@@ -845,9 +845,9 @@ void Start()
 
 现在就从代码逻辑上解决了服务端在读取时，如果读取失败就直接退出。但是没有解决一方正在写入时对方把连接关闭的问题。一般经验：服务端在编写时，要有较为严谨的判断逻辑，一般服务器都要忽略 SIGPIPE 信号，防止非法写入的问题。
 
-# TCP 服务端
+## TCP 服务端
 
-TCP 是面向字节流的，从实现上可以简单地理解为使用字符串。不同于 UDP，前者面向数据包，相当于发快递，是客户端发一次，服务端接收一次（调用一次 recvfrom 函数），因此读取的是完整的 Request 对象。在 TCP 协议的服务端中，可能一个服务端会同时等待多个 Request 请求，然后一次性读取多个 Request 对象，==问题在 TCP 服务端获取 Request 时，如何保证数据传输的完整性==。
+TCP 是面向字节流的，从实现上可以简单地理解为使用字符串。不同于 UDP，前者面向数据包，相当于发快递，是客户端发一次，服务端接收一次（调用一次 recvfrom 函数），因此读取的是完整的 Request 对象。在 TCP 协议的服务端中，可能一个服务端会同时等待多个 Request 请求，然后一次性读取多个 Request 对象，<mark>问题在 TCP 服务端获取 Request 时，如何保证数据传输的完整性</mark>。
 
 TCP 和 UDP 是「传输控制」协议。在 TCP 协议中，客户端和服务端调用函数发送或接收数据时，只是将数据拷贝到缓冲区，并未真正交给函数处理。 这是因为 TCP 是流式传输，没有边界，需要根据窗口大小和网络状况来确定何时发送数据。
 
@@ -863,7 +863,7 @@ TCP 和 UDP 是「传输控制」协议。在 TCP 协议中，客户端和服务
 
 虽然如此，但是具有这些性质并不能保证读取的完整性。
 
-## 保证报文的完整性
+### 保证报文的完整性
 
 `Protocol.hpp`中的`Recv()`函数的返回值不再是一个字符串，而是以一个输出型参数作为返回值，只返回 bool 类型以表示成功与否。这么做可以让这个函数值负责接收数据，`CalServer.cc`中的计算器函数`calculator()`函数使用一个指针类型的变量作为输出型参数获取处理以后的数据。如何在此函数中解析和处理数据。
 
@@ -871,7 +871,7 @@ TCP 和 UDP 是「传输控制」协议。在 TCP 协议中，客户端和服务
 
 因此需要在原有的基础上对协议进一步定制。
 
-## 定制协议（划分报文）
+### 定制协议（划分报文）
 
 在之前写过的 TCP socket 中，TCP 的客户端-服务端（c-s）都无法保证报文的完整性，因此在协议中增加一个成员`length`，表示报文的长度。因此，报文的信息就包含了：报文长度+报文内容。
 
@@ -888,13 +888,13 @@ TCP 和 UDP 是「传输控制」协议。在 TCP 协议中，客户端和服务
 这样就通过多个标记字符`'\r\n'`（当做一个整体）将报文划分为 2 个区域：有效数据的长度+有效数据。这样当主机从网络中获取到报文时，通过这个标记字符就能取出它们，并验证长度是否正确，这样就能保证报文的完整性。为了方便使用，用宏定义它们：
 
 ```cpp
-#define SEP "\r\n"
-#define SEP_LEN strlen(SEP)
+##define SEP "\r\n"
+##define SEP_LEN strlen(SEP)
 ```
 
 注意不能用 sizeof 计算它的长度，否则会包含最后的'\0'。
 
-### 编码
+#### 编码
 
 编码实际上就是将一个完整的报文用一个长度字段的报头包装起来，使得有效载荷是完整的。
 
@@ -921,7 +921,7 @@ length\r\nx_ op_ y_\r\nlength\r\nx_ op_ y_\r\n
 
 这样就能和其他报文区分了。
 
-### 解码
+#### 解码
 
 解码的过程和编码相反，是将字符串拆分的过程。对应的，是去除长度报头，提取被包装的有效载荷的过程。
 
@@ -955,7 +955,7 @@ std::string Decode(std::string &buffer)
 }
 ```
 
-## 修改
+### 修改
 
 在`calculator()`和`TcpServer::Start()`中增加添加和取出报头的逻辑。
 
@@ -1041,13 +1041,13 @@ void calculator(int sockfd)
 }
 ```
 
-## 测试
+### 测试
 
 简单测试一下：
 
 <img src="认识协议.IMG/MD202306041735382.png" alt="image-20230601234931790" style="zoom:40%;" />
 
-# 守护进程版本
+## 守护进程版本
 
 [守护进程](https://blog.csdn.net/m0_63312733/article/details/131025735?spm=1001.2014.3001.5501)（Daemon）是一种在后台运行的特殊进程，它不属于任何终端，也不受用户的交互控制，通常用来执行一些系统服务或应用程序。
 
@@ -1081,18 +1081,18 @@ setsid COMMAND
 
 <img src="认识协议.IMG/MD202306041735383.png" alt="image-20230604152951381" style="zoom:40%;" />
 
-## 实现
+### 实现
 
 下面将在进程中调用该函数，让它自己成为一个守护进程：
 ```cpp
-#pragma once
+##pragma once
 
-#include <iostream>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+##include <iostream>
+##include <unistd.h>
+##include <signal.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <fcntl.h>
 
 void MyDaemon()
 {
@@ -1149,15 +1149,15 @@ int main(int argc, char *argv[])
 
 <img src="认识协议.IMG/MD202306041735385.png" alt="image-20230604160302083" style="zoom:40%;" />
 
-# json 版本
+## json 版本
 
-## json 介绍
+### json 介绍
 
 JavaScript Object Notation，是一种轻量级的数据交换格式，使用人类可读的文本来存储和传输由属性值对和数组（或其他可序列化的值）组成的数据对象。JSON 是一种语言无关的数据格式，它源自于 JavaScript，但是许多现代编程语言都包含了生成和解析 JSON 格式数据的代码。JSON 文件使用。json 作为扩展名，但不是强制的。
 
 JSON 有以下特点：
 
-- 数据以==键值对==的形式表示，类似于 JavaScript 对象的属性。
+- 数据以<mark>键值对</mark>的形式表示，类似于 JavaScript 对象的属性。
 - 数据由逗号分隔，花括号保存对象，方括号保存数组。
 - JSON 是“自描述”的，易于理解和使用。
 - JSON 可以用于存储和交换各种类型的数据，如数字、布尔值、字符串、日期、对象、数组等。
@@ -1173,7 +1173,7 @@ JSON 有以下用途：
 - JSON 易于解析，客户端 JavaScript 可以简单地通过 eval() 函数进行 JSON 数据的读取。
 - JSON 格式能够直接为服务器端代码使用，大大简化了服务器端和客户端的代码开发量，但是完成的任务不变，且易于维护。
 
-## 优点
+### 优点
 
 相比于手动对字符串 encode 和手动 decode，后者有以下缺点：
 
@@ -1184,7 +1184,7 @@ JSON 有以下用途：
 
 实际上，之前手动写的协议是一个很粗略的协议，实际上用户只要输入两个操作数和一个操作符，中间的空格理论上可以是任意个，诸如此类的问题还有很多。因此实际应用中会使用成熟的协议。
 
-## 实现
+### 实现
 
 C++没有内置的 json 库，但是有很多第三方的 json 库可以使用，如 RapidJSON, JsonCpp, sonic-cpp 等。安装 JsonCpp：
 
@@ -1198,14 +1198,14 @@ sudo yum install jsoncpp-devel
 
 在编译选项中要增加`-ljsoncpp`链接该第三方库。
 
-### 用法
+#### 用法
 
 注意头文件的包含。
 
 ```cpp
-#include <iostream>
-#include <string>
-#include <jsoncpp/json/json.h>
+##include <iostream>
+##include <string>
+##include <jsoncpp/json/json.h>
 
 int main()
 {
@@ -1251,7 +1251,7 @@ int main()
 例如：
 <img src="认识协议.IMG/MD202306041735388.png" alt="image-20230604164259561" style="zoom:40%;" />
 
-### 实现
+#### 实现
 
 下面修改`Request`和`Response`中序列化和反序列化的逻辑（Protocol.hpp）：
 

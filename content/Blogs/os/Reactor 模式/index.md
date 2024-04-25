@@ -13,7 +13,11 @@ open: true
 
 - [I/O 多路复用【Linux/网络】（C++实现 epoll、select 和 epoll 服务器）](https://blog.csdn.net/m0_63312733/article/details/133661648?spm=1001.2014.3001.5501)
 
-# 1. 什么是 Reactor 模式
+
+
+### 1. 什么是 Reactor 模式
+
+
 
 既然你开始了解 Reactor（反应器） 模式，说明你知道在实现服务端时，多线程只能处理少量的客户端请求，一旦数量增多，维护线程的成本会急剧上升，导致服务端性能下降。而 Reactor 模型就是为解决这个问题而诞生的。
 
@@ -40,7 +44,11 @@ Reactor 模式是一种基于事件驱动的设计模式，它是 I/O 多路复�
 | Concrete Event Handler（具体事件处理器）         |             事件处理器中各个回调方法的具体实现（可以认为是 Event Handler 的函数体）。             |
 | Initiation Dispatcher（初始分发器）              | 初始分发器就是 Reactor 模型，它会通过同步事件分离器来等待事件的发生，当对应事件就绪时就调用事件处理器，最后调用对应的回调方法来处理这个事件。 |
 
-# 2. Reactor 模型的演化
+
+
+### 2. Reactor 模型的演化
+
+
 
 我们知道一个服务器在接收数据后，要对这个数据进行解码，反序列化，处理，有必要的话还要序列化，然后将处理后的数据返回给客户端。这些操作可以抽象为一个个模块，交给线程去做。
 
@@ -58,7 +66,7 @@ Reactor 模式是一种基于事件驱动的设计模式，它是 I/O 多路复�
 
 最后是多 Reactor 模型，此模型中，有一个主 Reactor（Main Reactor）和多个从 Reactor（Sub Reactor）。Main Reactor 负责处理客户端的连接请求，而 Sub Reactor 则负责处理已经建立的连接的读写事件。这种模型的好处就是整体职责更加明确，同时对于多核 CPU 的机器，系统资源的利用更加高一些。
 
-# 3. Reactor 模式的工作流程
+### 3. Reactor 模式的工作流程
 
 1. Reactor 对象通过 I/O 多路复用接口监听客户端请求事件，收到事件后，通过 Dispatch 进行分发。
 2. 如果是建立连接请求，则 Acceptor 通过 accept() 处理连接请求，然后创建一个 Handler 对象处理完成连接后的各种事件。
@@ -67,11 +75,11 @@ Reactor 模式是一种基于事件驱动的设计模式，它是 I/O 多路复�
 5. Worker 线程池（如果有的话）会分配独立线程完成真正的业务，并将结果返回给 Handler。
 6. Handler 收到响应后，通过 send() 分发将结果返回给客户端。
 
-# 4. Reactor 服务器
+### 4. Reactor 服务器
 
 下面是一个 epoll 服务器比较完善的写法，它是 [I/O 多路复用【Linux/网络】（C++实现 epoll、select 和 epoll 服务器）](https://blog.csdn.net/m0_63312733/article/details/133661648?spm=1001.2014.3001.5501) 中 epoll 服务器的提升版。
 
-## 4.1 Connection 类
+#### 4.1 Connection 类
 
 承接上一节中的 epoll 服务器：现在的问题是，来自用户的数据可能会被 TCP 协议拆分成多个报文，那么服务器怎么才能知道什么时候最后一个小报文被接收了呢？要保证完整地读取客户端发送的数据，服务器需要将这次读取到的数据保存起来，对它们进行一定的处理（报文可能会有报头，以解决粘包问题），最后将它们拼接起来，再向上层应用程序交付。
 
@@ -111,19 +119,19 @@ public:
 
 成员函数 SetCallBack 是用来设置回调函数的地址的。注意成员变量的访问权限设置为 public，这么做是测试是就不用写 Get 和 Set 方法了。
 
-## 4.2 TcpServer 服务器
+#### 4.2 TcpServer 服务器
 
 服务器类已经实现很多遍了，这里只是将名字从 EpollServer 换成 TcpServer，其中许多逻辑是不变的。不同的是成员变量将 epoll 的文件描述符换成了 epoll 对象，因为在服务器类中，希望直接调用函数，而不进行传参（其实不改也可以，只是换个地方传参），所以对 Epoll 类的封装改进了一下。
 
-### Epoll 类
+##### Epoll 类
 
 ```cpp
-#pragma once
+###pragma once
 
-#include <iostream>
+###include <iostream>
 using namespace std;
 
-#include <sys/epoll.h>
+###include <sys/epoll.h>
 
 class Epoll
 {
@@ -184,7 +192,7 @@ public:
 
 这里将成员访问限制限定为 public，这么做是方便直接访问，否则要写一些 Get 或 Set 方法。
 
-### 服务器类框架
+##### 服务器类框架
 
 在构造函数中，除了创建 listensock 和创建 Epoll 对象等之外，要注意不仅 listensock，真正运行起来的服务器应该会存在大量的 socket，每一个 sock 都要被封装为一个 Connection 对象。那么这些 Connection 对象这么多，必须要管理它们：先描述，后组织。所以在服务器中使用哈希表组织这些 Connection 对象，key 是 sock，value 是 Connection 对象。
 
@@ -302,7 +310,7 @@ static bool SetNonBlock(int sock)
 >
 > 当这个新的函数对象被调用时，它会调用 TcpServer::Accepter 这个成员函数，同时传入的参数会替换掉占位符`std::placeholders::_1`。
 
-### LoopOnce 函数
+##### LoopOnce 函数
 
 在 LoopOnce 函数中执行的是每一次循环要做的事，对于 epoll 而言，用户进程只需要用一个数组存放已经就绪的文件描述符。然后遍历它。数组的每个元素都是一个事件结构体，通过它的成员判断事件的类型，是读还是写（异常稍后再说）。
 
@@ -344,7 +352,7 @@ void LoopOnce()
 
 判断 Connection 对象在哈希表中，通过函数 IsConnectionExists 实现。
 
-### Accepter 回调函数
+##### Accepter 回调函数
 
 Accepter 函数要做的时和之前一样，但是和之前实现的 epoll 服务器不同的是，由于服务端要处理不止一个连接，所以要在一个死循环中执行逻辑，直到文件描述符获取失败。但这次失败不会影响到下次，因为设置的 sock 是非阻塞的。
 
@@ -399,7 +407,7 @@ void Accepter(Connection *conn)
 
 这个将文件描述符“交付”给内核的操作，在 select 服务器的编写过程中我们通过将文件描述符添加到数组中，那么在 epoll 服务器中，我们只需要将`<文件描述符，Connection 对象（三个回调函数）>`这样的键值对插入到哈希表中，就实现了用户和内核之间的解耦，和数组的作用是类似的，只不过我们不用自己维护哈希表。
 
-### Recver 回调函数
+##### Recver 回调函数
 
 由于文件描述符是非阻塞的，而且 epoll 被设置为 ET 模式，所以要不断地处理本次客户端发送的数据，因此在死循环中执行逻辑。差错处理和上面类似，不同的是当出现错误时或对端关闭连接时，调用 Excepter 函数。
 
@@ -477,7 +485,7 @@ private:
 
 定义一个函数对象叫 callback_t，它的参数是 (Connection *, std::string &request)，这其中包含连接的 sock 以及三个回调函数，还有客户端发送的请求，这个请求是上层业务需要解析的。
 
-### 定制协议和解决粘包问题
+##### 定制协议和解决粘包问题
 
 关于客户端请求的处理，在 [认识协议【网络基础】](https://blog.csdn.net/m0_63312733/article/details/131034790?spm=1001.2014.3001.5501) 有介绍，现在把其中的 Protocol.hpp 中的 Request 类和 Response 类以及 NetCal.hpp 的 calculatorHelper() 的放到这。
 
@@ -532,17 +540,17 @@ void Recver(Connection *conn)
 
 ```cpp
 // Protocol.hpp
-#pragma once
+###pragma once
 
-#include <iostream>
-#include <cstring>
-#include <string>
-#include <vector>
+###include <iostream>
+###include <cstring>
+###include <string>
+###include <vector>
 
-#define SEP "X"
-#define SEP_LEN strlen(SEP)
-#define SPACE " "
-#define SPACE_LEN strlen(SPACE)
+###define SEP "X"
+###define SEP_LEN strlen(SEP)
+###define SPACE " "
+###define SPACE_LEN strlen(SPACE)
 
 void SpliteMessage(std::string &buffer, std::vector<std::string> *out)
 {
@@ -670,8 +678,8 @@ public:
 
 ```cpp
 // main.cc
-#include "TcpServer.hpp"
-#include <memory>
+###include "TcpServer.hpp"
+###include <memory>
 
 static Response calculatorHelper(const Request &req)
 {
@@ -740,7 +748,7 @@ int main()
 
 还记得 Connection 类中有一个 TcpServer 类型的回指指针吗？它可以帮助上层业务回到服务器中设置服务器对写事件的关心。
 
-### EnableReadWrite 函数
+##### EnableReadWrite 函数
 
 这个函数用来设置服务器的 epoll 对象对连接读写事件的关心与否。它接受三个参数：一个是 Connection 类型的指针，表示要设置的连接对象；两个是 bool 类型的值，表示是否允许读取或写入数据。
 
@@ -761,7 +769,7 @@ void EnableReadWrite(Connection *conn, bool readable, bool writeable)
 
 除此之外，EnableReadWrite 函数将会在 Sender 函数中也发挥作用。
 
-### Sender 函数
+##### Sender 函数
 
 在 Sender 函数中，应该将上层业务处理好后的数据发送给客户端。同样地，send() 函数可能没办法一次性将发送缓冲区的数据发送给客户端，所以要在一个死循环中执行。
 
@@ -816,7 +824,7 @@ void Sender(Connection *conn)
 
 是因为 EPOLLOUT 事件是一个**高频率触发**的事件，也就是说，在大多数情况下，文件描述符都是可写的，除非缓冲区满了或者出现异常。如果不关闭 epoll 对写事件的关心，那么每次 epoll_wait 返回时，都会返回大量的 EPOLLOUT 事件，占用了服务器的 CPU 资源，并且可能干扰其他更重要的事件的处理。因此，在发送数据之后，如果数据已经发送完毕，就应该关闭 epoll 对写事件的关心，只保留对读事件或者其他事件的关心。这样可以提高服务器的性能和效率。
 
-### Excepter 函数
+##### Excepter 函数
 
 Excepter 函数是当内核检测到异常事件就绪时触发的回调函数。它的作用是在 Recver 函数或 Sender 函数中，当 recv() 或 send() 系统调用出现**致命性错误**时进行移除不需要的文件描述符以及资源回收等操作。
 
@@ -898,11 +906,11 @@ void Excepter(Connection *conn)
 
 同样地，有些错误并不是致命的，而是可以通过重试或忽略来解决的（注意代码中的 break 和 continue 对应着不同的错误）。如代码中写的，如果 recv 或 send 函数（ read 或 write 函数）返回 -1，并设置 errno 为 EAGAIN 或 EWOULDBLOCK，那么表示缓冲区已满或者没有数据可读，只需要等待下一次可读或可写时再次尝试即可；如果 recv 或 send 函数（ read 或 write 函数）返回 -1，并设置 errno 为 EINTR，那么表示被信号中断了，只需要继续尝试即可。这些情况都不需要调用 Excepter 函数来处理。因此，在事件出错时，将它们的状态设置为可读可写，可以让 Recver 或 Sender 函数在遇到这些错误时进行重试或忽略。
 
-## 4.3 测试
+#### 4.3 测试
 
 <img src="Reactor 模式.IMG/MD202310080037421.gif" alt="屏幕录制 2023-10-06 19.58.44" style="zoom:40%;" />
 
-## 4.4 扩展 1
+#### 4.4 扩展 1
 
 如果有恶意节点和服务端建立大量连接，并且保持长时间不发送数据，这种无意义的连接会占用服务端大量资源，解决办法是设置一个超时时间。记录当前时间和客户端最近一次发送数据的时间，当它们的差值超过设定的超时时间，就断开连接。
 
@@ -976,7 +984,7 @@ class TcpServer
 
 > 来自网络，以后会填坑。
 
-# 参考资料
+### 参考资料
 
 - [【死磕 NIO】— Reactor 模式就一定意味着高性能吗？](https://www.cnblogs.com/chenssy/p/15440348.html)
 - [Reactor pattern--wiki](https://en.wikipedia.org/wiki/Reactor_pattern)

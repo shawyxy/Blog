@@ -4,9 +4,9 @@ weight: 6
 open: true
 ---
 
-#  1. 创建进程
+##  1. 创建进程
 
-##  1.1 认识 fork
+###  1.1 认识 fork
 
 在 [进程概念]() 中已经说明 fork 函数的用法：在已有的进程中使用 fork 函数，会创建一个子进程，而父进程就是原进程。
 
@@ -22,10 +22,10 @@ fork 函数的位置就是一个分界点，fork 之前的代码由父进程执�
 > - fork 返回，开始调度器调度。
 
 ```cpp
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/types.h>                                                                                         
+##include <stdio.h>
+##include <unistd.h>
+##include <stdlib.h>
+##include <sys/types.h>                                                                                         
 int main()
 {
   printf("fork before:PID:%d\n", getpid());
@@ -45,7 +45,7 @@ int main()
 
 可以看到，fork 之前的代码只执行了一次，fork 之后的代码执行了两次。说明 fork 之后的代码父子进程都会执行。
 
-### fork 函数的返回值
+#### fork 函数的返回值
 
 给子进程返回 0；给父进程返回子进程的 PID，子进程创建失败则返回-1。
 
@@ -57,7 +57,7 @@ int main()
 
 fork 之后的代码中，包括最后的 return 语句，由于 fork 之后的语句父子进程都要执行，return 语句也不例外。
 
-##  1.2 写时拷贝
+###  1.2 写时拷贝
 
 在任意一方未进行写入数据的操作时，父子进程是共享代码和数据的。只要当任意一方写入数据，这时才会拷贝一份，然后修改部分代码和数据，得到属于各自的代码和数据。
 
@@ -67,26 +67,26 @@ fork 之后的代码中，包括最后的 return 语句，由于 fork 之后的�
 
 - 为了按需分配内存，高效地使用内存空间。子进程不一定会使用父进程的所有数据和代码，而且子进程在不写入数据的情况下，也没有必要对数据进行拷贝、修改。
 
-####  意义
+#####  意义
 
 分离父子进程，保证其独立性。写时拷贝本质是一种延时申请的技术，提高内存使用率。
 
-## 1.3 fork 的常规用法
+### 1.3 fork 的常规用法
 
 - 一个进程希望复制自己，使子进程同时执行不同的代码段。例如父进程等待客户端请求，生成子进程来处理请求；
 - 一个进程要执行一个不同的程序。例如子进程从 fork 返回后，调用 exec 函数。
 
-##  1.4 fork 调用失败的原因
+###  1.4 fork 调用失败的原因
 
 - 系统中有太多的进程，内存空间不足，子进程创建失败；
 
 - 实际用户的进程数超过了限制，子进程创建失败。
 
-#  2. 进程终止
+##  2. 进程终止
 
 进程终止，本质就是 OS 释放系统资源，释放进程之前申请的相关内核数据结构和对于的数据和代码。
 
-##  2.1 进程退出的情况
+###  2.1 进程退出的情况
 
 进程退出有三种情况：
 
@@ -117,8 +117,8 @@ fork 之后的代码中，包括最后的 return 语句，由于 fork 之后的�
 通过 strerror 函数可以获取错误码和错误信息字符串的映射关系：
 
 ```cpp
-#include <stdio.h>
-#include <string.h>
+##include <stdio.h>
+##include <string.h>
 int main()
 {
   for(int i = 0; i < 150; i++)
@@ -135,7 +135,7 @@ int main()
 
 > 退出码映射的字符串都有不同的含义，帮助程序员定位执行失败的原因，这是 C 语言中的退出码和字符串的映射关系，映射关系是人为规定的，不同情况下会有不同的含义。
 
-##  2.2 进程退出的方法
+###  2.2 进程退出的方法
 
 正常退出：
 
@@ -149,15 +149,15 @@ int main()
 
 - ctrl + c，信号终止。
 
-###  return 语句退出
+####  return 语句退出
 
 上面演示过，return 后可以自定义退出码，通过`echo $?`指令可以查看验证。
 
-###  exit 函数退出
+####  exit 函数退出
 
 ```cpp
-#include <stdio.h>
-#include <stdlib.h>
+##include <stdio.h>
+##include <stdlib.h>
 void show()
 {
   printf("hello world");
@@ -174,14 +174,14 @@ int main()
 
 在这段代码中，exit 会在进程终止前将缓冲区中的数据刷新出来。
 
-###   _exit 函数退出
+####   _exit 函数退出
 
 同样是上面的代码，将 exit 换成_exit，注意包含头文件`<unistd>`：
 
 ```cpp
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+##include <stdio.h>
+##include <stdlib.h>
+##include <unistd.h>
 void show()
 {
   printf("hello world");
@@ -202,7 +202,7 @@ int main()
 
 结果却可以打印，为什么？
 
-###  三者的区别
+####  三者的区别
 
 - return：只有 main 函数中的 return 语句才能让进程退出，其他函数中的 return 语句不能；exit 和_exit 函数在任何地方都可以让进程退出。
 - exit 函数在退出进程前，会执行用户定义的清理函数，冲刷缓冲，关闭流等操作，然后才终止进程；而_exit 直接终止进程，不会做任何收尾操作。
@@ -214,7 +214,7 @@ int main()
 
 重新回看那个、n 的问题，因为 exit 会冲刷缓冲，所以就算不加、n 最后也会打印出来，而没有收尾操作的、_exit，就没办法打印。这就说明「缓冲区」一定不在 OS 内部，而是 C 标准库为我们维护的。如果是 OS 维护，_exit 也可以将缓冲区中的内容刷新出来。
 
-###  三者的联系
+####  三者的联系
 
 事实上，main 函数中的 return 语句会隐式地调用 exit 函数。
 
@@ -222,9 +222,9 @@ int main()
 
 也就是说，_exit 是最底层的函数，其他两个函数都是由封装而来的。
 
-#  3. 进程等待
+##  3. 进程等待
 
-##  3.1 原因
+###  3.1 原因
 
 进程等待是对于父进程而言的，也就是说等待的进程是子进程。
 
@@ -233,7 +233,7 @@ int main()
 - 父进程创建子进程，其目的是让子进程工作，如果父进程对子进程不管不顾，这就违背了创建子进程的初衷；
 - 父进程需要通过进程等待，回收子进程的资源，获取子进程的退出信息。
 
-##   3.2 子进程 status 参数
+###   3.2 子进程 status 参数
 
 进程的 status 参数是一个 int 类型参数，但是它的不同范围的比特位储存着不同的信息（此处只研究低 16 位）。
 
@@ -266,15 +266,15 @@ if (WIFEXITED(status)) {
 >
 > 程序异常退出或崩溃，本质上是 OS 杀掉了进程，这和语言是无关的。OS 如何杀掉进程？--发送信号。
 
-##  3.3 进程等待的方法
+###  3.3 进程等待的方法
 
-###  wait 函数
+####  wait 函数
 
 **函数声明和头文件**
 
 ```cpp
-#include<sys/types.h>
-#include<sys/wait.h>
+##include<sys/types.h>
+##include<sys/wait.h>
 pid_t wait(int* status);
 ```
 
@@ -294,11 +294,11 @@ pid_t wait(int* status);
 下面用 fork 创建一个子进程，然后让子进程工作一段时间，在这段时间中，使用 wait 函数让父进程等待子进程结束。子进程结束以后父进程读取子进程的信息，然后打印子进程的 status 参数。
 
 ```cpp
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+##include <stdio.h>
+##include <stdlib.h>
+##include <unistd.h>
+##include <sys/types.h>
+##include <sys/wait.h>
 int main()
 {
     pid_t id = fork();
@@ -339,13 +339,13 @@ while :; do ps axj | head -1 && ps axj | grep proc | grep -v grep;echo "########
 
 从监控结果可以看到，子进程结束以后被父进程回收，不会变成僵尸进程。
 
-###  waitpid 函数
+####  waitpid 函数
 
 **函数声明和头文件**
 
 ```cpp
-#include<sys/types.h>
-#include<sys/wait.h>
+##include<sys/types.h>
+##include<sys/wait.h>
 pid_t waitpid(pid_t pid, int* status, int options);
 ```
 
@@ -371,7 +371,7 @@ pid_t waitpid(pid_t pid, int* status, int options);
 
 - 等待指定 PID 进程或任意进程。
 
-###  wait 和 waitpid 的区别
+####  wait 和 waitpid 的区别
 
 **效果不同**:
 
@@ -391,7 +391,7 @@ waitpid 有 wait 没有的三个特性：
 >
 > 通过 status 参数，父进程可以知道子进程的状态。
 
-###  阻塞等待和非阻塞等待
+####  阻塞等待和非阻塞等待
 
 **阻塞等待**
 
@@ -405,7 +405,7 @@ waitpid 有 wait 没有的三个特性：
 
 一般进程阻塞，伴随着被切换的操作，也就是如果进程不运行了，OS 将它的 PCB 放到排队队列中，在用户层面看来，就好像卡住了一样。将 PCB 放到运行队列中，就是进程运行起来了。
 
-###  阻塞调用和非阻塞调用
+####  阻塞调用和非阻塞调用
 
 调用的主体是父进程，被调用的是 wait 和 waitpid 函数。
 
@@ -414,9 +414,9 @@ waitpid 有 wait 没有的三个特性：
 
 示例
 
-#  4. 进程程序替换
+##  4. 进程程序替换
 
-## 4.1 替换原理
+### 4.1 替换原理
 
 fork 之后，父子进程各自执行父进程代码的一部分，这一部分对于用户而言是重复的，而创建子进程的初衷就是让它去干父进程之外的事情（这一点在接触『进程』后已经提到过不止一次）。虽然可以通过写时拷贝让父子进程拥有属于它们各自的数据，但是代码依然是共享的，也就是说，它们虽然数据不同，但是执行的任务还是一样的。
 
@@ -436,14 +436,14 @@ fork 之后，父子进程各自执行父进程代码的一部分，这一部分
 
 - 不会。因为每个进程都有自己的环境变量。环境变量以进程为单位，子进程继承父进程的环境变量。关于环境变量，可以参看这篇文章：[环境变量的来源、原理与应用](https://www.polarxiong.com/archives/%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E7%9A%84%E6%9D%A5%E6%BA%90-%E5%8E%9F%E7%90%86%E4%B8%8E%E5%BA%94%E7%94%A8.html)。
 
-##  4.2 exec 函数族
+###  4.2 exec 函数族
 
 exec 函数族提供了一个在进程中启动另一个程序执行的方法。它可以根据指定的文件名或目录名找到可执行文件，并用它来取代原调用进程的数据段、代码段和堆栈段，在执行完之后，原调用进程的内容除了进程号外，其他全部被新的进程替换了。
 
 **头文件**
 
 ```cpp
-#include <unistd.h>
+##include <unistd.h>
 ```
 
 **函数原型**
@@ -472,9 +472,9 @@ int execvp(const char * file,char * const argv[]);
 
 - 一 1 表明调用 exec 失败，无返回表明调用成功。即 exec 函数有返回值则表明调用程序失败。
 
-##  4.3 exec 函数用例
+###  4.3 exec 函数用例
 
-###  execl
+####  execl
 
 ```cpp
 int execl(const char * path,const char * arg,…);
@@ -491,8 +491,8 @@ execl 中的 l，可以看作 list 的缩写。
 - 第二个参数实际上也是有顺序的：第一个参数是程序名，中间的是选项，以字符串形式传入，最后以 NULL 结尾。也就是在命令行是怎么写的，这里就怎么传，下面的示例也是一样的。
 
 ```cpp
-#include <unistd.h>
-#include <stdio.h>
+##include <unistd.h>
+##include <stdio.h>
 int main()
 {
     printf("exec 函数之前、n");
@@ -516,7 +516,7 @@ int main()
 
 - 为了不影响父进程，保证父进程工作的付利息。父进程的主要任务是读取数据、解析数据、指派进程执行代码等工作，如果替换父进程，那么就没有进程可以管理数据了。
 
-###  execv
+####  execv
 
 ```cpp
 int execv(const char * path,char * const argv[]);
@@ -529,11 +529,11 @@ execv 中的 v，可以认为是 vector，和第二个参数 argv 对应，表�
 下面把参数放到数组中，然后将数组作为参数传入 execv：
 
 ```cpp
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#define NUM 16
+##include <unistd.h>
+##include <stdio.h>
+##include <stdlib.h>
+##include <sys/types.h>
+##define NUM 16
 int main()
 {
 	pid_t id = fork();
@@ -562,7 +562,7 @@ int main()
 
 <img src="进程控制.IMG/MD202210160957820.png" alt="image-20221014103514819" style="zoom:40%;" />
 
-###  execlp
+####  execlp
 
 ```cpp
 int execlp(const char * file,const char * arg,…);
@@ -582,10 +582,10 @@ execlp 中的 p 和环境变量 PATH 对应。
 也就是说，execlp 可以直接调用环境变量中的程序，而不用传入路径。
 
 ```cpp
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
+##include <unistd.h>
+##include <stdio.h>
+##include <stdlib.h>
+##include <sys/types.h>
 int main()
 {
 	pid_t id = fork();
@@ -614,7 +614,7 @@ int main()
 >
 > int main(int argc, char* argv[], char* envp[])
 
-###  execle
+####  execle
 
 ```cpp
 int execle(const char * path,const char * arg,char * const envp[]);
@@ -630,9 +630,9 @@ execle 中的 e 和 environment variables（环境变量）对应，所以不带
 
 ```cpp
 //mycmd
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+##include <stdio.h>
+##include <string.h>
+##include <stdlib.h>
 int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 {
 	if(argc != 2)
@@ -658,11 +658,11 @@ int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 
 ```cpp
 //proc2.c
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#define NUM 16
+##include <unistd.h>
+##include <stdio.h>
+##include <stdlib.h>
+##include <sys/types.h>
+##define NUM 16
 //绝对路径或相对路径都可以
 const char* myfile = "mycmd";
 
@@ -704,11 +704,11 @@ int main()
 在 proc2.c 的 main 函数中定义一个指针数组作为要传入的环境变量：
 
 ```cpp
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#define NUM 16
+##include <unistd.h>
+##include <stdio.h>
+##include <stdlib.h>
+##include <sys/types.h>
+##define NUM 16
 
 const char* myfile = "mycmd";
 int main()
@@ -742,9 +742,9 @@ int main()
 在 mycmd.c 中，增加查看环境变量的打印语句：
 
 ```cpp
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+##include <stdio.h>
+##include <string.h>
+##include <stdlib.h>
 int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 {
 	if(argc != 2)
@@ -775,7 +775,7 @@ int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 
 结果表明，proc2 的环境变量传给了 mycmd。
 
-####  补充
+#####  补充
 
 这就是环境变量具有全局属性，可以被子进程继承的原因。实际上，在子进程内部调用 execle 函数时，传入 main 函数接收的环境变量 env 就可以让子进程继承父进程的环境变量。
 
@@ -791,7 +791,7 @@ int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 
 这就是 main 函数接收的系统环境变量 PATH。
 
-###  execve
+####  execve
 
 ```cpp
 int execve(const char * path,char * const argv[],char * const envp[]);
@@ -799,7 +799,7 @@ int execve(const char * path,char * const argv[],char * const envp[]);
 
 这是一个系统调用，是 OS 提供的接口。实际上 exec 函数族都是用它封装的函数。原因是封装不同功能的函数以满足上层不同的需要。
 
-###  小结
+####  小结
 
 **命名**
 
@@ -819,11 +819,11 @@ int execve(const char * path,char * const argv[],char * const envp[]);
 
 <img src="进程控制.IMG/MD202210160957827.png" alt="image-20221016094523442" style="zoom:40%;" />
 
-# 5. 自制简易 shell
+## 5. 自制简易 shell
 
 通过了解进程程序替换的原理后，介绍 shell 的运行原理。
 
-##  5.1 shell 运行原理
+###  5.1 shell 运行原理
 
 通过子进程执行命令，父进程完成等待子进程、解析命令等管理操作即可完成命令行解释器（shell）的工作。
 
@@ -831,7 +831,7 @@ int execve(const char * path,char * const argv[],char * const envp[]);
 
 <img src="进程控制.IMG/MD202210160957828.png" alt="image-20221016095719900" style="zoom:40%;" />
 
-##  5.2 模拟实现
+###  5.2 模拟实现
 
 0. 首先要明确，shell 一定是一个常驻内存的进程（不主动退出），也就是死循环。
 
@@ -845,7 +845,7 @@ int execve(const char * path,char * const argv[],char * const envp[]);
 
 > 既然是常驻内存的进程，那么下面的操作都是在死循环内进行的。如果想退出这个自制 shell，可以按 ctrl+c；如果是死循环（打印），连续按几次就可以停下了。
 
-###  打印提示信息
+####  打印提示信息
 
 每次输入命令之前，都有这样的提示信息（具体视连接工具和平台而异）：<img src="进程控制.IMG/MD202210160957829.png" alt="image-20221014140842559" style="zoom:40%;" />
 
@@ -872,15 +872,15 @@ while(1)
 
   还增加需要下面的部件，否则这只是一个死循环打印。
 
-###  获取键入的信息
+####  获取键入的信息
 
 **自己写一个缓冲区**
 
 用一个全局的数组储存命令行参数。因为我们输入命令行参数的形式是一个字符串，就像这样：`"ls -a -l"`，所以这个字符数组存储的是字符串。为了等下方便完整且刚好地截取输入的字符串，在初始化这个数组的时候就将所有元素置为`\0`。
 
 ```cpp
-#include <string.h>//注意 memset 的头文件
-#define NUM 1024    //定义缓冲区的长度
+##include <string.h>//注意 memset 的头文件
+##define NUM 1024    //定义缓冲区的长度
 
 char cmd_line[NUM];  //定义缓冲区字符数组
 
@@ -923,13 +923,13 @@ cmd_line[strlen(cmd_line) - 1] = '\0';//除去、n
 
 现在有模有样的，就差解析命令和程序替换（就是让子进程调用命令的程序）了。
 
-###  解析命令
+####  解析命令
 
 还记得上面的 exec 函数族吗？给它们传入的命令参数是一个数组，这个数组的元素是命令或选项，就像这样："ls"，"-a"，"-l"。但是我们知道，输入的命令行参数是一个字符串，为了使用这个接口，我们需要将这个字符串拆分成若干个命令和选项的小字符串，并且把它们存到一个数组里面，最后传入这个数组到 exec 函数（至于选哪个，等下再说）中。
 
 ```cpp
-#define SIZE 32
-#define SEP " "     //定义" "为拆散字符串的分隔符
+##define SIZE 32
+##define SEP " "     //定义" "为拆散字符串的分隔符
 char cmd_line[NUM];  //定义缓冲区字符数组，保存输入的命令行字符串
 char *g_argv[SIZE];  //保存拆散后的命令行字符串
 
@@ -963,7 +963,7 @@ for(int i = 0; g_argv[i]; i++)
 
 删掉它，继续。解析命令行参数的操作完成了，下面就是创建子进程和用子进程调用指定程序了。
 
-###  创建子进程
+####  创建子进程
 
 用 fork 创建子进程已经轻车熟路：
 
@@ -981,7 +981,7 @@ else//父进程
 }
 ```
 
-###  替换子进程（子进程）
+####  替换子进程（子进程）
 
 这部分的操作的主体是子进程。
 
@@ -1000,7 +1000,7 @@ if(id == 0)//子进程
 }
 ```
 
-###  等待子进程退出（父进程）
+####  等待子进程退出（父进程）
 
 这部分的操作的主体是父进程。
 
@@ -1022,22 +1022,22 @@ else//父进程
 }
 ```
 
-##  5.3 测试及补充
+###  5.3 测试及补充
 
 **测试**
 
 编译运行以下代码：
 
 ```cpp
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <string.h>//注意 memset 的头文件
-#define NUM 1024    //定义缓冲区的长度
-#define SIZE 32
-#define SEP " "     //定义" "为拆散字符串的分隔符
+##include <unistd.h>
+##include <stdio.h>
+##include <stdlib.h>
+##include <sys/types.h>
+##include <sys/wait.h>
+##include <string.h>//注意 memset 的头文件
+##define NUM 1024    //定义缓冲区的长度
+##define SIZE 32
+##define SEP " "     //定义" "为拆散字符串的分隔符
 char cmd_line[NUM];  //定义缓冲区字符数组，保存输入的命令行字符串
 char *g_argv[SIZE];  //保存拆散后的命令行字符串
 
@@ -1153,7 +1153,7 @@ come on，有内味了。
 
 > 有一个细节，我的代码中没有过滤 fork 失败的判断分支，因为篇幅有限且一般情况下不会失败。
 
-##  5.4 小结
+###  5.4 小结
 
 运用所学的知识，通过解决各种问题，能更深层次地理解我们平常使用的指令，又理解了一点点“一切皆文件”的 Linux 了。感觉黑乎乎的 shell 也不再那么神秘，只要抽丝剥茧，高楼大厦也是砂砾筑之。
 

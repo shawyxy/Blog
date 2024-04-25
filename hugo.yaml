@@ -7,14 +7,21 @@ module:
   - path: github.com/imfing/hextra
 
 markup:
-  # allow raw html
   goldmark:
     renderer:
-      unsafe: true
-
+      unsafe: true  # 允许在Markdown文件中直接使用HTML
+  tableOfContents:
+    startLevel: 2  # 从一级标题开始生成目录
+    endLevel: 6    # 包括到六级标题
+    ordered: false # 目录使用无序列表
+    parser:
+      attribute: true
+      autoHeadingID: true
   # enable hextra syntax highlight
   highlight:
     noClasses: false
+    lineNos: true
+    style: github
 
 menu:
   main:

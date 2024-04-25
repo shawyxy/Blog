@@ -3,7 +3,7 @@ title: 库的操作
 weight: 3
 open: true
 ---
-# 创建数据库
+## 创建数据库
 
 SQL:
 
@@ -26,9 +26,9 @@ Query OK, 1 row affected (0.00 sec)
 
 创建数据库后，可以用`USE <database_name>`来打开数据库（实际上是进入这个数据库所在的目录）。
 
-# 字符集和校验规则
+## 字符集和校验规则
 
-## 概念
+### 概念
 
 在 MySQL 中，字符集和校验规则决定了 MySQL 如何**存储和比较字符串**。简单地说：
 
@@ -44,7 +44,7 @@ Query OK, 1 row affected (0.00 sec)
 >
 > 不同的语言可能有不同的字母表和排序规则，所以你需要选择合适的字典来查阅或者编写文字。
 
-## 分类
+### 分类
 
 字符集可以分为单字节字符集和多字节字符集，例如 ASCII、Latin1、GB18030、UTF8 等。**每种字符集都有一个或多个校验规则**，例如 utf8_general_ci、utf8mb4_0900_ai_ci 等。校验规则的命名通常遵循以下约定：
 
@@ -90,7 +90,7 @@ MySQL 没有默认的校验规则是因为不同的字符集和场景可能需�
 
 <img src="库的操作.IMG/image-20231021204442691.png" alt="image-20231021204442691" style="zoom:40%;" />
 
-## 例子
+### 例子
 
 > 有字符集（编码格式）我可以理解，毕竟不同语言需要不同的格式，这样才不会显示乱码。但是校验规则存在的意义在哪里呢？
 
@@ -101,24 +101,24 @@ MySQL 没有默认的校验规则是因为不同的字符集和场景可能需�
 下面以 utf8_general_ci 校验规则来创建一个`person_test1`数据库，并创建一个`person1`表：
 
 ```mysql
-# 创建数据库
+## 创建数据库
 mysql> create database person_test1 collate=utf8_general_ci;
 Query OK, 1 row affected (0.00 sec)
-# 进入数据库
+## 进入数据库
 mysql> use person_test1;
 Database changed
-# 创建表
+## 创建表
 mysql> create table person1(
     -> name varchar(20)
     -> );
 Query OK, 0 rows affected (0.02 sec)
-# 插入两行数据
+## 插入两行数据
 mysql> insert into person1 values ('AAAAA');
 Query OK, 1 row affected (0.01 sec)
 
 mysql> insert into person1 values ('aaaaa');
 Query OK, 1 row affected (0.00 sec)
-# 输出表中的内容
+## 输出表中的内容
 mysql> select * from person1;
 +-------+
 | name  |
@@ -212,7 +212,7 @@ mysql> select * from person1 where name='aaaaa';
 
 由此可见，utf8_bin 不是大小写敏感的，因为它按照二进制比较。
 
-# 查看数据库
+## 查看数据库
 
 使用：
 
@@ -238,7 +238,7 @@ show databases;
 8 rows in set (0.00 sec)
 ```
 
-# 显示创建语句
+## 显示创建语句
 
 ```mysql
 show create database <database_name>;
@@ -269,7 +269,7 @@ system clear # 清屏
 system ls -l
 ```
 
-# 修改数据库
+## 修改数据库
 
 SQL：
 
@@ -283,7 +283,7 @@ ALTER DATABASE db_name [[DEFAULT] CHARSET=character_name] [[DEFAULT] COLLATE=col
 
 <img src="库的操作.IMG/image-20231021231421456.png" alt="image-20231021231421456" style="zoom:40%;" />
 
-# 删除数据库
+## 删除数据库
 
 SQL：
 
@@ -337,9 +337,9 @@ mysql> show databases;
 
 当删除这个数据库后，这个路径下的同名目录也会被删除，即使里面有表。
 
-# 备份和恢复
+## 备份和恢复
 
-## 备份
+### 备份
 
 命令行：
 
@@ -393,7 +393,7 @@ Query OK, 1 row affected (0.00 sec)
 这个文件保存了对数据库和表的所有 SQL 操作以及数据本身，并且是做了优化的：
 <img src="库的操作.IMG/image-20231022000808169.png" alt="image-20231022000808169" style="zoom:40%;" />
 
-## 恢复
+### 恢复
 
 SQL：
 ```bash

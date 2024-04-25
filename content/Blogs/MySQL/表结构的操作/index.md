@@ -12,7 +12,7 @@ open: true
 
 本文介绍对表结构的操作，在学习 MySQL 的数据类型、表的约束以后，再学习表内容的增删查改。
 
-# 创建表
+## 创建表
 
 SQL：
 ```mysql
@@ -32,7 +32,7 @@ CREATE TABLE [IF NOT EXISTS] table_name(
 - ENGINE 用于指定表所采用的存储引擎。
 - COMMENT 用于对指定列添加注释信息。
 
-## 例子
+### 例子
 
 不同的存储引擎，创建表时底层的文件类型和数量有所不同。
 
@@ -80,7 +80,7 @@ mysql> create table table_test2(
   - .frm：表结构文件。作用同上。
   - .ibd：表空间文件（InnoDB Data）。保存了表的数据和索引信息，使用聚集索引结构组织，把主键和数据紧密绑定在一起。
 
-# 查看表结构
+## 查看表结构
 
 SQL：
 
@@ -112,7 +112,7 @@ show create database <数据库名> \G
 
 <img src="表结构的操作.IMG/image-20231022191947763.png" alt="image-20231022191947763" style="zoom:40%;" />
 
-# 修改表
+## 修改表
 
 SQL：
 
@@ -128,7 +128,7 @@ ALTER TABLE table_name RENAME [TO] 新表名；
 ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 ```
 
-## 新增列属性
+### 新增列属性
 
 为刚才创建的`table_test1`表中增加`name`和`adress`列属性：
 <img src="表结构的操作.IMG/image-20231022193155544.png" alt="image-20231022193155544" style="zoom:40%;" />
@@ -139,7 +139,7 @@ ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 
 <img src="表结构的操作.IMG/image-20231022193705174.png" alt="image-20231022193705174" style="zoom:40%;" />
 
-## 修改列属性
+### 修改列属性
 
 修改列属性，会将这一列的所有数据的属性都修改。
 
@@ -149,7 +149,7 @@ ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 
 值得注意的是， MySQL 在修改时，会把原来的列定义**替换**为新的列定义，而不是在原有的基础上修改。所以如果想保留原来的 comment 字段，需要再修改时显式定义。
 
-## 修改列名
+### 修改列名
 
 将上表的`adress`改为`home`：
 
@@ -157,13 +157,13 @@ ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 
 由于 MySQL 在修改列属性是是替换而不是直接修改，所以在修改列名时要指定列属性。
 
-## 修改表名
+### 修改表名
 
 将`table_test1`表改为`test_table1`：
 
 <img src="表结构的操作.IMG/image-20231022195008486.png" alt="image-20231022195008486" style="zoom:40%;" />
 
-## 删除列
+### 删除列
 
 将`test_table1`表中的`name`列删除：
 
@@ -171,7 +171,7 @@ ALTER TABLE table_name CHANGE 列名 新列名 新列属性；
 
 删除这一列后，一整列的数据都没有了。除了备份外，MySQL 会记忆之前的所有插入的 SQL，其中包含了数据本身。
 
-# 删除表
+## 删除表
 
 SQL：
 

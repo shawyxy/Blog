@@ -1,15 +1,15 @@
 ---
 title: MySQL
 type: folder
-# cascade:
-#   _build:
-#     render: false
-#     list: false
+## cascade:
+##   _build:
+##     render: false
+##     list: false
 open: true
 toc: false
 ---
 
-## Documentation
+### Documentation
 
 {{< cards >}}
   {{< card link="/blogs/mysql/数据库基础一/" title="数据库基础（一）" icon="book-open" >}}

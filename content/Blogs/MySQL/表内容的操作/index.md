@@ -12,15 +12,15 @@ open: true
 
 前者已经在介绍了 [表结构的操作](https://blog.csdn.net/m0_63312733/article/details/133977132?spm=1001.2014.3001.5502)。
 
-# 表的 CRUD
+## 表的 CRUD
 
 CRUD 即：Create（新增），Retrieve（查找），Update（修改），Delete（删除）。
 
 SQL 标准规定大写单词表示关键字，在使用时为了方便和可读性，可以小写，因为 MySQL 会自动优化合并。
 
-# Create（增加）
+## Create（增加）
 
-## 插入记录
+### 插入记录
 
 ```mysql
 INSERT [INTO] table_name [(column1 [, column2] ...)] VALUES (value_list1) [, (value_list2)] ...;
@@ -59,7 +59,7 @@ mysql> create table students(
 
 <img src="表内容的操作.IMG/image-20231030143253181.png" alt="image-20231030143253181" style="zoom:40%;" />
 
-## 插入冲突则更新记录
+### 插入冲突则更新记录
 
 ```mysql
 INSERT INTO table_name (column1, column2,..) VALUES (value1, value2,..) ON DUPLICATE KEY UPDATE column1=value1, column2=value2,..;
@@ -77,7 +77,7 @@ INSERT INTO table_name (column1, column2,..) VALUES (value1, value2,..) ON DUPLI
 
 它们的不同之处在于 MySQL 打印的日志信息，前者是`2 rows affected`，表示这条已存在的记录中数据有冲突（先删除后插入）；后者是`1 rows affected`，表示没有数据冲突（直接插入）。如果是`0 rows affected`，则说明插入的和原来的记录相同。
 
-## 替换记录
+### 替换记录
 
 替换记录的语法和插入类似，只需要将 INSERT 换成 REPLACE。
 
@@ -90,9 +90,9 @@ INSERT INTO table_name (column1, column2,..) VALUES (value1, value2,..) ON DUPLI
 如果不存在这条记录，相当于直接插入：
 <img src="表内容的操作.IMG/image-20231030150147812.png" alt="image-20231030150147812" style="zoom:40%;" />
 
-# Retrieve（查找）
+## Retrieve（查找）
 
-## 查找记录
+### 查找记录
 
 ```mysql
 SELECT [DISTINCT] {* | {column1 [, column2] ...}} FROM table_name [WHERE ...] [ORDER BY ...] [LIMIT ...];
@@ -140,7 +140,7 @@ mysql> insert into en_exam
 
 关于更多类似的做法，将会在下面介绍。
 
-## 指定表达式的别名
+### 指定表达式的别名
 
 ```mysql
 SELECT column [AS] alias_name [...] FROM table_name;
@@ -150,19 +150,19 @@ SELECT column [AS] alias_name [...] FROM table_name;
 
 <img src="表内容的操作.IMG/image-20231030153920065.png" alt="image-20231030153920065" style="zoom:40%;" />
 
-## 为结果去重
+### 为结果去重
 
 在 select 关键字后加上 DISTINCT 关键字以对表指定的列值去重：
 
 <img src="表内容的操作.IMG/image-20231031150016331.png" alt="image-20231031150016331" style="zoom:40%;" />
 
-## WHERE 子句
+### WHERE 子句
 
 WHERE 子句用于从表中选择满足指定条件的数据。用户可以使用不同的比较运算符、逻辑运算符、通配符等来构造过滤表达式。WHERE 子句可以用在 SELECT、UPDATE、DELETE 等语句中。
 
 那么，SELECT 等语句在查询表时，是根据 WHERE 子句筛选结果的，也就是说 WHERE 子句的执行在 SELECT 等语句之前。
 
-### 运算符
+#### 运算符
 
 比较运算符：
 
@@ -188,7 +188,7 @@ WHERE 子句用于从表中选择满足指定条件的数据。用户可以使�
 
 其中和编程语言的习惯不同的主要是“等于”（=，<=>）和“不等于”（<>），需要注意区分。
 
-### 条件查询
+#### 条件查询
 
 在 en_exam 表中，做一下条件查询：
 <img src="表内容的操作.IMG/image-20231031155349033.png" alt="image-20231031155349033" style="zoom:40%;" />
@@ -203,7 +203,7 @@ WHERE 子句中的条件并没有标准来规范格式，所以不需要添加�
 
 <img src="表内容的操作.IMG/image-20231031160414195.png" alt="image-20231031160414195" style="zoom:40%;" />
 
-### 区间查询
+#### 区间查询
 
 查询口语成绩在 5~8 分之间的人的姓名：
 
@@ -240,7 +240,7 @@ WHERE 子句中的条件并没有标准来规范格式，所以不需要添加�
 
 <img src="表内容的操作.IMG/image-20231031163307803.png" alt="image-20231031163307803" style="zoom:40%;" />
 
-### 模糊查询
+#### 模糊查询
 
 插入了两条记录：
 
@@ -258,7 +258,7 @@ mysql> insert into en_exam values (8, '孙大勇', 5, 7, 8, 1), (9, '森破', 6,
 
 <img src="表内容的操作.IMG/image-20231120142112678.png" alt="image-20231120142112678" style="zoom:40%;" />
 
-### 空值查询
+#### 空值查询
 
 现在表的内容：
 
@@ -278,7 +278,7 @@ mysql> insert into en_exam values (8, '孙大勇', 5, 7, 8, 1), (9, '森破', 6,
 
 <img src="表内容的操作.IMG/image-20231115132319120.png" alt="image-20231115132319120" style="zoom:40%;" />
 
-## 对结果排序
+### 对结果排序
 
 ```mysql
 SELECT ... FROM table_name [WHERE ...] ORDER BY column [ASC | DESC] [, ...];
@@ -314,7 +314,7 @@ order by 子句的执行在 select 语句之后，所以在 order by 子句中�
 
 <img src="表内容的操作.IMG/image-20231120142447279.png" alt="image-20231120142447279" style="zoom:40%;" />
 
-## 筛选分页结果
+### 筛选分页结果
 
 从第 0 条记录开始，向后筛选出 n 条记录：
 
@@ -347,7 +347,7 @@ SELECT ... FROM table_name [WHERE ...] [ORDER BY ...] LIMIT n OFFSET s;
 
 这些查询记录的子句，每一步都相当于从原表中摘出来的一张新的子表，后执行的语句都是在这张子表的基础上进行的。
 
-# Update（修改）
+## Update（修改）
 
 ```mysql
 UPDATE table_name SET column1=expr1 [, column2=expr2] ... [WHERE ...] [ORDER BY ...] [LIMIT ...];
@@ -369,9 +369,9 @@ UPDATE table_name SET column1=expr1 [, column2=expr2] ... [WHERE ...] [ORDER BY 
 
 不论是多复杂的查询，总是要先得到查询后的这张子表，在子表中修改属性的值。另外注意 MySQL 不支持诸如+=这样的运算符。前 3 名+3 分后仍然是前三，但是如果是倒数 3 名+3 分后，可能就不是了。
 
-# Delete（删除）
+## Delete（删除）
 
-## DELETE
+### DELETE
 
 ```mysql
 DELETE FROM table_name [WHERE ...] [ORDER BY ...] [LIMIT ...];
@@ -392,7 +392,7 @@ DELETE FROM table_name [WHERE ...] [ORDER BY ...] [LIMIT ...];
 
 删除后这张表中就没有记录了，再向它插入几条不指定 id 的记录，可见自增变量即使在删除表以后仍然是删除前的最大值。
 
-## TRUNCATE
+### TRUNCATE
 
 删除表中所有数据。
 
@@ -421,7 +421,7 @@ truncate 子句的作用类似于没有 where 条件的 delete 语句，或者�
 
 截断表后再插入记录，从 1 开始自增。
 
-## 记录去重
+### 记录去重
 
 只保留重复记录中的一份，通常的做法是使用一个临时表。这种方法可以通过创建一个和原表结构相同的临时表，然后将原表中不重复的数据插入到临时表中，再删除原表并将临时表重命名为原表的名字。
 
@@ -445,7 +445,7 @@ truncate 子句的作用类似于没有 where 条件的 delete 语句，或者�
 
 <img src="表内容的操作.IMG/image-20231120153004759.png" alt="image-20231120153004759" style="zoom:40%;" />
 
-# 聚合函数
+## 聚合函数
 
 聚合函数是一类用于对一组值进行计算并返回单个值的函数。MySQL 提供了多种聚合函数，可以用来计算平均值，总和，计数，最大值，最小值等。聚合函数通常和 GROUP BY 子句一起使用，来对数据进行分组和统计。
 
@@ -493,7 +493,7 @@ truncate 子句的作用类似于没有 where 条件的 delete 语句，或者�
 
 <img src="表内容的操作.IMG/image-20231120221805974.png" alt="image-20231120221805974" style="zoom:40%;" />
 
-# 分组查询
+## 分组查询
 
 分组查询是一种用于对查询结果按照一个或多个字段进行分组的查询方式。分组查询可以配合聚合函数来对每个分组进行统计或计算。
 
@@ -652,7 +652,7 @@ insert into salgrade (grade, losal, hisal) values (5, 3001, 9999);
 
 注意：group by 子句中可以指明按照多个字段进行分组，各个字段之间使用逗号隔开，分组优先级与书写顺序相同。当两条记录的部门号相同时，将会继续按照岗位进行分组。
 
-## HAVING
+### HAVING
 
 HAVING 子句是用来在 SELECT 语句中指定一组行或聚合的过滤条件的。HAVING 子句通常与 GROUP BY 子句一起使用，以根据指定的条件过滤分组。如果省略 GROUP BY 子句，则 HAVING 子句的行为与 WHERE 子句类似。
 

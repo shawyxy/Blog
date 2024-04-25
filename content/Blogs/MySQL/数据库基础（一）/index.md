@@ -4,13 +4,13 @@ weight: 1
 open: true
 ---
 
-# 安装 MySQL
+## 安装 MySQL
 
 这是在 Linux 中安装 MySQL 的教程：[Linux 下 MySQL 安装](https://blog.csdn.net/lirendada/article/details/131513739?ops_request_misc=&request_id=&biz_id=102&utm_term=MySQL%E5%AE%89%E8%A3%85&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-1-131513739.142^v96^pc_search_result_base5&spm=1018.2226.3001.4187)。本系列测试用的 MySQL 版本是 5.7，机器是 centOS7.6。
 
 实际应用中，一般 MySQL 服务都是部署在 Linux 主机上的，如果想在 Windows 系统中安装，可以参考：[Windows 下 MySQL 安装](https://blog.csdn.net/m0_63112274/article/details/130517120?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522169788855716800213052480%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=169788855716800213052480&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-11-130517120-null-null.142^v96^pc_search_result_base5&utm_term=MySQL%E5%AE%89%E8%A3%85&spm=1018.2226.3001.4187)。
 
-# 修改密码
+## 修改密码
 
 MySQL 在安装时会为用户设置一个默认的随机密码，可以通过：
 ```bash
@@ -40,7 +40,7 @@ mysql -uroot -p # 以 root 身份登录
 mysqladmin: unable to change password; error: 'Your password does not satisfy the current policy requirements'
 ```
 
-# 连接和退出数据库服务器
+## 连接和退出数据库服务器
 
 ```bash
 mysql -uroot -p # 以 root 身份登录
@@ -56,7 +56,7 @@ mysql -uroot -p # 以 root 身份登录
 
 在 MySQL 服务器的命令行中键入`quit`/`exit`/`\q`回车以退出。
 
-# 使用 systemctl 管理服务器进程
+## 使用 systemctl 管理服务器进程
 
 systemctl 是一个用于控制和检查 systemd 系统和服务管理器的工具，它负责在 Linux 内核启动后运行和维护用户空间的组件。systemctl 可以用来启动、停止、重启、重载、启用、禁用等各种操作 systemd 的服务单元，也可以用来查看系统的状态、日志、性能等信息。
 
@@ -80,7 +80,7 @@ systemctl restart mysqld
 
 `mysqld`可以是你想要操作的进程名称。
 
-# 配置数据库
+## 配置数据库
 
 MySQL 的配置文件在这个路径：
 
@@ -89,29 +89,29 @@ cat /etc/my.cnf
 ```
 
 ```text
-# For advice on how to change settings please see
-# http://dev.mysql.com/doc/refman/5.7/en/server-configuration-defaults.html
+## For advice on how to change settings please see
+## http://dev.mysql.com/doc/refman/5.7/en/server-configuration-defaults.html
 
 [mysqld]
-#
-# Remove leading # and set to the amount of RAM for the most important data
-# cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
-# innodb_buffer_pool_size = 128M
-#
-# Remove leading # to turn on a very important data integrity option: logging
-# changes to the binary log between backups.
-# log_bin
-#
-# Remove leading # to set options mainly useful for reporting servers.
-# The server defaults are faster for transactions and fast SELECTs.
-# Adjust sizes as needed, experiment to find the optimal values.
-# join_buffer_size = 128M
-# sort_buffer_size = 2M
-# read_rnd_buffer_size = 2M
+##
+## Remove leading # and set to the amount of RAM for the most important data
+## cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.
+## innodb_buffer_pool_size = 128M
+##
+## Remove leading # to turn on a very important data integrity option: logging
+## changes to the binary log between backups.
+## log_bin
+##
+## Remove leading # to set options mainly useful for reporting servers.
+## The server defaults are faster for transactions and fast SELECTs.
+## Adjust sizes as needed, experiment to find the optimal values.
+## join_buffer_size = 128M
+## sort_buffer_size = 2M
+## read_rnd_buffer_size = 2M
 datadir=/var/lib/mysql
 socket=/var/lib/mysql/mysql.sock
 
-# Disabling symbolic-links is recommended to prevent assorted security risks
+## Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
 
 log-error=/var/log/mysqld.log
@@ -142,7 +142,7 @@ default-storage-engine=innodb
 
 在这里简单介绍一下索引：如果说数据库是一本字典，那么索引就是字典的目录。有了目录才能提高查找的效率，但目录本身也是占用数据库的空间的，所以这是空间换时间的做法。
 
-# 从文件角度看待数据库
+## 从文件角度看待数据库
 
 在`/var/lib/mysql`路径下， 存放的是 MySQL 的所有数据库和表文件。例如创建了一个数据库`test_db`：
 
@@ -192,7 +192,7 @@ rm -rf test_db/
 在 MySQL 客户端中查看数据库：
 
 ```mysql
-######## 删除前 ########
+######### 删除前 ########
 mysql> show databases;
 +--------------------+
 | Database           |
@@ -204,7 +204,7 @@ mysql> show databases;
 | test_db            |
 +--------------------+
 5 rows in set (0.00 sec)
-######## 删除后 ########
+######### 删除后 ########
 mysql> show databases;
 +--------------------+
 | Database           |
@@ -230,7 +230,7 @@ MySQL 默认有四个数据库，每个数据库都有其特定的用途：
 3. performance_schema：这个数据库主要用于收集数据库服务器性能参数。它提供了进程等待的详细信息，包括锁、互斥变量、文件信息等，并保存了历史的事件汇总信息，为提供 MySQL 服务器性能做出详细的判断。
 4. sys：这个库所有的数据源来自 performance_schema。它的目标是降低 performance_schema 的复杂度，让 DBA 能更好地阅读这个库里的内容，从而让 DBA 更快地了解 DB 的运行情况。
 
-# 查看连接情况
+## 查看连接情况
 
 show processlist 命令可以显示当前连接到 MySQL 服务器的线程的信息，可以使用这个命令来监控服务器的性能，排查问题，或者终止某些线程。
 

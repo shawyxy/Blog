@@ -4,7 +4,7 @@ weight: 3
 open: true
 ---
 
-## 阅读前导
+### 阅读前导
 
 TCP（Transmission Control Protocol，传输控制协议）提供的是面向连接，可靠的字节流服务。即客户和服务器交换数据前，必须现在双方之间建立一个 TCP 连接，之后才能传输数据。并且提供超时重发，丢弃重复数据，检验数据，流量控制等功能，保证数据能从一端传到另一端。
 
@@ -28,15 +28,15 @@ TCP 套接字编程的基本流程是这样的：
   - 通过连接套接字与服务器进行数据交互（send/recv）
   - 关闭连接套接字（close）
 
-# 服务端
+## 服务端
 
-## 定义
+### 定义
 
 服务端的逻辑将被定义在`TCPServer.cc`中，它包含了头文件`TCPServer.hpp`。
 
 而且服务端使用各种 socket 接口的操作将被封装为一个`TCPServer`类，这个类型的对象就可以被称之为服务端。它将在头文件中被定义，在源文件中被使用。
 
-## 日志
+### 日志
 
 在调试过程中，我们经常使用打印语句打印提示信息，虽然“打印大法”在很多时候很有用，但产品始终是面向用户的，因此提示信息既要使用用户看得懂的话呈现，又要将错误信息保存起来，以供开发者修复。日志信息通常保存在日志文件中，它的文件后缀是`.log`
 
@@ -46,19 +46,19 @@ TCP 套接字编程的基本流程是这样的：
 
 ```cpp
 // Log.hpp
-#pragma once
+##pragma once
 
-#include <iostream>
-#include <cstdarg>
-#include <ctime>
-#include <string>
+##include <iostream>
+##include <cstdarg>
+##include <ctime>
+##include <string>
 
 // 日志级别
-#define DEBUG   0
-#define NORMAL  1
-#define WARNING 2
-#define ERROR   3
-#define FATAL   4
+##define DEBUG   0
+##define NORMAL  1
+##define WARNING 2
+##define ERROR   3
+##define FATAL   4
 
 const char *LevelMap[] = 
 {
@@ -72,9 +72,9 @@ const char *LevelMap[] =
 // 打印版本
 void logMessage(int level, const char *format, ...)
 {
-#ifndef DEBUG_SHOW
+##ifndef DEBUG_SHOW
     if(level== DEBUG) return;
-#endif
+##endif
     // 标准部分
     char stdBuffer[1024];
     time_t timestamp = time(nullptr);
@@ -103,9 +103,9 @@ void logMessage(int level, const char *format, ...)
 
 关于可变参数的说明，可以看这里：[stdarg.h](https://gitee.com/shawyxy/2023-linux/blob/main/UdpSocket/SingleProcess/stdarg.md)
 
-## 框架
+### 框架
 
-### 成员属性
+#### 成员属性
 
 和 UDP 的实现类似，服务器要接收所有可能的 IP 地址发送的数据，因此在大多数情况下不需要限定数据的来源 IP 地址。除此之外，网络中数据的传输本质上是跨网络的进程间通信，通过端口号标定主机中进程的唯一性。
 
@@ -115,16 +115,16 @@ void logMessage(int level, const char *format, ...)
 
 ```cpp
 // TcpServer.hpp 
-#include <iostream>
-#include <string>
-#include <cerrno>
-#include <cstring>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include "Log.hpp"
+##include <iostream>
+##include <string>
+##include <cerrno>
+##include <cstring>
+##include <sys/types.h>
+##include <sys/socket.h>
+##include <netinet/in.h>
+##include <arpa/inet.h>
+##include <unistd.h>
+##include "Log.hpp"
 class TcpServer
 {
 public:
@@ -159,7 +159,7 @@ private:
 - `initServer()`是初始化服务器的逻辑。
 - `start()`是服务器对数据处理的逻辑。
 
-### 服务端框架
+#### 服务端框架
 
 - 控制命令行参数：在运行程序的同时将 IP 和 PORT 作为参数传递给进程，例如`./[name] [PORT]`这就需要提取出命令行参数和`PORT`。除此之外，通常的做法是通过打印一个语句来显示它的使用方法，一般使用一个函数`usage()`封装。
 
@@ -171,8 +171,8 @@ private:
 
 ```cpp
 // TcpServer.cc
-#include "TcpServer.hpp"
-#include <memory>
+##include "TcpServer.hpp"
+##include <memory>
 
 static void usage(std::string name)
 {
@@ -196,9 +196,9 @@ int main(int argc, char* argv[])
 
 后续代码中重复的头文件将会被省略，只显示新增的头文件。
 
-## 初始化服务器
+### 初始化服务器
 
-### 创建套接字
+#### 创建套接字
 
 当服务器对象被创建出来，就要立马初始化它，初始化的第一件事就是创建套接字，这个操作相当于构建了网络通信信道的一端。`socket()`函数用于创建套接字。
 
@@ -265,7 +265,7 @@ public:
 
 这一步和实现 UDP socket 编程的唯一区别就是使用`socket()`函数的第二个参数不同。
 
-### 绑定
+#### 绑定
 
 上面只完成了初始化服务器的第一步，下一步要将用户在命令行传入的 PORT 在内核中与当前进程强关联起来，也就是绑定（bind）。即通过绑定，在后续的执行逻辑中这个端口号就对只对应着被绑定的服务器进程，因为端口号标定着主机中进程的唯一性，服务器运行起来本身就是一个进程。
 
@@ -274,9 +274,9 @@ public:
 `bind()`函数用于将套接字与指定的 IP 地址和端口号绑定。通常在 TCP 协议或 UDP 协议的服务端设置。
 
 ```c
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+##include <sys/socket.h>
+##include <netinet/in.h>
+##include <arpa/inet.h>
 int bind(int sockfd, const struct sockaddr *addr,
                 socklen_t addrlen);
 ```
@@ -360,7 +360,7 @@ bool initServer()
 
 UDP 服务器的实现就到此为止了，所以 UDP 通信的效率很高，但通过实现它的步骤可以知道，这是要付出代价的。
 
-### 开启监听
+#### 开启监听
 
 TCP 服务器是面向连接的，客户端在向服务器发送数据之前，首先要建立连接才能进行通信。但是建立连接的前提是服务端能及时对客户端发送的连接请求产生回应，因此在建立连接之前，需要让服务端不断接收客户端发送的连接请求。
 
@@ -369,8 +369,8 @@ TCP 服务器是面向连接的，客户端在向服务器发送数据之前，�
 `listen()` 函数用于将套接字标记为被动套接字，即用于使用 `accept()` 接受传入的连接请求的套接字。
 
 ```c
-#include <sys/types.h>
-#include <sys/socket.h>
+##include <sys/types.h>
+##include <sys/socket.h>
 
 int listen(int sockfd, int backlog);
 ```
@@ -420,9 +420,9 @@ public:
 
 可以验证，打开的文件描述符是 3 号，说明 0、1 和 2 号文件描述符都是默认被打开的状态。
 
-## 运行服务器
+### 运行服务器
 
-### netstat 工具
+#### netstat 工具
 
 端口号只能被一个进程使用，如果再用`8080`（随便设置的）端口号初始化服务器，那么会绑定失败，因为这个端口号已经被其他进程占用了。
 
@@ -471,15 +471,15 @@ int main()
 
 <img src="网络编程：TCP socket.IMG/image-20230507232320538.png" alt="image-20230507232320538" style="zoom:40%;" />
 
-### 获取连接和通信准备
+#### 获取连接和通信准备
 
 和 UDP 服务器不一样，TCP 服务器的实现要手动连接。
 
 `accept()` 函数用于基于连接的套接字类型（`SOCK_STREAM`，`SOCK_SEQPACKET`）。它从监听套接字 `sockfd` 的挂起连接队列中提取第一个连接请求，创建一个新的已连接套接字，并返回指向该套接字的新文件描述符。新创建的套接字不处于监听状态。原始套接字 `sockfd` 不受此调用影响。参数 `sockfd` 是一个已使用 `socket(2)` 创建、使用 `bind(2)` 绑定到本地地址且正在监听的套接字。
 
 ```cpp
-#include <sys/types.h>
-#include <sys/socket.h>
+##include <sys/types.h>
+##include <sys/socket.h>
 
 int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
 ```
@@ -560,18 +560,18 @@ private:
 - `service()`函数是通信的具体逻辑，由于通信的逻辑不应该和服务器本身封装在一起，因此简单地将通信逻辑定义在服务器的头文件中（实际上如果通信逻辑比较复杂，可以另外用文件封装）。
 - 在函数执行的最后要关闭文件描述符。
 
-### 通信逻辑
+#### 通信逻辑
 
 通信相关的逻辑应该独立于服务器之外，因此在类外部实现通信逻辑。它将会根据需要有多个版本，在此实现一个简单的单进程版本通信逻辑，这样以后要修改具体的通信方式只要修改这个函数即可，不需要修改服务器的逻辑。
 
 根据不同的需要，本文将会从单进程改进到多线程，进而接入线程池。
 
-## 单进程服务端函数（version1）
+### 单进程服务端函数（version1）
 
 用 write() 向套接字写入数据，用 read() 从套接字中读取数据。
 
 ```c
-#include <unistd.h>
+##include <unistd.h>
 
 ssize_t read(int fd, void *buf, size_t count);
 ssize_t write(int fd, const void *buf, size_t count);
@@ -582,7 +582,7 @@ ssize_t write(int fd, const void *buf, size_t count);
 目前的服务端函数的任务是实现一个回声服务器（echo），即将客户端发送的数据打印出来，然后原封不动地回发数据。下面是服务端使用`read()`函数和`write()`函数读取数据和差错处理的逻辑：
 
 ```cpp
-#define NUM 1024
+##define NUM 1024
 static void service(int service_sockfd, std::string client_ip, uint16_t client_port)
 {
     char buffer[NUM]; // 以字符串作为缓冲区
@@ -632,7 +632,7 @@ TCP 提供全双工服务，这意味着可以在同一时间内在两个实体�
 
 在 UNIX 和类 UNIX 系统中，套接字被视为一种特殊类型的文件。这就是可以使用像 read() 和 write() 这样的文件 I/O 函数来读写套接字的原因。但是，套接字不是普通文件，它们不能存储在磁盘上，也不能通过文件系统进行访问。它们是一种用于在网络上进行通信的特殊类型的文件。
 
-### telent 工具
+#### telent 工具
 
 虽然现在还未实现客户端的逻辑，但是可以使用 telent 工具充当客户端的角色进行测试。
 
@@ -651,7 +651,7 @@ Linux 中的 telnet 是一种远程登录的协议，它可以让用户通过网
 
 当不需要远程登录时，首先键入转义字符`Ctrl - ]`，然后输入 exit 或 logout 命令退出 telnet 会话。
 
-### 测试
+#### 测试
 
 <img src="网络编程：TCP socket.IMG/telnet1.gif" alt="telnet1" style="zoom:40%;" />
 
@@ -668,9 +668,9 @@ Linux 中的 telnet 是一种远程登录的协议，它可以让用户通过网
 
 原因是这个服务端中的`start()`处理数据的函数中的逻辑是在`while(1)`死循环中进行的，而且是单进程执行这个操作。如果某次死循环中的任务没有执行完毕，那么整个服务端进程将会陷入死循环中，一直等待任务被执行完。这个单进程服务端一次只能处理一个客户端的任务，处理完了才能处理下一个。虽然单进程版本没什么用，但是它作为学习还是很有价值的，是一切改进的基础。
 
-## 多进程服务端（version2）
+### 多进程服务端（version2）
 
-### 创建子进程
+#### 创建子进程
 
 在学习完进程相关知识后，我们知道子进程创建后会继承父进程的文件描述符表。因此子进程能够直接使用父进程曾经打开的文件描述符。
 
@@ -683,7 +683,7 @@ Linux 中的 telnet 是一种远程登录的协议，它可以让用户通过网
 > 孙子进程的原理是：父进程创建一个子进程，然后立即使用 waitpid() 来等待子进程结束。子进程创建一个孙子进程，然后立即退出。这样，父进程就可以回收子进程，而不会阻塞。孙子进程成为孤儿进程，由 init 进程（1 号进程）领养。当孙子进程退出时，init 进程会回收它的资源。
 >
 
-### 关于文件描述符
+#### 关于文件描述符
 
 子进程继承父进程打开的文件描述符，而子进程的存在是解决单进程版本的服务器函数一次只能处理一个客户端的问题，因此服务端的“服务”逻辑应该由子进程执行，它不需要`listen_sockfd`（监听套接字）只需要`service_sockfd`（服务套接字）来处理数据，也就是`accept()`函数的返回值。
 
@@ -735,7 +735,7 @@ class TcpServer
 };
 ```
 
-### 测试
+#### 测试
 
 使用脚本每隔 1 秒查看进程的所有信息：
 
@@ -754,7 +754,7 @@ while :; do ps axj | grep TcpServer; sleep 1; echo "#"; done
 
 > 在进程列表中，`<defunct>`表示僵尸进程。
 
-#### 捕捉信号
+##### 捕捉信号
 
 为了更明显地显示进程的信息，在进程退出时的日志打印信息增加了线程的 PID 打印，脚本也增加了头目的显示：
 
@@ -808,7 +808,7 @@ void start()
 
 <img src="网络编程：TCP socket.IMG/image-20230510225849302.png" alt="image-20230510225849302" style="zoom:40%;" />
 
-#### 孙子进程
+##### 孙子进程
 
 让子进程再次创建子进程，就是孙子进程。那么原本子进程要执行的逻辑将会被孙子进程执行，子进程创建孙子进程后立即调用`exit(0)`退出，原本的父进程调用`wait()`或`waitpid()`函数等待子进程能立刻成功地回收子进程的资源，而不需要等待回收孙子进程的资源，这样原本的父进程就能避免因等待回收子进程资源而占用时间，降低效率了。
 
@@ -835,7 +835,7 @@ void start()
 
 下面是使用孙子进程执行服务端任务的逻辑：
 ```cpp
-#include <sys/wait.h>
+##include <sys/wait.h>
 void start()
 {
     while (1)
@@ -867,11 +867,11 @@ void start()
 
 <img src="网络编程：TCP socket.IMG/image-20230510235305723.png" alt="image-20230510235305723" style="zoom:40%;" />
 
-# 客户端
+## 客户端
 
-## 框架
+### 框架
 
-### 成员属性
+#### 成员属性
 
 TCP 是面向连接的，客户端不同于服务端，它需要明确数据接收者的 IP 地址和 PORT。除此之外，还要有网络数据的载体--套接字，因此还要保存文件描述符。
 
@@ -903,7 +903,7 @@ private:
 
 注意点同服务端。
 
-### 客户端框架
+#### 客户端框架
 
 和服务端类似，要提取命令行参数中的 IP 地址和 PORT，需要注意函数的使用，以及使用`usage()`函数提示使用方法，和使用智能指针接管客户端对象的资源管理（实际上简单情况下使用普通的指针也没有问题）。
 
@@ -934,9 +934,9 @@ int main(int argc, char* argv[])
 
 头文件都是和服务端类似的。
 
-## 初始化客户端
+### 初始化客户端
 
-### 创建套接字
+#### 创建套接字
 
 使用`socket()`函数创建一个连接套接字，`SOCK_STREAM`指定使用 TCP 协议。
 
@@ -961,7 +961,7 @@ public:
 };
 ```
 
-### 绑定
+#### 绑定
 
 服务端必须明确端口号，是因为服务端面向的是众多客户端，如果不确定端口号，那么客户端主机和服务端主机就不能进行跨网络的进程间通信。因此服务端的端口号一旦被设置，就不应该再被改变。
 
@@ -969,15 +969,15 @@ public:
 
 既然不需要程序员手动调用`bind()`函数绑定，那么也就不需要在客户端中设置监听套接字了，监听操作应该是服务端要做的事情；也不需要使用`accept()`函数获取连接，因为没有主机会主动连接客户端，获取连接的操作也应该是服务端要做的事情。客户端主要需要做的事情是连接别的主机（服务端），这个能力就叫做`connect`。
 
-## 运行服务器
+### 运行服务器
 
-### 连接
+#### 连接
 
 connect 函数的功能是客户端主动连接服务器，建立连接是通过三次握手，而这个连接的过程是由内核完成，不是这个函数完成的，这个函数的作用仅仅是通知 Linux 内核，让 Linux 内核自动完成 TCP 三次握手连接。（具体细节将在 TCP 协议专题介绍）
 
 ```c
-#include <sys/types.h>
-#include <sys/socket.h>
+##include <sys/types.h>
+##include <sys/socket.h>
 
 int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 ```
@@ -1024,7 +1024,7 @@ void start()
 
 > `errno:106:Transport endpoint is already connected`表示连接套接字被重复连接。
 
-### 读取用户数据
+#### 读取用户数据
 
 例子中是一个很简单的客户端，它从标准输入获取用户输入的数据，对此我们可以用一个字符串保存用户要发送的数据，然后使用`send()`函数将字符串中的数据转移到套接字描述符对应的文件中，以此向已经连接的套接字中发送数据；使用`recv()`函数将服务端返回的数据从套接字中提取出来。
 
@@ -1040,12 +1040,12 @@ ssize_t recv(int socket, void *buf, size_t len, int flags);
 
 读取用户要发送数据的逻辑将与下一小节一起给出。
 
-### 发送用户数据
+#### 发送用户数据
 
 由于实现的是一个回声服务器，就像`echo`指令一样，所以服务端在接收到数据以后直接原封不动地将数据返回给客户端。
 
 ```cpp
-#define SIZE 1024
+##define SIZE 1024
 void start()
 {
     // 4.0 发送并接收数据
@@ -1105,7 +1105,7 @@ void start()
 
 > 这和管道是一样的。
 
-### 测试
+#### 测试
 
 用两个实现的客户端替代之前的`telnet`，进行同样的测试：
 <img src="网络编程：TCP socket.IMG/tcp_client_1.gif" style="zoom:50%;" />
@@ -1123,9 +1123,9 @@ void start()
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/TcpSocket/Processes)
 
-# 多线程版服务端（version3）
+## 多线程版服务端（version3）
 
-## 引入
+### 引入
 
 在实现客户端的框架时，使用了多个进程处理多个客户端的任务，但是多进程执行任务的成本通常比单进程要高，原因如下：
 
@@ -1150,9 +1150,9 @@ void start()
 - [线程概念与控制](https://blog.csdn.net/m0_63312733/article/details/130001145?spm=1001.2014.3001.5502)
 - [线程池](https://blog.csdn.net/m0_63312733/article/details/130396163?spm=1001.2014.3001.5502)（本小节只需了解`ThreadData`类的封装）
 
-## 前导知识
+### 前导知识
 
-### 资源管理
+#### 资源管理
 
 线程的创建和销毁被封装在一个类中，逻辑比较简单：在执行任务之前创建线程，线程执行完毕任务以后就销毁线程。
 
@@ -1160,7 +1160,7 @@ void start()
 
 资源回收问题：主线程（服务进程）创建出新线程后，也需要等待回收线程资源（只是线程要回收的资源规模比进程小），否则也会造成类似于僵尸进程这样的问题。但对于线程来说，如果不想让主线程等待新线程退出，可以让线程自己调用`pthread_detach()`函数进行线程分离，当线程退出时系统会自动回收该线程的资源。此时主线程就可以继续调用`accept`函数获取新连接，创建线程执行任务，如此往复。如果不回收资源的话，服务端线程就没有足够的资源重复地为不同客户端服务了。
 
-### 文件描述符
+#### 文件描述符
 
 主线程就是`main()`函数对应的进程，在这个例子中就是服务端进程，服务端进程创建的线程是依赖于进程自己的，因而（主）线程创建的所有线程能共享进程大部分资源，包括进程的文件描述符表。文件描述符表维护的是进程与文件之间的对应关系，当线程被进程创建时，操作系统并不会单独为线程们创建新的文件描述符表，而是让所有归属于同一个进程的线程共享进程的文件描述符表。
 
@@ -1170,11 +1170,11 @@ void start()
 
 值得注意的是，即使线程们能直接访问服务端进程通过`accept()`函数获取的文件描述符，但是线程们作为“工具人”只是主线程在执行任务过程中凭空创建出来的，因此它们并不知道它们要服务的客户端对应的文件描述符是哪一个。因此主线程在创建线程时，应该将客户端的信息作为参数传给线程函数中。
 
-## 实现
+### 实现
 
 操作系统已经为我们完成了线程操作的各种逻辑，我们只需要调用简单的接口进行创建线程或销毁线程等操作。线程是被用来执行任务的，因此线程函数才是我们自己要动手写的，也是多线程编程的主要内容。
 
-### 线程信息
+#### 线程信息
 
 对于`pthread`库中的线程函数，线程函数的第三个参数类型是`void*`类型，这就能让任何类型的参数先被强转为`void*`类型，然后在线程函数内部再强转回去，这样就能获取到外部传给线程的信息。
 
@@ -1191,7 +1191,7 @@ public:
 };
 ```
 
-### 创建多线程
+#### 创建多线程
 
 下面是填充线程信息和创建 5 个线程执行任务的逻辑：
 
@@ -1219,7 +1219,7 @@ void start()
 
 最后线程退出以后要关闭服务套接字对应的文件描述符。
 
-### 线程函数
+#### 线程函数
 
 线程函数要做的事情就是执行之前主线程要调用的服务函数`service()`，而线程函数要做的就是提取参数：
 ```cpp
@@ -1246,7 +1246,7 @@ static void *routine(void *args)
 >
 > `thread` 参数是待终止的线程的标识符。如果该函数调用成功，被终止的线程将立即停止运行，并释放所有占用的资源。需要注意的是，该函数并不保证能够成功终止线程，因为被终止的线程有可能阻塞在某个系统调用中，无法被立即终止。此外，被终止的线程也不能够自动释放资源，因此需要其他线程来调用 `pthread_join` 函数来等待该线程的结束，并释放资源。
 
-### 关于文件描述符
+#### 关于文件描述符
 
 线程共享了主线程的文件描述符表，因此某个线程不应该对文件描述符表作修改，否则会影响其他线程。
 
@@ -1254,7 +1254,7 @@ static void *routine(void *args)
 
 线程的作用是为客户端服务，因此它不关心监听套接字，所以执行任务的线程不能关闭监听套接字，因为客户端进程（主线程）是需要不断（死循环中）地监听连接任务的。
 
-## 测试
+### 测试
 
 由于使用了多线程，所以打印的脚本应该改为查看线程的信息而不是进程：
 ```shell
@@ -1270,11 +1270,11 @@ while :; do ps -aL | head -1 && ps -aL | grep TcpServer; sleep 1; echo "#"; done
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/TcpSocket/Threads)
 
-# 线程池版服务端
+## 线程池版服务端
 
 - [线程池](https://blog.csdn.net/m0_63312733/article/details/130396163?spm=1001.2014.3001.5502)（本小节还需了解`Thread`类和`ThreadPool`类的封装）
 
-## 引入
+### 引入
 
 在上面的例子中，只是很简单地通过`pthread_create()`和资源回收等底层提供的系统调用创建线程，实现起来并没有什么难度，唯一需要注意的也就是给线程传递参数的类型转换的过程，多用几次也不难。上面这个例子只是一个热身，相当于熟悉接口的使用，实际上服务端不应该只有当客户端连接时才创建线程执行任务，不断创建和销毁线程也会带来开销，因此服务端应该实现创建一定数量的线程，然后将不同客户端的任务分派给线程执行任务，线程执行任务完毕以后也不退出，接着等待下次任务指派。
 
@@ -1291,7 +1291,7 @@ while :; do ps -aL | head -1 && ps -aL | grep TcpServer; sleep 1; echo "#"; done
 
 > 这些问题在 [线程同步与互斥](https://blog.csdn.net/m0_63312733/article/details/130164414?spm=1001.2014.3001.5502) 一文中作出了解答并给出了解决方案。
 
-## 线程池成员
+### 线程池成员
 
 在`TcpServer`类中，新增线程池成员，由于线程池是一个模板类，而且是单例模式的类，所以在定义它时要指定模板参数为`Task`类（这在“线程池”一文中介绍，简单地说它就是一个仿函数）；使用一个智能指针管理线程池，使用起来就像普通指针一样（在这个简单的例子中使用简单指针也可以）。由于是单例模式的类，所以这个类中没有对编译器开放构造函数，因此只能通过`::`操作符和内部的 get 接口获取线程池对象的地址：
 
@@ -1308,13 +1308,13 @@ private:
 };
 ```
 
-## Task 类
+### Task 类
 
 ```cpp
-#pragma once
-#include "Log.hpp"
-#include <string>
-#include <functional>
+##pragma once
+##include "Log.hpp"
+##include <string>
+##include <functional>
 
 // typedef std::function<void (int, const std::string &, uint16_t &)> func_t;
 // 等价于
@@ -1348,7 +1348,7 @@ public:
 - `operator()`的参数是一个字符串`name`，是因为可能在测试时会打印线程的信息，例如线程 IP 或编号。在这里暂不做处理。
 - `Task`类相当于一个数据包，它包含了服务端接收到的客户端 IP、PORT 以及服务套接字文件描述符，以及服务端给客户端提供服务的函数`service()`。只要客户端构造一个`Task`类型的对象，传给线程池，线程池就能在内部取出成员，然后执行`service()`。
 
-## 服务端多线程执行任务
+### 服务端多线程执行任务
 
 通过线程池指针`_threadpool_ptr`调用成员函数`run()`，实际上就是调用`pthread_create()`创建数个线程，去执行线程函数：
 ```cpp
@@ -1367,7 +1367,7 @@ public:
 
 这也是`Task`类要有 IP 和 PORT 等网络相关的成员的原因。
 
-## 生产任务
+### 生产任务
 
 ```cpp
 void start()
@@ -1396,7 +1396,7 @@ static void service(int service_sockfd, std::string client_ip, uint16_t client_p
 }
 ```
 
-## 测试
+### 测试
 
 用同样的方式测试：
 <img src="网络编程：TCP socket.IMG/tcp_server_threadpool1.gif" alt="tcp_server_threadpool1" style="zoom:40%;" />
@@ -1409,9 +1409,9 @@ static void service(int service_sockfd, std::string client_ip, uint16_t client_p
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/TcpSocket/ThreadPool)
 
-## 问题
+### 问题
 
-### 长连接业务
+#### 长连接业务
 
 长连接业务是指服务器与客户端建立的 TCP 连接在一定时间内保持打开状态，直到某个条件（例如超时或客户端发送指定的关闭连接请求）触发连接的关闭。
 
@@ -1433,7 +1433,7 @@ static void service(int service_sockfd, std::string client_ip, uint16_t client_p
 
 实际上在实现服务器的时候不会简单粗暴地将业务逻辑放在一个死循环中，基本上是客户端请求服务端协助以后，服务端再去为客户端服务，不用一直执行死循环。
 
-## 更换短业务
+### 更换短业务
 
 短业务是指客户端与服务器之间仅进行**一次**请求和响应的业务。在短业务中，客户端向服务器发送一个请求，服务器处理该请求并返回一个响应，然后连接就会被关闭，整个交互过程只持续很短的时间。
 
@@ -1567,7 +1567,7 @@ void start()
 - `alive`的作用是进行重连操作，能保证执行到“请输入>>>”时一定连接成功。
 - 为了安全起见，在`send()`之前也判断一下返回值。
 
-# 简易英译汉服务端
+## 简易英译汉服务端
 
 接入线程池后的服务端，已经可以应付小几百个的客户端需求（还可以增加线程池内的线程数量），如果想让服务端更改或增加服务，那么只要修改或增加线程函数即可。
 
@@ -1575,7 +1575,7 @@ void start()
 
 这是一个查询的任务，因此我们可以使用哈希表来实现，即 STL 中的`unordered_map`。将英文单词作为 key，将对应的中文释义作为 value。
 
-## 实现
+### 实现
 
 在这里只是简单地实现一个查询操作，因此并不会将整个字典映射到哈希表中，只是简单地加入几个键值对进行测试，也不考虑一词多义的情况。如果要实现较完整的功能，可以从文件中读取键值对。
 
@@ -1623,7 +1623,7 @@ static void enToZh(int service_sockfd, std::string client_ip, uint16_t client_po
 }
 ```
 
-## 测试
+### 测试
 
 <img src="网络编程：TCP socket.IMG/image-20230515143556472.png" alt="image-20230515143556472" style="zoom:40%;" />
 
@@ -1633,16 +1633,16 @@ static void enToZh(int service_sockfd, std::string client_ip, uint16_t client_po
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/TcpSocket/ThreadPoolChange)
 
-# 地址转换函数
+## 地址转换函数
 
-## 介绍
+### 介绍
 
 在 Linux 中，有一些地址转换函数可以用来在字符串 IP 地址和整数 IP 地址之间进行转换。这些函数通常包含在以下头文件中，下面介绍几个常用的函数：
 
 ```c
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+##include <sys/socket.h>
+##include <netinet/in.h>
+##include <arpa/inet.h>
 ```
 
 1. `inet_addr()`：将字符串 IP 地址转换为 32 位整数 IP 地址。该函数的原型如下：
@@ -1717,13 +1717,13 @@ const char *inet_ntop(int af, const void *src, char *dst, socklen_t size);
 - 在使用这些函数进行地址转换时，应该始终检查返回值以确保转换成功。如果返回值为特殊值`INADDR_NONE`或`-1`，则表示转换失败，应该相应地处理错误。
 - 指针类型的`dst`参数都是一个输出型参数。
 
-## 并发安全问题
+### 并发安全问题
 
 在网络通信中，实际上只需要字符串格式 IP 转二进制数格式 IP 的函数即可，而从二进制格式 IP 转字符串格式 IP 存在的意义就是打印出来，让用户更方便地进行查看。
 
 在上面的实践过程中，使用的是 inet_addr() 和 inet_ntoa()，因为这两个函数最简单，参数只有一个，只要接收返回值即可。但是，这两个函数在多线程并发条件下可能会出现安全问题。
 
-### inet_ntoa()
+#### inet_ntoa()
 
 inet_ntoa() 函数在将 32 位整数 IP 地址转换为字符串 IP 地址时存在安全问题。具体来说，该函数返回的指针指向的字符数组是静态分配的，因此如果需要多次使用该函数的返回值，请先将返回值复制到另一个缓冲区中。
 
@@ -1735,14 +1735,14 @@ inet_ntoa() 函数在将 32 位整数 IP 地址转换为字符串 IP 地址时�
 
 需要注意的是，使用 inet_ntoa_r() 函数时，应该确保提供的缓冲区足够大，以容纳转换后的字符串 IP 地址。通常，可以使用 INET_ADDRSTRLEN 宏来定义缓冲区的大小，该宏定义为 16，可以容纳 IPv4 地址的字符串表示形式（例如 "192.168.0.1"）。
 
-#### 测试
+##### 测试
 
 下面创建两个套接字，然后将它的二进制 IP 成员的值分别设置为`0`和`0xffffffff`，再分别调用`inet_ntoa()`函数转化，打印两次函数调用的返回值：
 
 ```cpp
-#include <iostream>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+##include <iostream>
+##include <netinet/in.h>
+##include <arpa/inet.h>
 using namespace std;
 
 int main()
@@ -1773,11 +1773,11 @@ int main()
 
 在多线程条件下，这个静态的字符串内存区域相当于被所有线程共享的临界资源，如果不用互斥锁或条件变量限制线程的行为，那么很可能会发生并发问题，也就是说，inet_ntoa 函数不是线程安全的。
 ```cpp
-#include <iostream>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <pthread.h>
-#include <unistd.h>
+##include <iostream>
+##include <netinet/in.h>
+##include <arpa/inet.h>
+##include <pthread.h>
+##include <unistd.h>
 using namespace std;
 
 void*func1(void *args)
@@ -1829,7 +1829,7 @@ ptr2: 255.255.255.255
 
 不过在 centos7 中测试时，并未发现问题，这可能是这个版本的 Linux 实现函数时使用了线程安全限制。
 
-### inet_addr()
+#### inet_addr()
 
 inet_addr() 函数在将字符串 IP 地址转换为 32 位整数 IP 地址时也存在安全问题。具体来说，该函数的返回值是一个 32 位整数，如果转换失败，则返回一个特殊值 INADDR_NONE，此时可能会出现一些安全问题。
 
@@ -1841,15 +1841,15 @@ inet_addr() 函数在将字符串 IP 地址转换为 32 位整数 IP 地址时�
 
 需要注意的是，在使用 inet_pton() 函数进行地址转换时，应该始终检查返回值以确保转换成功。如果返回值为 -1，则表示转换失败，应该相应地处理错误。
 
-# 其他问题
+## 其他问题
 
-## 资源释放问题
+### 资源释放问题
 
 在上面的测试中，端口号可能一会是 8080，一会是 8081，这是因为当客户端连接服务端时，如果服务端直接被关闭，那么服务端再次绑定上次的端口号时可能会绑定失败，直接退出可能会导致服务端的资源未完全释放完全。
 
 具体细节涉及 TCP 协议，在这里仅解释原因。
 
-## 无法绑定
+### 无法绑定
 
 绑定失败的另一大原因是其他进程已经绑定了端口号。
 

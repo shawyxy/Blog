@@ -1,5 +1,5 @@
 ---
-title: "C++"
+title: "算法"
 type: folder
 ## cascade:
 ##   _build:

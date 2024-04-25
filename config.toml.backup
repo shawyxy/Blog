@@ -73,5 +73,8 @@ verboseLog:                 false
 # 监视文件系统变化并根据需要重新创建
 watch:                      true
 ignoreFiles = ["^\\.(?!.*\\.IMG$)"]
+[markup]
+  [markup.defaultMarkdownHandler]
+    name = "goldmark"
 
 ---

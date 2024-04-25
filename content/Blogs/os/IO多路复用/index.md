@@ -8,7 +8,7 @@ open: true
 
 “I/O 多路复用”处于知识树中网络和操作系统的最后，因此本文默认读者有计算机网络和操作系统的基础。
 
-# 1. 引入：C10K 问题
+## 1. 引入：C10K 问题
 
 c10k 问题是指如何让一个服务器同时处理超过 10000 个客户端的连接，这是一个网络编程中的经典挑战。
 
@@ -29,7 +29,7 @@ c10k 问题是指如何让一个服务器同时处理超过 10000 个客户端�
 
 事件驱动就是 I/O 多路复用。
 
-# 2. 什么是 I/O 多路复用
+## 2. 什么是 I/O 多路复用
 
 I/O 多路复用（也叫多路转接）是一种解决方案，它可以让一个进程或线程同时监控多个文件描述符（通常是网络套接字），并在其中一个或多个文件描述符准备好进行 I/O 操作时（至少一个），通知应用程序进行相应的读写操作。这样，应用程序可以在等待数据的过程中执行其他任务，而不会被阻塞，从而提高了程序的性能和响应速度。
 
@@ -41,16 +41,16 @@ I/O 多路复用的实现方式有多种，比如 select，poll，epoll 等，�
 
 这就好像上学时老师总会定几个组长，这样每次收作业时老师只需要等这几个组长，但实际上等待不同组的同学上交作业的时间是有重叠的，这样便节省了时间。
 
-## 2.1 socket 就绪条件
+### 2.1 socket 就绪条件
 
 socket 就绪条件是指在使用 I/O 多路复用的方式来监控多个文件描述符时，判断哪些文件描述符已经准备好进行 I/O 操作（如读或写）的条件。不同的 I/O 模型和文件描述符类型可能有不同的就绪条件，但一般来说，可以分为以下几种情况：
 
-- 一个文件描述符准备好==读==，当满足以下条件之一时：
+- 一个文件描述符准备好<mark>读</mark>，当满足以下条件之一时：
   - 该文件描述符接收缓冲区中的数据字节数**大于等于其接收缓冲区低水位标记**的当前大小（SO_RCVLOWAT）。这意味着对这样的文件描述符执行读操作不会阻塞，并返回一个大于 0 的值（也就是可读数据的大小）。
   - 该连接的读**半部关闭**（也就是接收了 FIN 的 TCP 连接）。对这样的文件描述符的读操作将不阻塞并返回 0（也就是 EOF）。
   - 该文件描述符是一个**监听套接字且已完成的连接数不为 0**。对这样的文件描述符的 accept 操作通常不会阻塞。
   - 该文件描述符上有一个**未处理的错误**。对这样的文件描述符的读操作将不阻塞并返回 -1（也就是一个错误），同时把 errno 设置成确切的错误条件。
-- 一个文件描述符准备好==写==，当满足以下条件之一时：
+- 一个文件描述符准备好<mark>写</mark>，当满足以下条件之一时：
   - 该文件描述符发送缓冲区中的可用空间字节数大于等于其发送缓冲区低水位标记的当前大小（SO_SNDLOWAT），并且该文件描述符已经成功连接（TCP）或者不需要连接（UDP）。这意味着对这样的文件描述符执行写操作不会阻塞，并返回一个正值（例如由传输层接收的字节数）。
   - 该连接的**写半部关闭**（也就是主动发送 FIN 的 TCP 连接）。对这样的文件描述符的写操作将产生 SIGPIPE 信号。
   - 使用非阻塞的 connect 的套接字**已建立连接**，或者已经**以失败告终**。
@@ -60,15 +60,15 @@ socket 就绪条件是指在使用 I/O 多路复用的方式来监控多个文�
 
 > [注] 带外数据和 TCP 的紧急模式相关，TCP 报头中的 URG 标志位和 16 位紧急指针搭配使用，就能够发送/接收带外数据。
 
-# 3. select
+## 3. select
 
-## 3.1 select 函数
+### 3.1 select 函数
 
 select 函数的名称的含义是：它可以从一组文件描述符中**选择**出那些已经准备好的文件描述符，然后返回给应用程序。
 
 函数原型：
 ```c
-#include <sys/select.h>
+##include <sys/select.h>
 int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
 ```
 
@@ -86,7 +86,7 @@ int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struc
 fd_set 是一个位图结构，它的不同标志位用来记录被监视的文件描述符的属性，如可读、可写或异常状态等，它的大小固定是 128 字节，最多 能够记录 128 * 8 = 1024 个文件描述符。原型：
 
 ```c
-#include <sys/select.h>
+##include <sys/select.h>
 typedef struct {
     long int fds_bits[32]; // 一个长整型数组，每一位对应一个文件描述符
 } fd_set;
@@ -133,27 +133,27 @@ struct timeval {
 - `EINVAL`：参数 nfds 为负值。
 - `ENOMEM`：核心内存不足。
 
-## 3.2 select 服务器
+### 3.2 select 服务器
 
-### Sock 类
+#### Sock 类
 
 由于本节是网络部分中靠后的知识点，因此 socket 套接字的编写不是本节的重点，将它们封装为一个 Sock 类，以供后续使用。
 
 ```cpp
-#pragma once
+##pragma once
 
-#include <iostream>
-#include <string>
-#include <cstring>
-#include <cerrno>
-#include <cassert>
-#include <unistd.h>
-#include <memory>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <ctype.h>
+##include <iostream>
+##include <string>
+##include <cstring>
+##include <cerrno>
+##include <cassert>
+##include <unistd.h>
+##include <memory>
+##include <sys/types.h>
+##include <sys/socket.h>
+##include <arpa/inet.h>
+##include <netinet/in.h>
+##include <ctype.h>
 
 // 注：为了方便使用，并且将重点放在 select Server 的编写上，
 // 所有接口都设置为静态，通过 类名：: 函数名 调用
@@ -227,24 +227,24 @@ public:
 
 可以把它们直接当做系统调用来看，只不过是省略了参数设置的细节。
 
-### 日志类
+#### 日志类
 
 为了方便观察现象，下面实现了一个简单的 Log 日志类（这里是我直接拿了之前写的），下面的代码中可以把它当做普通的打印语句。
 
 ```cpp
-#pragma once
+##pragma once
 
-#include <iostream>
-#include <cstdarg>
-#include <ctime>
-#include <string>
+##include <iostream>
+##include <cstdarg>
+##include <ctime>
+##include <string>
 
 // 日志级别
-#define DEBUG   0
-#define NORMAL  1
-#define WARNING 2
-#define ERROR   3
-#define FATAL   4
+##define DEBUG   0
+##define NORMAL  1
+##define WARNING 2
+##define ERROR   3
+##define FATAL   4
 
 const char *LevelMap[] = 
 {
@@ -259,9 +259,9 @@ const char *LevelMap[] =
 
 void logMessage(int level, const char *format, ...)
 {
-#ifndef DEBUG_SHOW
+##ifndef DEBUG_SHOW
     if(level== DEBUG) return;
-#endif
+##endif
     // 标准部分
     char stdBuffer[1024];
     time_t timestamp = time(nullptr);
@@ -277,7 +277,7 @@ void logMessage(int level, const char *format, ...)
 }
 ```
 
-### select 的基本工作流程
+#### select 的基本工作流程
 
 > 注：在这三个（select、poll 和 epoll）接口中，select server 的实现难度最大，但它们都是类似的。本文实现的三个 server 中只实现读操作，读、写和异常三个操作将会在下一篇文章中实现。由于网络并不是本节的重点，因此在阐述时默认已经完成套接字 Socket 的编写。
 
@@ -292,23 +292,23 @@ void logMessage(int level, const char *format, ...)
 
 上面的“套接字”在网络层面指的是套接字文件，在系统层面指的是套接字对应的文件描述符，这是因为在 Linux 一切皆文件的意义下，文件描述符可以操作套接字文件。套接字编写时用到的 socket() 函数的返回值就是一个文件描述符，本质是数组的索引值。
 
-### SelectServer 类
+#### SelectServer 类
 
-#### 构造函数和析构函数
+##### 构造函数和析构函数
 
 在构造函数中实现套接字的创建、绑定和监听。在析构函数中关闭套接字文件描述符。
 
 ```cpp
 // SelectServer.hpp
 
-#ifndef __SELECT_SVR_H__
-#define __SELECT_SVR_H__
+##ifndef __SELECT_SVR_H__
+##define __SELECT_SVR_H__
 
-#include <iostream>
-#include <sys/select.h>
+##include <iostream>
+##include <sys/select.h>
 
-#include "Sock.hpp"
-#include "Log.hpp"
+##include "Sock.hpp"
+##include "Log.hpp"
 
 class SelectServer
 {
@@ -332,14 +332,14 @@ private:
     int _listensock;
 };
 
-#endif
+##endif
 ```
 
 值得注意的是，这里使用的是云服务器测试，所以 IP 地址可能是厂商虚拟提供给我们的，在实现 Sock 类时，设置为任何 IP 都可以使用，如果要显式地设置为指定 IP 作为参数也可以。
 
 作为一个服务器，端口号和监听套接字文件描述符是必不可少的。
 
-#### Start 函数
+##### Start 函数
 
 当服务器初始化完成以后，就要让它运行起来，运行的逻辑在 Start 函数中实现。
 
@@ -384,8 +384,8 @@ void Start()
 在 main.cc 中，将服务器运行起来（使用普通指针也可以）：
 
 ```cpp
-#include "selectServer.hpp"
-#include <memory>
+##include "selectServer.hpp"
+##include <memory>
 
 int main()
 {
@@ -420,7 +420,7 @@ int main()
 
 这是因为 Accept() 函数是阻塞式的，它会主动地使用户进程阻塞等待，直到一个新连接到来。多路复用 I/O 就是解决这个问题的，select 函数可以代替它等待，直到有新连接请求到来后才会通知用户进程，所以要把它留在有连接请求到来时再调用。
 
-#### HandlerEvent 函数
+##### HandlerEvent 函数
 
 它应该在 Start 函数的最后一个分支被调用。
 
@@ -461,7 +461,7 @@ select 函数的作用是监听一组文件描述符的 I/O 事件是否就绪�
 
 这样，我们就可以把服务器套接字对应的文件描述符的可读事件，理解为队列中有连接请求等待被接受。当 select 函数检测到服务器套接字可读时，就表示有客户端发出的连接请求到达了服务器，并被放入了队列中，等待用户进程调用 accept 函数来接受连接。这样，我们就可以用 select 函数来代替用户进程阻塞式地监听客户端发出的连接请求，而不会错过任何一个连接请求。
 
-所以，==站在文件读写的角度看，连接请求也是一种 I/O==，因为套接字也是一种文件，但是它是一种特殊的 I/O，它是由 TCP 协议在传输层实现的，而不是由用户进程在应用层实现的。我们只是借用了 select 函数的功能，来实现一个非阻塞的连接监听，而不是真正地对连接请求进行读写操作。
+所以，<mark>站在文件读写的角度看，连接请求也是一种 I/O</mark>，因为套接字也是一种文件，但是它是一种特殊的 I/O，它是由 TCP 协议在传输层实现的，而不是由用户进程在应用层实现的。我们只是借用了 select 函数的功能，来实现一个非阻塞的连接监听，而不是真正地对连接请求进行读写操作。
 
 测试：
 
@@ -477,7 +477,7 @@ select 函数的作用是监听一组文件描述符的 I/O 事件是否就绪�
 
 这三个问题需要我们手动地将合法的文件描述符保存起来，以更新 select 函数的第一个参数（即最大的 fd）和更新文件描述符集合 fd_set。
 
-#### select 服务器的编写模式
+##### select 服务器的编写模式
 
  select 服务器的一般编写模式（以读取为例）：
 
@@ -503,9 +503,9 @@ select 函数的作用是监听一组文件描述符的 I/O 事件是否就绪�
 2. 在 HandlerEvent() 函数中，处理 select 函数检测到的读取事件。但由于文件描述符集合 fd_set 中既包含了监听套接字文件描述符，也包含了普通的文件描述符，因此我们要根据它们的类型做不同的处理。在上一个 HandlerEvent() 函数的编写中，只实现了前者的处理。为了将读写逻辑模块化，将处理二者的逻辑分别用成员函数 Accepter() 和 Recver() 函数封装。
 
 ```cpp
-#define BITS 8
-#define NUM (sizeof(fd_set) * BITS)
-#define FD_NONE -1
+##define BITS 8
+##define NUM (sizeof(fd_set) * BITS)
+##define FD_NONE -1
 
 class SelectServer
 {
@@ -695,7 +695,7 @@ private:
 >
 > 关于完整服务的 I/O 多路复用的服务器，将会在下一节的 Reactor 模式的服务器中实现。
 
-## 3.3 优缺点
+### 3.3 优缺点
 
 select 服务器可以在一个进程或线程中同时处理多个客户端的连接和数据请求，提高了服务器的并发性能。select 服务器有以下优缺点：
 
@@ -711,7 +711,7 @@ select 服务器可以在一个进程或线程中同时处理多个客户端的�
 
 > 小结 select 函数的原理：它会将用户传入的文件描述符集合拷贝到内核空间，然后遍历这个集合，检查每个文件描述符的状态，如果有就绪的文件描述符，就将其标记为可读、可写或异常，并将就绪的文件描述符的数量返回给用户。这个遍历的过程是比较耗时的，尤其是当文件描述符的数量很多时，会造成很大的开销。
 
-## 3.4 应用场景
+### 3.4 应用场景
 
 select 服务器的应用场景一般有以下几种：
 
@@ -724,9 +724,9 @@ select 服务器的应用场景一般有以下几种：
 
 根据具体情况而定，需要考虑连接数量、并发性能要求、代码实现难度等多个因素。
 
-# 4. poll
+## 4. poll
 
-## 4.1 poll 函数
+### 4.1 poll 函数
 
 poll 函数的原理和 select 函数是一样的，它们只负责 I/O 中“等”的部分，也就是：
 
@@ -805,9 +805,9 @@ events 和 revents 的取值：
 它们是宏，其二进制序列中只有一个比特位为 1，且以 1 的位置区分。例如：
 
 ```c
-#define POLLIN		0x001		/* There is data to read.  */
-#define POLLPRI		0x002		/* There is urgent data to read.  */
-#define POLLOUT		0x004		/* Writing now will not block.  */
+##define POLLIN		0x001		/* There is data to read.  */
+##define POLLPRI		0x002		/* There is urgent data to read.  */
+##define POLLOUT		0x004		/* Writing now will not block.  */
 ```
 
 在 poll 的测试中，我们只使用 POLLIN 和 POLLOUT。
@@ -818,11 +818,11 @@ events 和 revents 的取值：
 
 这意味着某个结构体的 fd 属性只需要设置一次，而且就 fd 而言，它对于内核和用户空间都是只读的（因为没有写的必要），用户只需要设置 fd 的值，以及它在内核中被监测时应该以何种状态返回用户空间；而内核只需要监视 fd，通过 fd 的状态设置 revent 的值。
 
-## 4.2 poll 服务器
+### 4.2 poll 服务器
 
 下面就 select 服务器的代码进行改写，得益于 poll 解决了 select 每次都要重新设置参数的问题，poll 服务器的代码编写难度降低。
 
-### 动态数组的维护
+#### 动态数组的维护
 
 由于 poll 的第一个参数是一个动态数组，所以将 struct pollfd *类型的指针和规定的默认数组长度作为类成员。
 
@@ -830,7 +830,7 @@ events 和 revents 的取值：
 
 当设置文件描述符到数组时，如果容量已满，则以 2 倍的方式扩容，这在代码中将会体现。
 
-### 事件掩码的使用
+#### 事件掩码的使用
 
 两个事件掩码对应着两个方向，表示着 fd 对应的事件是否就绪：
 
@@ -839,24 +839,24 @@ events 和 revents 的取值：
 
 掩码是一个二进制数字，所以用 `&` 运算判断其状态。
 
-### 实现
+#### 实现
 
 ```cpp
-#ifndef __POLL_SVR_H__
-#define __POLL_SVR_H__
+##ifndef __POLL_SVR_H__
+##define __POLL_SVR_H__
 
-#include <iostream>
-#include <cerrno>
-#include <cstring>
-#include <string>
+##include <iostream>
+##include <cerrno>
+##include <cstring>
+##include <string>
 
-#include <sys/poll.h>
-#include <sys/time.h>
+##include <sys/poll.h>
+##include <sys/time.h>
 
-#include "Sock.hpp"
-#include "Log.hpp"
+##include "Sock.hpp"
+##include "Log.hpp"
 
-#define FD_NONE -1
+##define FD_NONE -1
 
 class PollServer
 {
@@ -1004,10 +1004,10 @@ private:
     int _timeout;
 };
 
-#endif
+##endif
 ```
 
-## 4.3 优缺点
+### 4.3 优缺点
 
 优点：
 
@@ -1021,7 +1021,7 @@ private:
 - [主要] poll 函数返回后，仍然需要轮询结构体数组来获取就绪的文件描述符，这会降低效率。
 - poll 函数在监视的文件描述符数目增多时，效率会线性下降，因为每次调用都需要遍历所有的结构体数组，而且可能只有很少的文件描述符处于就绪状态。
 
-# 5. epoll
+## 5. epoll
 
 epoll 是 Linux 内核为处理大批量文件描述符而设计的多路复用 I/O 机制。它是 select 和 poll 的改进版本，具有以下优势：
 
@@ -1034,11 +1034,11 @@ epoll 是 Linux 内核为处理大批量文件描述符而设计的多路复用 
 > - **e** 代表“event”，表示事件。
 > - **poll** 代表“polling”，表示轮询。
 
-## 5.1 epoll 相关接口
+### 5.1 epoll 相关接口
 
 epoll 是一种模型（类），select 和 poll 最大的问题就是用户要维护一个第三方数组、轮询、内核与用户态数据拷贝的成本。epoll 模型提供了多个接口，离不开其底层实现，这么做提高了灵活性、效率和易用性。
 
-### epoll_create
+#### epoll_create
 
 用于创建一个 epoll 实例或句柄。
 
@@ -1059,7 +1059,7 @@ int epoll_create(int size);
 
 > 句柄是一个用来标识对象或资源的唯一标识符。句柄通常由操作系统或应用程序管理，它可以用于访问或操作对象或资源。在 Linux 操作系统中，句柄是一个结构体。我们可以把句柄当做对象或资源的“身份证”。
 
-### epoll_ctl
+#### epoll_ctl
 
 用于添加、修改或删除一个文件描述符到 epoll 实例中。
 
@@ -1079,7 +1079,7 @@ int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
 
 它不同与 select 是在监听事件时告诉内核要监听什么类型的事件，而是在这里先注册要监听的事件类型。epoll_wait 方法返回的事件必然是通过 epoll_ctl 添加到 epoll 中的。
 
-#### struct epoll_event
+##### struct epoll_event
 
 用于指定要监听的事件类型。
 
@@ -1106,7 +1106,7 @@ struct epoll_event {
 - 成功：返回 0；
 - 失败：返回 -1 并设置错误码。
 
-#### epoll_data_t
+##### epoll_data_t
 
 ```c
 typedef union epoll_data {
@@ -1122,7 +1122,7 @@ typedef union epoll_data {
 - u32：32 位无符号整数。
 - u64：64 位无符号整数。
 
-### epoll_wait
+#### epoll_wait
 
 用于等待事件发生。
 
@@ -1152,7 +1152,7 @@ epoll 将会把发生的事件复制到 events 数组中（events 不可以是�
   - EINTR：此调用被信号所中断。
   - EINVAL：epfd 不是一个 epoll 模型对应的文件描述符，或传入的 maxevents 值小于等于 0。
 
-#### epoll 事件类型
+##### epoll 事件类型
 
 - EPOLLIN：表示对应的文件描述符可以读（包括对端 SOCKET 正常关闭）。
 - EPOLLOUT：表示对应的文件描述符可以写。
@@ -1162,7 +1162,7 @@ epoll 将会把发生的事件复制到 events 数组中（events 不可以是�
 - EPOLLET：将 epoll 的工作方式设置为边缘触发（Edge Triggered）模式。
 - EPOLLONESHOT：只监听一次事件，当监听完这次事件之后，如果还需要继续监听该文件描述符的话，需要重新将该文件描述符添加到 epoll 模型的队列中。
 
-## 5.2 epoll 的工作原理
+### 5.2 epoll 的工作原理
 
 epoll 的工作原理可以分为以下几个步骤：
 
@@ -1188,7 +1188,7 @@ struct eventpoll{
 
 当进程调用 epoll_wait 函数时，内核会将准备就绪的事件从双向链表中移除并返回给进程。
 
-在这个过程中，红黑树和就绪队列起着关键的作用。==红黑树用于高效地存储和检索需要监控的事件（受 epoll_ctl() 的行为影响），而就绪队列则用于存储已经就绪的事件==，等待用户程序来处理（（受 epoll_wait() 的行为影响））。
+在这个过程中，红黑树和就绪队列起着关键的作用。<mark>红黑树用于高效地存储和检索需要监控的事件（受 epoll_ctl() 的行为影响），而就绪队列则用于存储已经就绪的事件</mark>，等待用户程序来处理（（受 epoll_wait() 的行为影响））。
 
 在 epoll 实例中，每一个被注册到 epoll 句柄上的事件都会有一个对应的 epitem 结构体。epitem 结构体包含了事件的相关信息，包括文件描述符、事件类型、事件状态等。
 
@@ -1248,7 +1248,7 @@ epoll_event 结构体中的 ptr  保存着回调函数的地址。回调函数�
 
 > 操作系统是通过节点的 events 成员的 oneshot 标志位来实现节点在 epoll_wait 函数返回后被暂时禁用的。
 
-## 5.3 epoll 的工作流程
+### 5.3 epoll 的工作流程
 
 1. 创建 epoll 句柄。
 2. 将文件描述符添加到 epoll 句柄中。
@@ -1267,13 +1267,13 @@ epoll 的工作原理示意
     |- 处理发生的事件
 ```
 
-## 5.4 epoll 服务器
+### 5.4 epoll 服务器
 
 关于网络编程 socket 的部分，前面已经实现了两遍，下面就不再赘述了。只要理解了 select 服务器的代码，理解 epoll 服务器的代码会更加简单，其实就是设计一个 Epoll 类，封装 epoll 的几个系统调用。
 
 不同的是 epoll 在这里是一个实例对象，它在被创建出来后，用户程序添加文件描述符给它监视，当事件就绪时，用户程序从 epoll 对象中取出事件，通过判断事件的类型，执行不同的回调函数。
 
-### Epoll 类
+#### Epoll 类
 
 Epoll 类就是封装几个系统调用，用公开的接口省去上层设置参数的逻辑，其接口设置为静态函数，以通过类名 `Epoll::`直接调用。
 
@@ -1290,9 +1290,9 @@ EpollWait()：取出 epoll 模型中就绪队列中就绪的文件描述符。�
 而且，当 epoll_wait() 返回时，会将就绪队列中所有就绪的文件描述符都放入这个数组中，返回值就是它们的个数。如果数组的大小不足以一次性存入所有就绪事件的文件描述符，那么它只会返回数组能容纳的最大事件数，即第三个参数的值。需要下一次调用 epol_wait() 才能获取。因此第三个参数应该设置为一个足够大的值，以覆盖可能的最大并发连接数。
 
 ```cpp
-#pragma once
+##pragma once
 
-#include <sys/epoll.h>
+##include <sys/epoll.h>
 
 class Epoll
 {
@@ -1322,7 +1322,7 @@ public:
 };
 ```
 
-### EpollServer 类
+#### EpollServer 类
 
 作为一个服务器，它必须要有端口号和监听套接字，将需要关心的文件描述符交给 epoll 模型监视。和 select、poll 不同的是，当内核发现有事件就绪时，会直接将它的文件描述符链入就绪队列，应用程序只需要通过 epoll_wait() 函数取出它（如果就绪的话），通过事先设置好的判断逻辑，相应地调用应用程序设置的回调函数，执行相应的任务，而不需要应用程序自己不断地轮询，这是 epoll 高效之处。
 
@@ -1330,7 +1330,7 @@ public:
 
 其次，由于要使用 epoll_wait() 函数，它的参数需要有 epoll 实例的文件描述符，以及一个 epoll_event 类型的数组以及它的大小，所以将它们作为成员。
 
-#### 构造函数和析构函数
+##### 构造函数和析构函数
 
 1. 为数组申请空间并初始化
 2. 创建 listen 套接字
@@ -1381,7 +1381,7 @@ class EpollServer
 
 值得注意的是，当通过 socket 获取到监听套接字后，不应该直接调用 Accept 函数接收数据，这是因为虽然这个客户端和服务端建立连接成功，但是我们并不知道对方何时发送数据，而 Accept 中封装的系统调用 recv 会阻塞当前进程，所以我们把这个“等”的任务交给内核去做，也就是将监听套接字添加到 epoll 模型中，让内核代替用户进程监视。
 
-#### Start 函数
+##### Start 函数
 
 服务器是一个长期运行的进程，因此必须要有一个无限循环以启动所有的逻辑， 在之前的实现中，所有相关逻辑都是在无限循环内部的，下面的写法是，将原本在循环内的所有逻辑用一个名为 LoopOnce 的函数封装。
 
@@ -1400,7 +1400,7 @@ void Start()
 
 注意一定要有无限循环，否则服务器运行不起来。
 
-#### LoopOnce 函数
+##### LoopOnce 函数
 
 LoopOnce 函数就是原先循环中运行一次的逻辑，在这里我们假设 epoll 已经为用户进程准备了若干个就绪事件的文件描述符。
 
@@ -1439,7 +1439,7 @@ void LoopOnce(int &timeout)
 
 注意 EpollWait 的返回值就是 epoll_wait 的返回值，即数组取出就绪队列的就绪事件文件描述符的个数，那么在 HandlerEvents 函数中就要用这个返回值进行遍历，这样就避免了遍历整个红黑树（如果是 select 或 poll ，得遍历整个数组）。
 
-#### HandlerEvents 函数
+##### HandlerEvents 函数
 
 如果调用 epoll_wait 成功，则处理已经就绪的事件，根据就绪事件的文件描述符的类型用不同的逻辑，这和 select 、poll 服务器的实现是一样的：
 
@@ -1474,7 +1474,7 @@ void HandlerEvents(int n)
 }
 ```
 
-#### Accepter 函数
+##### Accepter 函数
 
 `!Epoll::EpollCtrl(_epfd, EPOLL_CTL_ADD, sock, EPOLLIN)` 的意思是，如果这个监听的 sock 文件描述符对应的事件不是一个读事件，直接返回。其他逻辑和之前是类似的。
 
@@ -1495,7 +1495,7 @@ void Accepter(int listensock)
 }
 ```
 
-#### Recver 函数
+##### Recver 函数
 
 在差错处理中，后面两个分支和之前的操作类似，要注意删除 epoll 对象中的文件描述符调用 epoll_ctl 参数的用法。
 
@@ -1504,7 +1504,7 @@ void Accepter(int listensock)
 在 EpollServer 类中新增一个函数对象，它的参数是 RequestData 类型，这是我定义的一个简单的“信息”类，用来传送这个数据的信息。在这里仅仅是为了打印它的 sock 和传输的数据。在这里只是为了提一下像 RequestData 这样保存请求的小数据包是有可能作为参数的，测试时直接拆分为一个个参数即可。
 
 ```cpp
-#include <functional>
+##include <functional>
 
 struct RequestData
 {
@@ -1570,11 +1570,11 @@ int main()
 
 这个 toDo 函数本应该是处理请求数据的，在这里仅打印测试。
 
-### 测试
+#### 测试
 
 <img src="./IMG/屏幕录制 2023-10-05 01.19.22.gif" alt="屏幕录制 2023-10-05 01.19.22" style="zoom:40%;" />
 
-## 5.5 优缺点
+### 5.5 优缺点
 
 - 效率高
   - 使用了红黑树来存储待监听的文件描述符，而 select 和 poll 使用了数组来存储待监听的文件描述符。epoll 的红黑树可以动态扩展，而 select 和 poll 的数组大小是固定的。因此，epoll 可以更有效地处理大量的文件描述符。
@@ -1584,11 +1584,11 @@ int main()
 - 分离内核与用户态：多路复用的所有调用在执行时，数据流有两个方向，即内核<-->用户。select 和 poll 将这两件事情都交给了同一个函数来完成，而 epoll 在接口层面上就将这两件事进行了分离，epoll 通过调用 epoll_ctl 实现用户告知内核，通过调用 epoll_wait 实现内核告知用户。
 - 使用简单：epoll 的 API 接口更加简单易用。
 
-## 5.6 应用场景
+### 5.6 应用场景
 
 epoll 通过在内核中维护事件的状态，并通过就绪队列来存储已经就绪的事件，从而实现了高效的事件通知和处理。这使得 epoll 非常适合于高并发、大量连接、少部分连接活跃的场景。
 
-## 5.7 补充
+### 5.7 补充
 
 > 我看了你的代码好久（好吧是我自己），不是说 epoll 模型在内核中一旦监测到时间就绪时，就会通过应用程序设置的回调函数唤醒应用程序，我怎么找不到你设置的这个回调函数？
 
@@ -1694,7 +1694,7 @@ epoll 使用内核文件系统（eventpollfs）来存储事件列表，并通过
 
 另外一个细节，还记得 SelectServer 的测试吗？我用三个客户端连接，并且断开中间的连接，打印输出的文件描述符是不连续的。而 epoll 会将所有就绪的文件描述符组织好，使得它们连续的分布。这样用户进程在遍历就绪的文件描述符时，就尽可能高效了。如果不连续，例如 只有 5 和 100 两个就绪，还要遍历到 100，遍历中间未就绪的就是浪费了。
 
-# 6. 工作模式
+## 6. 工作模式
 
 首先用一个例子作为引入：
 
@@ -1712,7 +1712,7 @@ epoll 使用内核文件系统（eventpollfs）来存储事件列表，并通过
 
 图中，水平的线叫做水平线，竖直的线叫做边缘线。数据的变化也是类似的，随着时间的推移，而缓冲区的大小一般是不变的，缓冲区中的（有效）数据是有数据->被取出->有数据这样的状态。而水平触发的条件就是当数据超过水平线，也就是缓冲区中有数据；边缘触发的条件就是只有当数据增加、或减少（我们一般考虑数据增加的情况），数据从无到有，从有到多的情况。
 
-## 6.1 水平触发（Level Trigger）
+### 6.1 水平触发（Level Trigger）
 
 在水平触发模式下，只要文件描述符的状态发生变化，就会触发事件。例如，如果一个文件描述符处于可读状态，如果一直有数据可读，那么内核就会一直触发读事件。
 
@@ -1720,7 +1720,7 @@ epoll 使用内核文件系统（eventpollfs）来存储事件列表，并通过
 
 优点：它可能会导致内核频繁地被唤醒。如果一个文件描述符一直处于可读状态，那么内核就会一直被唤醒，这样会消耗系统资源。
 
-## 6.2 边缘触发（Edge Trigger）
+### 6.2 边缘触发（Edge Trigger）
 
 在边缘触发模式下，只有文件描述符的状态从未就绪变为就绪时才会触发事件。例如，如果一个文件描述符处于可读状态，然后有数据可读，那么内核就会触发一次读事件。**如果再次有数据可读，内核不会再触发读事件，直到文件描述符从可读变为不可读**。
 
@@ -1730,7 +1730,7 @@ ET 工作模式下 epoll 通知用户的次数一般比 LT 少，因此 ET 的�
 
 缺点：它可能会导致系统的吞吐量下降。如果一个文件描述符一直处于可读状态，那么在边缘触发模式下，内核只会触发一次读事件，这样用户进程只能读取一次数据。**这样就相当于数据变相的丢失了**。
 
-### 如何读写
+#### 如何读写
 
 在 ET 工作模式下，只有底层就绪事件的数据无到有或由有到多发生变化的时候才会通知用户，这其实是**在倒逼程序员当读事件就绪时必须一次性将数据全部读取完毕**，当写事件就绪时必须一次性将发送缓冲区写满，否则可能再也没有机会进行读写了。
 
@@ -1746,7 +1746,7 @@ ET 工作模式下 epoll 通知用户的次数一般比 LT 少，因此 ET 的�
 
 **注意**： ET 工作模式下，recv 和 send 操作的文件描述符必须设置为非阻塞状态，这是必须的，不是可选的。
 
-## 6.3 使用场景
+### 6.3 使用场景
 
 在使用水平触发工作模式时，我们可以根据自己的需要来读取数据，不用担心数据丢失或者延迟；但是在使用边缘触发工作模式时，我们必须一次性地读取完所有的数据，或者记录下当前的状态，以便后续继续处理；否则我们可能会错过一些数据或者事件 。
 
@@ -1765,7 +1765,7 @@ ET 工作模式下 epoll 通知用户的次数一般比 LT 少，因此 ET 的�
 
 话说回来，如果在 LT 模式下，上层应用程序每次都能立即处理就绪事件（小明改掉了拖延），那效率上和 ET 模式也没什么区别。所以要分具体情况讨论。
 
-# 参考资料
+## 参考资料
 
 - [IO 多路转接 ——— select、poll、epoll](https://blog.csdn.net/chenlong_cxy/article/details/126189616)
 

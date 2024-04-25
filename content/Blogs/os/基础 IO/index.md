@@ -5,7 +5,7 @@ highlight: true
 open: true
 ---
 
-# 前言
+## 前言
 
 Linux 下一切皆文件，这个文件可以是我们通常认为的文件，也可以是任何硬件。而文件并不仅指文件内容本身，还有它的属性（大小、创建日期等），这些都是数据。由此可见，文件的所有操作，不仅包括对文件内容的操作，而且包含对文件属性的操作。
 
@@ -52,9 +52,9 @@ Linux 认为一切皆文件：
 >
 > **I/O**（英语：**I**nput/**O**utput），即**输入／输出**，通常指数据在存储器（内部和外部）或其他周边设备之间的输入和输出，是信息处理系统（例如电脑）与外部世界（可能是人类或另一信息处理系统）之间的通信。
 
-#  1. C 语言文件 I/O
+##  1. C 语言文件 I/O
 
-##  1.1 回顾
+###  1.1 回顾
 
 关于 C 语言的文件操作接口，可以移步：[文件操作](https://blog.csdn.net/m0_63312733/article/details/123925412?spm=1001.2014.3001.5502)
 
@@ -85,7 +85,7 @@ filename 是要打开的文件名，mode 的打开文件要做什么。
 
 > 重要的是前 6 个，最重要的是前三个
 
-我们知道，如果使用 fopen 函数以"w"的方式打开一个文件，如果文件不存在会在==当前路径==下创建文件。那么==当前路径==是哪个路径呢？
+我们知道，如果使用 fopen 函数以"w"的方式打开一个文件，如果文件不存在会在<mark>当前路径</mark>下创建文件。那么<mark>当前路径</mark>是哪个路径呢？
 
 <img src="基础IO.IMG/MD202211051402368.png" alt="image-20221101114400408" style="zoom:40%;" />
 
@@ -93,13 +93,13 @@ filename 是要打开的文件名，mode 的打开文件要做什么。
 
 由于 C 语言的文件 I/O 接口众多，下面仅用最常使用的两个接口示例。
 
-## 1.2 fwrite 写入
+### 1.2 fwrite 写入
 
 对文件写入数据示例：
 
 ```cpp
-#include <stdio.h>
-#include <string.h>
+##include <stdio.h>
+##include <string.h>
 int main()
 {
     FILE* fp = fopen("log.txt", "w");//创建 log.txt 新文件
@@ -129,12 +129,12 @@ int main()
 >
 > 注：w，是先清空后再写入。清空是在打开的时候，写入数据之前就已经被清空了。
 
-## 1.3 fgets 按行读取
+### 1.3 fgets 按行读取
 
 读取文件数据示例：
 
 ```cpp
-#include <stdio.h>
+##include <stdio.h>
 int main()
 {
     FILE* fp = fopen("log.txt", "r");
@@ -156,7 +156,7 @@ int main()
 
 <img src="基础IO.IMG/MD202211051402370.png" alt="image-20221101111803755" style="zoom:40%;" />
 
-## 1.4 C 默认打开的三个流
+### 1.4 C 默认打开的三个流
 
 在「前言」中，重新认识了文件。计算机能获取我们从键盘敲下的字符，是因为键盘对“键盘文件”进行了数据写入，计算机从“键盘文件”中读取了写入的数据；显示器同理。
 
@@ -181,11 +181,11 @@ man stdout
 
 > 在 C++中，分别是 cin、cout、cerr。这种特性是由操作系统决定的，所有语言都有类似的概念。
 
-# 2. 系统文件 I/O
+## 2. 系统文件 I/O
 
 实际上，C 语言的标准库文件 I/O 接口是封装系统文件的 I/O 接口的，这我们很容易理解。不仅是为了使用方法符合语言的特性（系统接口往往是偏复杂的），保证系统的安全，也要保证语言本身具有跨平台性（C 语言根据系统，封装了不同版本的接口，Linux、Windows...）。
 
-## 2.1 open
+### 2.1 open
 
 通过 man 手册查看，`man 2 open`：
 
@@ -195,7 +195,7 @@ man stdout
 
 > 请注意系统接口 open 的头文件，等下可能会用到。
 
-### 参数 pathname
+#### 参数 pathname
 
 - 要打开或创建的目标文件。
 
@@ -203,7 +203,7 @@ man stdout
 
   - 给文件名：在当前路径下进行创建（请明确「当前路径」的含义）。
 
-### 参数 flags
+#### 参数 flags
 
 - 打开文件的方式。
 
@@ -219,7 +219,7 @@ man stdout
 
 > 注意：宏通常可以见名知意，例如 O_RDONLY，就是 read only。
 
-#### 拓展
+##### 拓展
 
 > 如果在 man 手册往下翻，会发现很多这些选项，它们都是宏，为什么要有这么多宏呢？
 
@@ -238,12 +238,12 @@ man stdout
 动手试试：用 open 以只读的方式打开一个文件（暂时忽略 fd，后面会解释）：
 
 ```cpp
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+##include <stdio.h>
+##include <unistd.h>
+##include <string.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <fcntl.h>
 int main()
 {
   int fd = open("log.txt", O_WRONLY); // 以只读形式打开文件
@@ -272,7 +272,7 @@ int fd = open("log.txt", O_WRONLY | O_CREAT); // 以只读形式打开文件
 
 这样就成功创建了。
 
-### mode 参数
+#### mode 参数
 
 - 创建文件的默认权限。
 
@@ -317,7 +317,7 @@ int fd = open("log.txt", O_WRONLY | O_CREAT, 0666); // 以只读形式打开文�
 
 open 的第三个参数只有需要创建文件的情况下才会使用，也就是有`O_CREAT`选项的时候。
 
-### 返回值
+#### 返回值
 
 - 成功：返回新打开文件的文件描述符；
 - 失败：返回-1。
@@ -325,11 +325,11 @@ open 的第三个参数只有需要创建文件的情况下才会使用，也就
 上面的例子中，open 的返回值 fd 是 3，那么如果多打开几次文件呢？
 
 ```cpp
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+##include <stdio.h>
+##include <unistd.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <fcntl.h>
 int main()
 {
 	umask(0);
@@ -351,15 +351,15 @@ int main()
 
 可以看到，当前目录下不仅多了几个新增的文件，而且 fd 是从 3 开始递增的，0/1/2 去哪了？
 
-## 2.2 read
+### 2.2 read
 
 ```cpp
-#include <stdio.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <fcntl.h>
+##include <stdio.h>
+##include <string.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <stdlib.h>
+##include <fcntl.h>
 int main()
 {
     umask(0);
@@ -383,11 +383,11 @@ int main()
 
 <img src="基础IO.IMG/MD202211051402382.png" alt="image-20221102161325037" style="zoom:40%;" />
 
-# 3. 文件描述符
+## 3. 文件描述符
 
 open（成功）的返回值是文件描述符，通过示例可以知道，文件描述符是一个整数，而且总是从 3 开始的，为什么呢？
 
-## 3.1 概念
+### 3.1 概念
 
 文件描述符（File descriptor，以下简称 fd）在形式上是一个非负整数。实际上，它是一个索引值，指向 [内核](https://zh.wikipedia.org/wiki/内核）为每一个 [进程](https://zh.wikipedia.org/wiki/进程)所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。
 
@@ -397,11 +397,11 @@ open（成功）的返回值是文件描述符，通过示例可以知道，文�
 
 > 那么，进程和文件之间的映射关系是如何建立的？
 
-## 3.2 作用
+### 3.2 作用
 
-在进程部分的学习中，我们知道，当进程开始运行时，OS 会将程序的数据加载到内存中，创建属于它的`task_struct`、`mm_struct`、页表等数据结构，而建立虚拟内存和物理内存之间的映射是页表。那么对于进程和文件而言，也是类似的方式，只不过不是页表，==而是一个存在于`file_struc`t 结构体中的一个指针数组，数组的下标就是文件描述符。==
+在进程部分的学习中，我们知道，当进程开始运行时，OS 会将程序的数据加载到内存中，创建属于它的`task_struct`、`mm_struct`、页表等数据结构，而建立虚拟内存和物理内存之间的映射是页表。那么对于进程和文件而言，也是类似的方式，只不过不是页表，<mark>而是一个存在于`file_struc`t 结构体中的一个指针数组，数组的下标就是文件描述符。</mark>
 
-首先简要地说明一下这些结构体之间的关系（从进程到文件）：`task_struct`结构体保存着进程的数据，而`task_struc`t 中保存着另一个结构体的地址，名为`file_struct`，保存着文件的数据。而这个`file_struct`中有一个指针数组`fd_array`，==文件描述符的本质是指针数组的下标。==
+首先简要地说明一下这些结构体之间的关系（从进程到文件）：`task_struct`结构体保存着进程的数据，而`task_struc`t 中保存着另一个结构体的地址，名为`file_struct`，保存着文件的数据。而这个`file_struct`中有一个指针数组`fd_array`，<mark>文件描述符的本质是指针数组的下标。</mark>
 
 > 文件描述符作为数组下标，它的作用是什么呢？
 
@@ -425,11 +425,11 @@ Linux 下一切皆文件，我们知道，OS 会将各种接入计算机的硬�
 用代码验证一下：
 
 ```cpp
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+##include <stdio.h>
+##include <unistd.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <fcntl.h>
 int main()
 {
     printf("stdin, %d\n", stdin->_fileno);
@@ -443,7 +443,7 @@ int main()
 
 因为 stdin、stdout 和 stderr 都是 C 语言的结构体指针，所以可以访问结构体成员。其中_fileno 就是封装了文件描述符的成员。
 
-## 3.3 分配规则
+### 3.3 分配规则
 
 在看了 2.1 中的示例和上面的阐述后，不难知道为什么用 open 打开文件后的返回值是从 3 递增的整数。
 
@@ -451,16 +451,16 @@ int main()
 
 > 那么，可以关闭 fd=0/1/2 的文件吗？
 
-- 可以。但是不要关闭 fd=1 的文件，因为它对应着输出设备的文件，否则就看不到==显示器显示的==结果了。
+- 可以。但是不要关闭 fd=1 的文件，因为它对应着输出设备的文件，否则就看不到<mark>显示器显示的</mark>结果了。
 
 例如，就 2.1 的代码，可以用 close 把 fd=0/2 的文件关掉，然后再打开一个其他文件，看看 fd 的情况：
 
 ```cpp
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+##include <stdio.h>
+##include <unistd.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <fcntl.h>
 int main()
 {
     close(0); // 关闭标准输入
@@ -490,9 +490,9 @@ int main()
 
 <img src="基础IO.IMG/MD202211051402385.png" alt="image-20221103135052296" style="zoom:40%;" />
 
-# 4. 重定向
+## 4. 重定向
 
-## 4.1 概念
+### 4.1 概念
 
 总之就是一句话：数据本来要写入到 A 文件中，却被写到了 B 文件中。例如，在学习 Linux 基本操作时，就有这样的重定向操作：
 
@@ -502,22 +502,22 @@ echo 重定向测试 > test.txt
 
 <img src="基础IO.IMG/MD202211051402386.png" alt="image-20221102172320361" style="zoom:40%;" />
 
-## 4.2 重定向的原理
+### 4.2 重定向的原理
 
-### 输出重定向示例
+#### 输出重定向示例
 
 在理解了文件操作符的作用和分配规则以后，理解重定向的原理也就不难了。
 
-==重定向的本质是修改下标为 fd 的数组元素的指向。==
+<mark>重定向的本质是修改下标为 fd 的数组元素的指向。</mark>
 
 首先来看，如果关掉了 fd=1（标准输出）的文件后，会发生什么？
 
 ```cpp
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+##include <stdio.h>
+##include <unistd.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <fcntl.h>
 int main()
 {
 	close(1);
@@ -538,7 +538,7 @@ int main()
 
 <img src="基础IO.IMG/MD202211051402387.png" alt="image-20221103111251072" style="zoom:40%;" />
 
-### 原理
+#### 原理
 
 对代码的解读：
 
@@ -575,7 +575,7 @@ close(fd);
 
 从图示可以知道，输出重定向就是打开一个文件的同时，OS 在内核中创建一个 file 对象，让进程的 fd_array[1] 重新指向打开文件的 file 对象。
 
-### 追加重定向
+#### 追加重定向
 
 上面的输出重定向如果测试几次，会发现它和 C 语言以"w"形式使用 fopen 打开文件一样，每次都是先清空然后再输入，如何实现追加重定向呢？
 
@@ -585,16 +585,16 @@ close(fd);
 int fd = open("log.txt", O_WRONLY|O_APPEND|O_CREAT, 0666);
 ```
 
-### 输入重定向
+#### 输入重定向
 
 和输出重定向的原理类似，都是修改 fd_array[] 元素的指向。对于 C 语言，输入是从 stdin 读取的数据，所以要修改的下标 fd=0。
 
 ```cpp
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+##include <stdio.h>
+##include <unistd.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <fcntl.h>
 int main()
 {
 	close(0);
@@ -634,7 +634,7 @@ int main()
 >
 > <img src="基础IO.IMG/MD202211051402392.png" alt="image-20221103142737300" style="zoom:40%;" />
 
-### 补充
+#### 补充
 
 对于 stdout 和 stderr，都是对应的显示器，它们的区别在于：
 
@@ -645,7 +645,7 @@ int main()
 和 printf 和 scanf 对应，perror 默认输出到 stderr 中：
 
 ```cpp
-#include <stdio.h>
+##include <stdio.h>
 int main()
 {
     printf("stdout printf\n");                                                    
@@ -673,11 +673,11 @@ int main()
 
 结果表明，重定向操作不会把本来要输出到 stderr 文件中的数据输出到 log.txt，只会对 stdout 文件操作。
 
-# 5. dup2
+## 5. dup2
 
 在系统调用中，dup2 封装了类似上面示例中的操作，仅需要传入两个新旧文件描述符，就能完成重定向操作。
 
-## 5.1 介绍
+### 5.1 介绍
 
 使用 man 手册查看系统调用 dup2 的介绍：
 
@@ -693,36 +693,36 @@ man 2 dup2
 
 <img src="基础IO.IMG/MD202211051402395.png" alt="image-20221103225936774" style="zoom:40%;" />
 
-### 原型
+#### 原型
 
 ```cpp
 int dup2(int oldfd, int newfd);
 ```
 
-### 功能
+#### 功能
 
 - dup2 会将 fd_array[oldfd] 的内容拷贝到 fd_array[newfd] 中。
 
-### 返回值
+#### 返回值
 
 - 调用拷贝成功：返回 newfd；
 - 失败：返回-1。
 
-### 注意事项
+#### 注意事项
 
 1. 如果 oldfd 不是有效的文件描述符，则 dup2 调用失败，并且此时文件描述符为 newfd 的文件没有被关闭；
 2. 如果 oldfd 是一个有效的文件描述符，但是 newfd 和 oldfd 具有相同的值，则 dup2 不做任何操作，并返回 newfd。
 
-### 示例
+#### 示例
 
 打开一个文件 log.txt，用 fd 变量保存文件的文件描述符，然后 close(1)，关闭 stdout 文件，使用 dup2 实现 stdout 数据到文件 log.txt 的重定向。
 
 ```cpp
-#include <stdio.h>                                                              
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+##include <stdio.h>                                                              
+##include <unistd.h>
+##include <sys/types.h>
+##include <sys/stat.h>
+##include <fcntl.h>
 int main()
 {
     int fd = open("log.txt", O_WRONLY | O_CREAT, 0666);
@@ -750,13 +750,13 @@ fprintf(stdout, "hello, world <- fprintf\n");
 
 <img src="基础IO.IMG/MD202211051402397.png" alt="image-20221103231626369" style="zoom:40%;" />
 
-# 6. C 标准库中的 FILE 结构体
+## 6. C 标准库中的 FILE 结构体
 
 从重定向的原理和示例可以知道，尽管 C 标准库中定义 stdin、stdout 和 stderr 是 FILE 结构体指针，但因为语言层是封装系统调用的，所以 stdin、stdout 和 stderr 这些，只是语言中给文件描述符起的名字。实际上系统只认识文件描述符 fd，即 fd_array[] 的下标。
 
 正因如此，C 语言标准库定义的 FILE 结构体内部一定封装了等价于文件描述符的成员。
 
-## 6.1 FILE 中的_fileno
+### 6.1 FILE 中的_fileno
 
 在`/usr/include/libio.h`头文件中，可以查看`struct _IO_FILE`结构体的定义 (line:246)：
 
@@ -801,7 +801,7 @@ struct _IO_FILE {
     /*  char* _save_gptr;  char* _save_egptr; */
 
     _IO_lock_t *_lock;
-#ifdef _IO_USE_OLD_IO_FILE
+##ifdef _IO_USE_OLD_IO_FILE
 };
 ```
 
@@ -816,7 +816,7 @@ typedef struct _IO_FILE _IO_FILE;
 ```cpp
 typedef struct _IO_FILE FILE;
 
-#include <libio.h>
+##include <libio.h>
 ```
 
 在头文件`<libio.h>`中，有一个成员变量名为`_fileno`，它就是封装的文件描述符。而在 C 语言的标准输入输出库`stdio`中，包含了系统库`libio.h`，并将`FILE`作为`_IO_FILE`的别名。
@@ -831,7 +831,7 @@ typedef struct _IO_FILE FILE;
 
 类似地，如 fread、rwrite、rputs、fgets 等 C 标准库的其他文件 I/O 函数，实现的原理都是如此，只不过输入和输出的方向相反。万变不离其宗，文件的操作离不开文件描述符。
 
-### 小结
+#### 小结
 
 进程如何管理文件？
 
@@ -839,17 +839,17 @@ typedef struct _IO_FILE FILE;
 
 - 文件描述符的本质是 fd_array[] 的下标，这个结构体指针数组的地址是被进程的 task_struct 保存的。进程通过 fd_array[] 和用 fopen 函数得到的下标，就能通过特定下标元素和文件之间的映射关系管理文件。
 
-## 6.2 FILE 中的缓冲区
+### 6.2 FILE 中的缓冲区
 
-### 引入
+#### 引入
 
 在早期学习 C 语言时，一定会遇到使用 getchar()、fflush 等函数才能让我们正常地打印东西，但是至今还是一头雾水，不知道原理所在，只知道有“缓冲区”这个东西存在，它让人无语的地方就在于时不时能碰到它，却不能彻头彻尾地解决它。
 
 首先以一个程序引入，代码中分别调用了两个 C 库函数和一个系统调用，并且在 return 语句之前 fork 创建了子进程：
 
 ```cpp
-#include <stdio.h>
-#include <unistd.h>
+##include <stdio.h>
+##include <unistd.h>
 int main()
 {
     printf("hello world <- printf\n");
@@ -872,15 +872,15 @@ int main()
 
 这两种不同的情况和 fork 有关，虽然它在语句最后。
 
-### 认识
+#### 认识
 
 首先要说明，缓冲有三种方式：
 
 - 无缓冲：标准 I/O 库不缓存字符；
 
-- 行缓冲：只有在输入/输出中遇到==换行符==的时候，才会执行 I/O 操作，一般而言，行缓冲对应显示器文件；
+- 行缓冲：只有在输入/输出中遇到<mark>换行符</mark>的时候，才会执行 I/O 操作，一般而言，行缓冲对应显示器文件；
 
-- 全缓冲：I/O 操作只有在缓冲区==被填满了之后==才会进行，一般而言，全缓冲对应磁盘文件（是磁盘这个文件，而不是磁盘中的文件）。
+- 全缓冲：I/O 操作只有在缓冲区<mark>被填满了之后</mark>才会进行，一般而言，全缓冲对应磁盘文件（是磁盘这个文件，而不是磁盘中的文件）。
 
 - 特殊情况：
 
@@ -909,7 +909,7 @@ I/O 过程是最耗费时间的，就像借钱谈话 1 小时，转账 5s 一样
 
 因为需要数据被处理的结果的主体是人，计算机只是工具，人们需要接收动态的数据结果，就要通过显示器实时查看。如果采用全刷新，人们也就不用时时刻刻盯着股价看了，也不知道它什么时候显示走势，所以行刷新通常对应显示器文件。所以，除了全刷新之外的刷新策略（包括特殊情况），都是一种折中手段，一方面要保证效率，一方面要照顾用户体验。对于特殊情况，可以由用户自己决定。
 
-### 原理
+#### 原理
 
 造成上面同一打印方式不同输出文件而造成不同的结果的原因是：OS 根据输出文件的不同，采取了不同的刷新策略。
 
@@ -951,9 +951,9 @@ char *_IO_backup_base;  /* Pointer to first valid character of backup area */
 char *_IO_save_end; /* Pointer to end of non-current get area. */
 ```
 
-# 7. 文件系统
+## 7. 文件系统
 
-## 7.1 背景
+### 7.1 背景
 
 我们在之前通常所说的“文件”是磁盘中的文件（磁盘级文件），它们都是没有被打开的文件。学习磁盘级文件有以下侧重点：
 
@@ -971,9 +971,9 @@ char *_IO_save_end; /* Pointer to end of non-current get area. */
 
 为了更好地存取文件，如何对磁盘文件分门别类地存储？在学习磁盘文件之前，当然要对磁盘这个硬件有一定的了解。
 
-## 7.2 磁盘
+### 7.2 磁盘
 
-### 磁盘的特性
+#### 磁盘的特性
 
 首先，要区分磁盘和内存的区别：
 
@@ -982,7 +982,7 @@ char *_IO_save_end; /* Pointer to end of non-current get area. */
 
 磁盘是一个外设，是计算机中唯一一个机械设备，所以从结构上说它很慢（相对于 CPU 而言），但是 OS 会有一些提速方式（不展开讲）。所有的普通文件都是存储在磁盘中的。
 
-### 磁盘的结构
+#### 磁盘的结构
 
 磁盘由盘片、磁头、伺服系统、音圈马达（旋转）等部分组成。
 
@@ -1028,19 +1028,19 @@ char *_IO_save_end; /* Pointer to end of non-current get area. */
 
 <img src="基础IO.IMG/MD202211051402404.png" alt="image-20221104230005411" style="zoom:40%;" />
 
-## 7.3  EXT2 文件系统
+### 7.3  EXT2 文件系统
 
-### 文件系统
+#### 文件系统
 
 文件系统和操作系统类似，都是存储和组织计算机数据的方法。它使得对其访问和查找变得容易，文件系统使用**文件**和**树形目录**的抽象逻辑概念代替了硬盘和光盘等物理设备使用数据块的概念，用户使用文件系统来保存数据不必关心数据实际保存在硬盘（或者光盘）的地址为多少的数据块上，只需要记住这个文件的所属目录和文件名。在写入新数据之前，用户不必关心硬盘上的那个块地址没有被使用，硬盘上的存储空间管理（分配和释放）功能由文件系统自动完成，用户只需要记住数据被写入到了哪个文件中。
 
 文件系统就像操作系统一样不止一个，本节主要了解 EXT2 文件系统。
 
-### 介绍
+#### 介绍
 
 **第二代扩展文件系统**（**second extended filesystem**，缩写为** ext2**），是 Linux 内核所用的文件系统。
 
-### 结构
+#### 结构
 
 ext2 中的空间被分成了若干块（blocks），这些块被分到块组（block group）中。大型文件系统上通常有数千个块。任何给定文件的数据通常尽可能包含在单个块组中。这样做是为了在读取大量连续数据时尽量减少磁盘寻道次数。
 
@@ -1065,7 +1065,7 @@ ext2 中的空间被分成了若干块（blocks），这些块被分到块组（
 
 > 启动块（boot block）的大小是固定的，其他块组的大小是根据写入的数据量确定的，且无法更改。
 
-### 管理方式
+#### 管理方式
 
 文件系统是属性信息的集合，虽然磁盘的基本单位是 512 字节的扇区，但是 OS 中的文件系统和磁盘进行 I/O 操作的基本单位是 4KB（8*512byte）。
 
@@ -1092,23 +1092,23 @@ ext2 中的空间被分成了若干块（blocks），这些块被分到块组（
 >
 > <img src="基础IO.IMG/MD202211051402406.png" alt="Estructure" style="zoom:40%;" />
 
-####  格式化
+#####  格式化
 
 如果每个块组中的组成部分都进行上面的操作，那么每个分区都会被写入管理数据，整个分区（块组组成分区）也就被写入了系统文件信息，我们将它称为“格式化”。其实格式化磁盘，就是格式化区块的属性，data block 那些储存信息的分区。
 
-#### 创建文件
+##### 创建文件
 
 1. 内核会在当前区块中遍历 inode 位图，得到状态为空闲（0）的 inode，然后将它的状态置为 1；
 2. 在 inode 表中找到对应 inode，然后将文件属性填入 inode 对应的结构体中；
 3. 文件名是用户提供的，inode 编号是文件系统给的，OS 会建立它们之间的映射关系，然后把映射关系保存到文件目录的 data block 中。
 
-#### 查找（写入、查看）数据
+##### 查找（写入、查看）数据
 
 1. 内核在当前区块的目录文件的 data block 中找到文件的 inode 结构体，通过文件的 inode 编号，找到对应的 inode 结构体；
 2. 通过 inode 结构体，找到储存文件内容的数据块，将数据写入其中；
 3. 如果数据块不存在或者数据块已满，内核会遍历块位图得到一个状态为空闲的块组的块号，在数据区找到块号对应的空间，将数据写入其中，最后建立新数据块和 inode 结构体之间的映射关系。
 
-#### 删除文件
+##### 删除文件
 
 1. 将文件对应的 inode 在 inode 位图中的状态置为无效；
 2. 将文件已申请的数据块在块位图中的状态置为无效。
@@ -1127,7 +1127,7 @@ ext2 中的空间被分成了若干块（blocks），这些块被分到块组（
 
 - inode 是固定的，data block 也是固定的，有可能出现一个能分配而另一无法分配的情况，但这是没办法的事。
 
-### 理解目录
+#### 理解目录
 
 目录是文件吗？
 
@@ -1140,7 +1140,7 @@ ext2 中的空间被分成了若干块（blocks），这些块被分到块组（
 
 目录有自己的属性，也有它自己的内容，当然可以被认为是文件。
 
-#### inode vs 文件名
+##### inode vs 文件名
 
 指令：
 
@@ -1173,9 +1173,9 @@ inode 编号（分区内有效，在哪个分区，就是哪个编号）->分区
 
 - 依托于目录结构。不管是相对路径和绝对路径，它都能通过目录结构找到想操作的文件。
 
-# 8. 软硬链接
+## 8. 软硬链接
 
-## 8.1 准备工作
+### 8.1 准备工作
 
 创建一个文件 testLink.txt，然后给它一些内容。
 
@@ -1194,7 +1194,7 @@ ls -li
 
 其中，第一列是 inode 编号，第三列是引用计数。
 
-## 8.2 软链接
+### 8.2 软链接
 
 通过指令实现两个文件之间的硬链接：
 
@@ -1220,7 +1220,7 @@ ln -s main main.txt
 
 <img src="基础IO.IMG/MD202211051402411.png" alt="image-20221105113011647" style="zoom:40%;" />
 
-## 8.3 硬链接
+### 8.3 硬链接
 
 通过指令创建文件并建立硬链接关系：
 
@@ -1234,7 +1234,7 @@ ln main mainH
 
 > 但是，通过`ls -li`命令查看信息时，软链接的引用计数都是 1，而硬链接的引用计数都变成了 2，这是为什么呢？
 
-==引用计数用来描述文件被硬链接的次数。==硬链接创建的文件是被链接文件的一个别名，它的别名有几个，那么它的引用计数就是几。而原文件唯一的身份标识就是 inode 编号，所以即使是原文件的别名，inode 编号也必须一致。
+<mark>引用计数用来描述文件被硬链接的次数。</mark>硬链接创建的文件是被链接文件的一个别名，它的别名有几个，那么它的引用计数就是几。而原文件唯一的身份标识就是 inode 编号，所以即使是原文件的别名，inode 编号也必须一致。
 
 > 如果删除了原文件，硬链接创建的文件还能正常访问吗？
 
@@ -1251,7 +1251,7 @@ ls -li
 
 可以看到，文件的引用计数-1。
 
-## 8.4 目录的引用计数
+### 8.4 目录的引用计数
 
 创建一个目录，用`ls -li`命令查看它的引用计数（硬链接数）：
 
@@ -1276,7 +1276,7 @@ ls -i -a dir
 
 每个目录中，都有两个隐藏文件：`.`和`..`，我们都很熟悉它，经常用 cd 指令在上下级目录中跳转。它们分别表示当前目录和上级目录。那么，当前目录就有了两个名字，一个是`dir`，一个是`.`，所以引用计数是 2，同时，它们的 inode 编号也是一样的。
 
-## 8.5 文件时间
+### 8.5 文件时间
 
 通过`stat`命令可以查看文件的三个时间（ACM）：
 
@@ -1290,7 +1290,7 @@ ls -i -a dir
 
 使用指令`touch 文件名`可以将文件的 ACM 时间更新。
 
-## 8.6 小结
+### 8.6 小结
 
 - 软链接：通过文件名引用文件；软链接文件是一个独立的文件，有它自己的 inode。相当于一个快捷方式（例如 Windows 中的快捷方式也是占有内存的，也是一个文件），本质没有创建文件，只是建立了某个已有的文件名和 inode 的映射关系，这个映射关系被保存到当前目录文件中。
 - 硬链接：通过 inode 编号引用文件，没有独立的 inode。

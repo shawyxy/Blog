@@ -4,7 +4,7 @@ weight: 14
 open: true
 ---
 
-# 1. 引入
+## 1. 引入
 
 线程池是一种池化技术，是一种线程的使用方式。对于执行任务的整个过程，执行流的创建与销毁，调度本身就需要花费一定的时间。当线程数量达到一定程度，那么维护线程会消耗一些资源。
 
@@ -12,11 +12,11 @@ open: true
 
 线程池是一种以空间换时间的做法，例如在 STL 中，通常以 1.5 倍或 2 倍增长。这样做的目的是减少时间，提高效率。实现创建多个线程，用某个数据结构管理它们（例如队列），让多个线程同时在队列中等待任务的派发。那么当任务很多时，就能直接从队列中取出线程，这就将「创建线程」这一操作从「执行任务」的流程中剔除，从整体上节省了时间。
 
-# 2. 应用
+## 2. 应用
 
-# 3. 实现
+## 3. 实现
 
-## 封装线程
+### 封装线程
 
 在线程类`Thread`中用成员函数封装创建线程和销毁线程的接口。并且可以设置要传给线程的各种参数。不可缺少的是线程要执行的任务，即线程函数，除此之外，增加了线程的信息，例如线程的名字。其中线程的信息单独用一个类`ThreadData`封装。
 
@@ -73,7 +73,7 @@ private:
 
 这里的`name()`接口稍后会有用，实际上它是后补的，在这里就先给出了。
 
-## 封装线程池
+### 封装线程池
 
 在`ThreadPool.hpp`中实现线程池的框架，线程池的本质是一个生产者消费者模型。
 
@@ -85,13 +85,13 @@ private:
 除了构造函数和析构函数以外， 最重要的两个接口是`run()`和`pushTask()`，分别代表线程执行任务和任务入队（等待被执行）。
 
 ```cpp
-#pragma once
+##pragma once
 
-#include "Thread.hpp"
-#include <vector>
-#include <queue>
+##include "Thread.hpp"
+##include <vector>
+##include <queue>
 
-#define THREAD_NUM 5
+##define THREAD_NUM 5
 template<class T>
 class ThreadPool
 {
@@ -136,7 +136,7 @@ private:
 
 - 构造函数中使用`new`创建线程时，参数列表和`Thread`对应。但是此时还未实现线程函数，和传递给线程的参数，因此后面两个参数是暂时不确定的。
 
-## 线程函数
+### 线程函数
 
 在这里暂时用打印语句代替线程要执行的任务：
 
@@ -166,7 +166,7 @@ static void* routine(void* args)
 
 解决办法是用`static`修饰，这样就没有 this 指针了。实际上可以写在类的外部，这取决于测试环境。
 
-## 生产消费逻辑
+### 生产消费逻辑
 
 在`ThreadPood.hpp`在可以定义一个临时的测试函数：
 ```cpp
@@ -183,7 +183,7 @@ void joins()
 main 函数启动的线程就是主线程，主线程的作用一般是指派任务给其他线程。在主线程中`new`一个线程池对象，在对象实例化时，`ThreadPool`类构造函数会被调用，接着会调用`Thread`类的构造函数。
 
 ```cpp
-#include "ThreadPool.hpp"
+##include "ThreadPool.hpp"
 
 // 主线程
 int main()
@@ -207,7 +207,7 @@ int main()
 
 这个结果基本说明前面的代码在逻辑上没什么问题，最可能出现问题的地方就是刚才提到的`static`routine() 函数。
 
-## 互斥锁
+### 互斥锁
 
 上面只是实现了简单的线程池，但是多个执行流并发操作并不是安全的，因此要限制在同一时间段内只有一个执行流能访问临界资源。
 
@@ -218,11 +218,11 @@ int main()
 下面将`pthread`库中的锁的操作用一个类`Mutex`简单地封装起来，它将被定义在`LockGuard.hpp`中。
 
 ```cpp
-#pragma once
+##pragma once
 
-#include <iostream>
-#include <pthread.h>
-#include <string>
+##include <iostream>
+##include <pthread.h>
+##include <string>
 
 class Mutex
 {
@@ -267,14 +267,14 @@ private:
 
 > 这种将资源的初始化/销毁操作分别交给构造函数和析构函数的做法是常见的，它被称为 RAII（Resource Acquisition Is Initialization，资源获取即初始化）。因为局部对象在创建时会调用构造函数，出了作用域以后会调用析构函数，它是一种半自动化的操作，这种编码规范能减少出现内存泄漏、死锁等问题。
 
-## 条件变量
+### 条件变量
 
 单纯的加锁只会拖慢速度，互斥锁常常与条件变量协同作用，所以可以设置一个条件变量，表征队列中的任务或数据条件（也就是有没有）是否就绪。条件变量也可以和锁一样，用 RAII 实现，不过下面为了有所区别，直接用条件变量的相关接口实现。
 
 下面是增加了互斥锁和条件变量的线程池代码：
 
 ```cpp
-#define THREAD_NUM 5
+##define THREAD_NUM 5
 template<class T>
 class ThreadPool
 {
@@ -371,7 +371,7 @@ private:
 
 因此上面顺便封装了`waitCond()`和`empty()`配合条件变量使用，以及`getMutex()`和`getTask()`，以获取锁的地址和将生产的任务放入队列中。（实际上这个操作应该在下面完成）
 
-## 线程函数
+### 线程函数
 
 线程函数`routine`就是一个消费过程，但是在这里是存在问题的。由于刚才我们用`static`修饰了它，那么这个静态函数是属于所有成员的，那么它就不能使用类内部的成员属性和方法，如`_task_queue`。无法读取任务队列，拿不到队列也就无法消费。
 
@@ -438,15 +438,15 @@ static void* routine(void* args)
 }
 ```
 
-## 主线程
+### 主线程
 
 主线程的作用是分配任务，在这里可以简单地用加减操作作为任务，它将被定义在`Task.hpp`中：
 ```cpp
-#pragma once
+##pragma once
 
-#include <iostream>
-#include <functional>
-#define SOL_NUM 2
+##include <iostream>
+##include <functional>
+##define SOL_NUM 2
 
 typedef std::function<int(int, int)> func_t;
 
@@ -486,10 +486,10 @@ public:
 在主线程中，可以用`Task`类创建任务。用一个值域为 0 或 1，表示`sol[0]`或`sol[1]`，以选择加法或减法。同时用随机数定义两个操作数，传入函数中，这样就完成了任务的生产，将`Task`对象存入任务队列中。
 
 ```cpp
-#include <iostream>
-#include "ThreadPool.hpp"
-#include "Task.hpp"
-#include <sys/types.h>
+##include <iostream>
+##include "ThreadPool.hpp"
+##include "Task.hpp"
+##include <sys/types.h>
 
 // 主线程
 int opt = -1;
@@ -517,7 +517,7 @@ int main()
 }
 ```
 
-## 测试 1
+### 测试 1
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/ThreadPool2/test1)
 
@@ -536,36 +536,36 @@ Task task(x, y, [](int x, int y)->int
 
 此处为了更清楚地显示结果，将加解锁的提示语句注释了。而且通过 sleep 限制了主线程和线程池中的线程生产和消费的速度。
 
-# 4. 优化
+## 4. 优化
 
 可以用两个队列，分别属于生产者和消费者。当生产者生产任务的任务把其中一个队列存满以后，直接将这个满的队列中的所有任务通过`swap`，放到消费者的队列中，这样生产者和消费者就能更关注自己的队列。而消费者就不用自己从任务队列中取出任务，然后执行了，这个操作是由程序员完成的。
 
 原来的临界资源是任务队列，在对它操作的整个过程中都需要线程持有锁，但是现在消费者和生产者都有自己的队列，我们知道加锁会降低效率，这样的话也会拖慢整体执行任务的速度，但是优化以后只要对`swap`操作加锁即可。而`swap`恰好是消费者取出任务的操作，这就将锁限制的粒度进一步缩到最小，以提高整体效率。
 
-# 5. 日志
+## 5. 日志
 
-## 日志的重要性
+### 日志的重要性
 
 在学习过程中，我们经常使用打印语句打印提示信息，虽然“打印大法”在很多时候很有用，但产品始终是面向用户的，因此提示信息既要使用用户看得到的话呈现，又要将错误信息保存起来，以供开发者修复。日志信息通常保存在日志文件中，它的文件后缀是`.log`
 
 日志文件是用于记录系统操作事件的记录文件或文件集合，可分为事件日志和消息日志。它具有处理历史数据、诊断问题的追踪以及理解系统的活动等重要作用。日志文件中的记录可提供以下用途：监控系统资源；审计用户行为；对可疑行为进行告普；确定入侵行为的范围；为恢复系统提供帮助；生成调查报告等等。
 
-## 实现
+### 实现
 
 使用上面的例子来实现日志信息的生成，它将在`log.hpp`文件中被实现。
 
 日志的设计可以根据需要，但是日志需要实现最基本的功能：日志等级、日期和时间、内容，以及支持用户自定义等（可以使用可变参数实现用户自定义的日志信息）。
 
-### 日志级别
+#### 日志级别
 
 根据日志的重要性，赋予日志以优先级，以保证重要的问题最先被处理。
 
 ```cpp
-#define DEBUG   0
-#define NORMAL  1
-#define WARNING 2
-#define ERROR   3
-#define FATAL   4
+##define DEBUG   0
+##define NORMAL  1
+##define WARNING 2
+##define ERROR   3
+##define FATAL   4
 const char* LevelMap[] = 
 {
     "DEBUG",
@@ -586,7 +586,7 @@ const char* LevelMap[] =
 
 用一个数组`LevelMap[]`保存这些宏，以便使用，且下标和它们的值对应。
 
-### 提取参数
+#### 提取参数
 
 首先介绍一下可变参数，在 C 语言中，常用的函数`printf`就是可变参数，它的参数可以任意长。main 函数也是可变参数：
 
@@ -596,7 +596,7 @@ int main (int argc, const char * argv[])
 // argc 表示参数的个数，数组 argv 保存参数
 ```
 
-#### stdarg.h 头文件
+##### stdarg.h 头文件
 
 stdarg 是由 standard（标准） arguments（参数）简化而来，主要目的是让函数能够接收可变参数。它定义了一个变量类型 va_list 和三个宏，这三个宏可用于在参数个数未知（即参数个数可变）时获取函数中的参数。
 
@@ -611,8 +611,8 @@ stdarg 是由 standard（标准） arguments（参数）简化而来，主要目
 下面是一个简单的例子，它演示了如何使用 `stdarg.h` 头文件中的宏来定义一个接受可变数量参数的函数。这个函数计算传递给它的所有整数参数的平均值。
 
 ```c
-#include <stdio.h>
-#include <stdarg.h>
+##include <stdio.h>
+##include <stdarg.h>
 
 double average(int count, ...) 
 {
@@ -659,8 +659,8 @@ Average of 5, 10, 15 = 10.000000
 下面是一个简单的例子，演示了如何使用 `vsnprintf` 函数：
 
 ```c
-#include <stdio.h>
-#include <stdarg.h>
+##include <stdio.h>
+##include <stdarg.h>
 
 void format_string(char *buffer, size_t size, const char *format, ...) {
     va_list args;
@@ -684,23 +684,23 @@ int main() {
 Hello, world!
 ```
 
-#### 日志文件
+##### 日志文件
 
 下面使用文件接口，将日志信息写入到`ThreadPool.log`日志文件中：
 ```cpp
-#pragma once
+##pragma once
 
-#include <iostream>
-#include <cstdarg>
-#include <ctime>
-#include <string>
+##include <iostream>
+##include <cstdarg>
+##include <ctime>
+##include <string>
 
 // 日志级别
-#define DEBUG   0
-#define NORMAL  1
-#define WARNING 2
-#define ERROR   3
-#define FATAL   4
+##define DEBUG   0
+##define NORMAL  1
+##define WARNING 2
+##define ERROR   3
+##define FATAL   4
 
 const char *LevelMap[] = 
 {
@@ -711,14 +711,14 @@ const char *LevelMap[] =
     "FATAL"
 };
 
-#define LOGFILE "./ThreadPool.log"
+##define LOGFILE "./ThreadPool.log"
 
 void logMessage(int level, const char *format, ...)
 {
 
-#ifndef DEBUG_SHOW
+##ifndef DEBUG_SHOW
     if(level == DEBUG) return;
-#endif
+##endif
 
     char stdBuffer[1024]; // 标准部分（一定要有的）
     time_t timestamp = time(nullptr); // 时间
@@ -740,9 +740,9 @@ void logMessage(int level, const char *format, ...)
 其中，这是一个预处理命令，`DEBUG_SHOW`是编译选项，例如`g++ ... -DDEBUG_SHOW`，就会启用这个日志文件重程序，否则不会执行。
 
 ```cpp
-#ifndef DEBUG_SHOW
+##ifndef DEBUG_SHOW
     if(level == DEBUG) return;
-#endif
+##endif
 ```
 
 现在有了记录日志的逻辑，就可以使用它来程序主体中使用：
@@ -762,16 +762,16 @@ void logMessage(int level, const char *format, ...)
 [WARNING] [1682508159] Thread:[2] 处理完成：5+4=9 | Task.hpp | 35
 ```
 
-# 懒汉实现单例模式
+## 懒汉实现单例模式
 
-## 什么是懒汉模式
+### 什么是懒汉模式
 
 懒汉模式是一种实现单例模式的方法，它在第一次使用单例实例时才创建该实例。这种方法的优点是可以延迟单例实例的创建，直到真正需要它为止。
 
 下面是一个简单的示例，演示了如何使用懒汉模式来实现单例模式：
 
 ```c++
-#include <mutex>
+##include <mutex>
 
 class Singleton {
 public:
@@ -796,7 +796,7 @@ std::once_flag Singleton::flag;
 
 这种方法可以实现懒汉模式，即在第一次使用单例实例时才创建该实例。
 
-## 什么是单例模式
+### 什么是单例模式
 
 简单介绍一下单例模式：
 
@@ -809,7 +809,7 @@ std::once_flag Singleton::flag;
 下面是一个简单的示例，演示了如何在多线程环境中使用双重检查锁定模式来实现单例模式：
 
 ```c++
-#include <mutex>
+##include <mutex>
 
 class Singleton 
 {
@@ -879,7 +879,7 @@ private:
 
 如果锁不是静态的，那么每个 `Singleton` 实例都会有自己的锁。但是，在单例模式中，我们只允许创建一个 `Singleton` 实例，因此只需要一个锁来保护对这个实例的访问。此外，由于 `Singleton` 类的构造函数是私有的，外部代码无法创建 `Singleton` 实例，因此也无法创建非静态锁。
 
-## 实现
+### 实现
 
 为了演示的简单，上例用 C++内置`Mutex`库实现单例模式，下面仍然使用`pthread`库中的接口。
 

@@ -8,11 +8,11 @@ categories: ["项目", "内存管理"]
 ---
 
 
-# 涉及知识
+## 涉及知识
 
 **池化技术、内存管理、内存分配器、并发编程、单例模式、哈希桶、基数树**
 
-# 项目介绍
+## 项目介绍
 
 本项目实现了一个高并发内存池（Concurrent Memory Pool），它的内存管理器来自 Google 开源项目 [TCMalloc](https://google.github.io/tcmalloc/)（Thread-Caching Malloc），一个专为高并发应用设计的内存分配器。Golang 是一个原生支持高并发的语言，TCMalloc 功不可没。
 
@@ -38,7 +38,7 @@ categories: ["项目", "内存管理"]
 
 使用方法：下载并解压安装包，然后使用 Visual Studio 2019（或更高版本）打开`ConcurrentMemoryPool.sln`工程文件，切换到 Debug 模式下的 32 位。
 
-# 关于 malloc()
+## 关于 malloc()
 
 虽然栈内存不需要由用户维护，但是它的空间很小，C++和 C 程序往往通过 malloc()/free() 来申请和释放堆内存空间（C++的 new 和 delete 封装了 malloc() 和 free()）。在 Linux 上，malloc() 和 free() 实际上是 glibc 提供的一组函数，malloc() 内部会涉及到 brk() 和 mmap() 这两种系统调用。使用策略如下：
 
@@ -72,7 +72,7 @@ malloc() 在分配大块内存时可能需要直接调用操作系统提供的�
 
 本项目将着重学习 TCMalloc 是如何解决锁的竞争和内存碎片这两个问题的。
 
-# TCMalloc 介绍
+## TCMalloc 介绍
 
 下面通过和 malloc 对比（主要），简要介绍 TCmalloc。
 
@@ -93,21 +93,21 @@ malloc() 在分配大块内存时可能需要直接调用操作系统提供的�
 
 本项目要实现的是 TCMalloc 的核心功能，代码只有几千行，目的是学习 TCMalloc 的思想。
 
-# 内部碎片和外部碎片
+## 内部碎片和外部碎片
 
 造成内存碎片（内部和外部）的**根本原因**在于内存分配系统需要在有限的、**连续**的内存空间中满足各种大小的申请，同时还要考虑对齐要求。
 
-## 内部碎片
+### 内部碎片
 内部碎片发生在**已分配的内存块内部**，指的是分配给程序的内存块中未被使用的部分。这种情况通常发生在内存分配系统为了满足某些对齐要求或管理方便，**分配给应用程序比实际请求更多的内存时**。
 
 例如一个程序请求 100 字节内存，而系统以 128 字节块分配内存（那么这多出的 28 字节就是内部碎片。
 
-## 外部碎片
+### 外部碎片
 外部碎片是指**未被分配的空闲内存空间中的小块碎片**，这些碎片太小，无法被后续的内存请求有效使用。
 
 当有大块内存请求时，尽管总的空闲内存量可能足够，但由于这些空闲内存是分散的，系统可能无法找到足够大的连续空间来满足请求。
 
-## 内存对齐
+### 内存对齐
 
 内存对齐是指在内存中存放数据时，数据的起始地址必须是某个数（通常是 2、4、8 等）的倍数。内存对齐是处理器访问内存的一种约束条件，它确保数据的地址按照一定的对齐方式排列。
 
@@ -115,13 +115,13 @@ malloc() 在分配大块内存时可能需要直接调用操作系统提供的�
 
 关于内存对齐：[C/C++内存对齐详解](https://zhuanlan.zhihu.com/p/30007037)
 
-# TCMalloc 的基本结构
+## TCMalloc 的基本结构
 
 下面是 TCMalloc 的内部设计，主要由三部分组成：
 
 <img src="高并发内存池.IMG/image-20240229142232027.png" alt="image-20240229142232027" style="zoom:40%;" />
 
-## 基本概念
+### 基本概念
 
 - Object：内存粒度。小于 256KB 的内存块，称之为（小）对象。
 - SizeClass：Object 的规格大小。
@@ -132,17 +132,17 @@ malloc() 在分配大块内存时可能需要直接调用操作系统提供的�
 - Page：TCMalloc 最底层管理内存的单位，通常一个 Page 等于两个 page （系统）。
 - Radix Tree：基数树，用于维护 Span。
 
-## ThreadCache
+### ThreadCache
 
 ThreadCache 是**每个线程**私有的内存缓存。它缓存了**小对象**（小于 256KB 称之为 Object）的内存块，当线程需要分配或释放内存时，它首先查询自己的 ThreadCache。如果 ThreadCache 能够满足请求，则直接（**不加锁**）从中分配或回收内存，**避免了与其他线程的竞争和全局锁的开销**。
 
 对于频繁的小对象分配（通常小于 256KB），线程可以直接从自己的 ThreadCache 中申请内存，而大于 256KB 的内存则向操作系统申请。这可以显著提高性能。这是 TCMalloc 在高并发情况下性能更好的主要原因。
 
-## CentralCache
+### CentralCache
 
 CentralCache 是**全局共享**的，为所有线程提供服务，这意味着线程访问 CentralCache 需要加锁。作为 ThreadCache 和 PageHeap 之间的**中间缓存层**，**它维护着 Objects（由 ThreadCache 管理）和 Spans（由 PageHeap 管理）的映射关系**。当 ThreadCache 无法满足内存分配请求时，它会尝试从 CentralCache 获取内存。CentralCache 以批量方式从 PageHeap 获取内存，然后分割成小块供 ThreadCache 使用，从而**减少对 PageHeap 的直接访问和锁竞争**。
 
-## PageHeap
+### PageHeap
 
 PageHeap 是 tcmalloc 中管理**大块内存**（Span）分配的组成部分，通过内存管理 API 与操作系统交互，以页（Page，通常为 4KB）为单位管理内存。**一个 Span 由若干个 Page 组成**，PageHeap 维护它们之间的映射关系。PageHeap 还负责跟踪所有已分配和空闲的页面，优化内存使用和减少碎片。
 
@@ -152,9 +152,9 @@ PageHeap 是 tcmalloc 中管理**大块内存**（Span）分配的组成部分�
 
 上面是对 TCMalloc 中的三个重要组成部分的简要介绍，其细节将会在实现的同时深入。
 
-# 设计定长内存池
+## 设计定长内存池
 
-## 内存池介绍
+### 内存池介绍
 
 内存池用于管理内存分配，通过预先分配一大块内存并将其分割成小块来快速满足内存分配请求。这**减少了操作系统分配内存的次数**，降低了内存碎片，提高了内存使用效率。内存池特别适用于**频繁分配**和**释放固定大小内存块**的场景。
 
@@ -162,7 +162,7 @@ PageHeap 是 tcmalloc 中管理**大块内存**（Span）分配的组成部分�
 
 在定长内存池中，所有块的大小都是相同的，所以分配内存时只需从池中选择一个空闲块；释放内存时只需要将其标记为可用。而这也避免了因频繁分配和释放不同大小的内存块而产生的内存碎片问题。
 
-## 实现
+### 实现
 
 在将要实现的 TCMalloc 中，定长内存池可以作为操作系统和 PageHeap 的缓冲，大小为 128KB。规定 CentralCache 向 PageHeap 申请大于 128KB 的内存都转为向操作系统申请，否则由定长内存池切分给 PageHeap。
 
@@ -191,8 +191,8 @@ template<size_t N>
 
 ```cpp
 // ObjectPool.h
-#pragma once
-#include "Common.h"
+##pragma once
+##include "Common.h"
 
 template<class T>
 class ObjectPool
@@ -276,11 +276,11 @@ static const size_t PAGE_SHIFT = 13;
 // 向堆按页申请空间
 inline static void* SystemAlloc(size_t kpage)
 {
-#ifdef _WIN32
+##ifdef _WIN32
 	void* ptr = VirtualAlloc(0, kpage << PAGE_SHIFT, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-#else
+##else
 	// linux 下 brk mmap 等
-#endif
+##endif
 	if (ptr == nullptr)
 		throw std::bad_alloc();
 	return ptr;
@@ -342,7 +342,7 @@ private:
 };
 ```
 
-## 测试
+### 测试
 
 对比内存池的 New/Delete 和 malloc/free 的性能：Round 是轮次，N 是每轮申请/释放的次数。
 
@@ -404,15 +404,15 @@ void ObjectPoolTest()
 - 用一个`Common.h`包含所有文件要使用的头文件，叫做公共头文件。
 - 项目每实现一个小模块，都要及时对其进行测试，这些测试的代码将放在`UnitTest.cpp`中，叫做单元测试。
 
-# ThreadCache
+## ThreadCache
 
-## 框架
+### 框架
 
 ThreadCache 向线程直接提供小于 256KB 的小块内存，每个相同大小的小块内存以自由链表的形式被组织起来，所有不同大小的自由链表的首地址由一个数组保存，下标和自由链表对应。链表+数组下标=哈希桶。
 
 <img src="高并发内存池.IMG/image-20240301213140836.png" alt="image-20240301213140836" style="zoom:40%;" />
 
-## 设计自由链表
+### 设计自由链表
 
 由于哈希桶的每个位置都是一个自由链表，所以实现一个类以供使用。设计的思路和规范的链表没有什么区别。目前需要用到接口主要有：Push，Pop，Empty 和 Size，后续有新需求后再增加。
 
@@ -493,7 +493,7 @@ void FreeListTest()
 
 可见，链表确实是头插和头删的。值得注意的是结点内的值会随着插入的进行而发生改变。
 
-## 字节范围与哈希桶下标的映射规则
+### 字节范围与哈希桶下标的映射规则
 
 如果以一个字节为单位，为每个大小的内存块都分配自由链表，那么将会有 256K=2^18 种情况，哈希表（数组）开这么大显然不可取，低频使用的小内存块也是一种内存碎片，降低内存有效利用率。所以运用二八法则，考虑一个折中的做法：用一个类型的内存块代表某一个小范围内的所有类型的内存块，限制总类型数尽可能小，而应对的申请内存请求尽可能广。
 
@@ -696,7 +696,7 @@ alignNum - 1=16-1=15		  =01111
 1. `+ (1 << alignShift) - 1`：将`bytes`向上舍入到最接近的 2 的`alignShift`次幂的倍数。`(1 << alignShift)`表示将 1 左移`alignShift`位，即得到 2 的`alignShift`次幂。因此，`bytes + (1 << alignShift) - 1`就是将`bytes`向上舍入到最接近的 2 的`alignShift`次幂的倍数。
 2. `>> alignShift`：将上一步得到的结果右移`alignShift`位，相当于除以 2 的`alignShift`次幂。这样可以将对齐后的字节数转换为对应的索引。
 
-## 设计 ThreadCache 类
+### 设计 ThreadCache 类
 
 通过上面的讨论，我们知道哈希桶的个数（SizeClass）是 208 个，这与自由链表的数量对应。规定 ThreadCache 只分配小于等于 256KB 的内存。在 C++中尽量用静态常量来代替宏的使用。
 
@@ -766,7 +766,7 @@ void* ThreadCache::FetchFromCentralCache(size_t index, size_t bytes)
 }
 ```
 
-## TLS 无锁访问
+### TLS 无锁访问
 
 正常情况下，全局变量可以被所有线程访问。如果 ThreadCache 使用普通的全局变量维护待分配的内存，那么需要锁控制线程访问内存的行为，这会造成效率低下。ThreadCache 作为更接近应用程序的一层，如果线程可以无锁地从 ThreadCache 中申请和释放小块内存，那么就提高了效率。
 
@@ -797,7 +797,7 @@ static __declspec(thread) ThreadCache* TLSThreadCache_ptr = nullptr;
 那么现在 ThreadCache 就不能作为普通变量直接定义了，而是由`TLSThreadCache_ptr`接管，资源只归属于线程本身。所有向 ThreadCache 申请和释放的请求，都要经过`TLSThreadCache_ptr`处理。所以在`ConcurrentAlloc.h`中封装 ThreadCache 的分配和回收接口。
 
 ```cpp
-#include "ThreadCache.h"
+##include "ThreadCache.h"
 
 static void* ConcurrentAlloc(size_t bytes)
 {
@@ -835,7 +835,7 @@ static void ConcurrentFree(void* ptr)
 
 由于涉及到 PageHeap 的逻辑，所以它暂时是一个框架。内存分配函数中有一个测试用的打印语句，将在测试多线程时打印线程 ID 和`TLSThreadCache_ptr`的地址。
 
-## 测试
+### 测试
 
 首先验证 TLS 是否起作用。方法是两个线程执行不同的线程函数，在线程函数中向 ThreadCache 申请若干次内存，然后打印线程 ID 和内存地址。
 
@@ -870,9 +870,9 @@ void TLSTest()
 
 由此可见，两个线程的 ThreadCache 是相互独立的。
 
-# CentralCache
+## CentralCache
 
-## 框架
+### 框架
 
 当 ThreadCache 中某个 SizeClass 对应的自由链表为空时，这意味着它上面的 Object 都被分配出去了。为了方便 ThreadCache 直接通过 SizeClass（下标）从 CentralCache 中获取自由链表，CentralCache 采取了相同的 SizeClass 映射。
 
@@ -884,7 +884,7 @@ void TLSTest()
 
 更具体地说，Span 也挂着自由链表，**但这些链表管理的内存块是按页（4KB）分配的，因此在物理内存中是连续的**，这意味着若干空闲的 Span 只要是相邻的，就可以合并（而在 ThreadCache 中，自由链表的 Object 内存块在物理内存中不一定是连续的）。
 
-## 设计 Span 类
+### 设计 Span 类
 
 （回想上图中 Span 的位置）Span 作为双向链表（哈希桶）的结点，它首先要有两个指针`_prev`和`_next`。其次 Span 挂的是自由链表，它上面又有若干个 Object，用于分配给 ThreadCache，所以需要有个计数器`__usedCount`和自由链表的起始地址`_objectsList`。
 
@@ -898,13 +898,13 @@ Span 中的 Object 数量可能会被分配或者合并，所以 Span 管理的�
 
 ```cpp
 // Common.h
-#ifdef _WIN64
+##ifdef _WIN64
 	typedef unsigned long long PAGE_ID;
-#elif _WIN32
+##elif _WIN32
 	typedef unsigned int PAGE_ID;
-#else
+##else
 	// Linux
-#endif
+##endif
 ```
 
 值得注意的是，32 位平台中只有_WIN32 有定义，64 位平台两者都有，所以应该先判断、_WIN64。
@@ -932,7 +932,7 @@ struct Span
 
 注意（这和 Span 的合并相关）：一个 Span 由若干 Page 组成，把第一个 Page 的地址作为 Span 的地址，再除以 2^13 作为页号。
 
-## 设计 SpanList 类
+### 设计 SpanList 类
 
 CentralCache 的核心成员是一个元素类型为 SpanList 的哈希桶数组 _spanLists。这些哈希桶对应着不同的 SizeClass，即不同大小的内存块。双向链表方便在 Span 不再需要时将其归还给 PageHeap。
 
@@ -999,7 +999,7 @@ public:
 
 <img src="高并发内存池.IMG/image-20240307203908977.png" alt="image-20240307203908977" style="zoom:40%;" />
 
-## 设计 CentralCache 类
+### 设计 CentralCache 类
 
 首先为了方便用字节转换的索引值在 ThreadCache 和 CentralCache 中申请内存，CentralCache 采用了相同的 SizeClass 映射。
 
@@ -1043,7 +1043,7 @@ private: // 单例模式
 CentralCache CentralCache::_sInst;
 ```
 
-### 慢开始反馈调节
+#### 慢开始反馈调节
 
 ThreadCache 向 CentralCache 申请内存 SizeClass 规格的 Object 时，中采用了类似 TCP 慢启动（Slow Start）的算法来管理 ThreadCache 向 CentralCache 的对象请求。这种机制主要用于动态调整每次分配的对象数量，以优化内存使用和减少对 CentralCache 的访问频率。
 
@@ -1101,7 +1101,7 @@ public:
 
 直到`_maxSize`的值达到`num`后，需要申请的对象个数再换成`num`。慢增长的逻辑可以用`min(_maxSize,NumMoveSize(size))`控制，在`_maxSize`没有到达`NumMoveSize(size)`之前，表达式的值一直是`_maxSize`。
 
-### CentralCache::FetchRangeObj
+#### CentralCache::FetchRangeObj
 
 `CentralCache::FetchRangeObj()`用于 CentralCache 在 SizeClass 对应的 Span 中取出若干 Object 对象给 ThreadCache。逻辑如下：
 
@@ -1152,7 +1152,7 @@ size_t CentralCache::FetchRangeObj(void*& start, void*& end, size_t n, size_t by
 
 并且如果 Span 的中没有 n 个 Object，那就全部都取出。在这个情况下让循环停下来的条件是`NextObj(end)==nullptr`。
 
-### ThreadCache::FetchFromCentralCache
+#### ThreadCache::FetchFromCentralCache
 
 基于上面的讨论，可以将`ThreadCache::FetchFromCentralCache()`补充，用于 ThreadCache 向 CentralCache 申请 Object。逻辑如下：
 
@@ -1241,9 +1241,9 @@ void* ThreadCache::FetchFromCentralCache(size_t index, size_t bytes)
 
 值得强调的是，`ThreadCache::FetchFromCentralCache()`返回的是一个 Object 的地址，它最终会通过线程调用`ThreadCache::Allocate()`得到。新申请的 Object 除了这一个分配出去的之外，添加到 ThreadCache 的 SizeClass 规格的自由链表中。
 
-# PageHeap
+## PageHeap
 
-## 框架
+### 框架
 
 <img src="高并发内存池.IMG/image-20240303182529707.png" alt="image-20240303182529707" style="zoom:40%;" />
 
@@ -1258,7 +1258,7 @@ static const size_t PH_MAX_PAGES = 129;
 
 <img src="高并发内存池.IMG/image-20240303182831369.png" alt="image-20240303182831369" style="zoom:40%;" />
 
-## 设计 PageHeap 类
+### 设计 PageHeap 类
 
 PageHeap 类的设计和 PageHeap 类似。PageHeap 作为 CentralCache 的内存“供应商”，可能会出现 CentralCache 的多个桶都没有 Span，向 PageHeap 申请多个 SizeClass 的 Span 的情况。
 
@@ -1296,7 +1296,7 @@ public:
 
 这些成员函数将在稍后实现。
 
-## CentralCache::GetOneSpan
+### CentralCache::GetOneSpan
 
 现在有了 PageHeap 的哈希桶结构，就可以实现`CentralCache::GetOneSpan()`了。如果 CentralCache 的某个 SizeClass 对应的 SpanList 中没有 Span 了，那么就要从 PageHeap 获取一个 Span，在此之前要遍历它自己的哈希桶链表，这也是要实现 SpanList 迭代器的函数`begin/end`的原因。当遍历完所有的 Span，则说明 CentralCache 要向 PageHeap 申请内存块了。
 
@@ -1419,7 +1419,7 @@ CentralCache::GetOneSpan() 用于从 CentralCache 获取一个非空的 Span，�
 
 值得注意的是，页号 PageId 原本是通过地址除以 2\^13 得到的，指针的值是一个无符号整数，但是页号乘以 2^13 后仍然是一个无符号整数，所以要强转成 char*，才能访问这个地址中的内存。
 
-## PageHeap::NewSpan
+### PageHeap::NewSpan
 
 当 CentralCache 的某个 SizeClass 的桶中没有 Span 后，需要调用 PageHeap::NewSpan()，从 PageHeap 中获取一个新的 Span 挂到自己的 SpanLists 上， 然后再给 ThreadCache。
 
@@ -1496,15 +1496,15 @@ Span* PageHeap::NewSpan(size_t k)
 
 > 递归可以用另外的逻辑代替，但是这里权衡递归的成本和代码复用的收益后，后者更加重要，因为递归最多一层。
 
-## PageHeap 的锁问题
+### PageHeap 的锁问题
 
-### CentralCache 向 PageHeap 申请 Span 加 Page 锁
+#### CentralCache 向 PageHeap 申请 Span 加 Page 锁
 
 在设计 PageHeap 类的最后讨论了：由于分割和合并 Span 的需要，只用桶锁对代码实现的要求很高，而通过 CentralCache 在向 PageHeap 申请内存时对一整个 PageHeap 加锁，保证并发安全问题。TCMalloc 在 CentralCache 向 PageHeap 申请内存的前后加锁。
 
 <img src="高并发内存池.IMG/image-20240304163838937.png" alt="image-20240304163838937" style="zoom:40%;" />
 
-### CentralCache 向 PageHeap 申请 Span 解桶锁
+#### CentralCache 向 PageHeap 申请 Span 解桶锁
 
 当 CentralCache 已经到了要向 PageHeap 申请 Span 的地步时，桶内已经没有 Span 了。而 CentralCache 是持有锁才能访问这个桶的，这可以保证在并发情况下多个线程取出 Object 不出现错误。
 
@@ -1520,11 +1520,11 @@ Span* PageHeap::NewSpan(size_t k)
 >
 > 加锁意味着要访问临界资源；解锁意味着从访问资源出来。脑海里可以有一个流程。
 
-# 内存申请测试
+## 内存申请测试
 
 现在 ThreadCache、CentralCache 和 PageHeap 的申请流程已经完善，下面用单线程进行内存申请流程的测试。
 
-## 测试一
+### 测试一
 
 ```cpp
 void AlignTest() // 测试对齐
@@ -1579,7 +1579,7 @@ return 1. 线程通过地址使用申请到的内存
 
 剩下两条语句的执行流程类似，只是由于前面的申请，CentralCache 和 PageHeap 里都有内存了。
 
-## 测试二
+### 测试二
 
 我们知道在初始情况 PageHeap 向系统申请了 8KB 的内存，下面测试单线程在申请 8KB 内存后，再申请 8Bytes，看看 PageHeap 会不会再申请向系统申请一个 Span。
 
@@ -1608,9 +1608,9 @@ void AlignTest2()
 >
 > 由于二者冲突而函数模板需要推演，所以编译器会优先选择更快的宏。所以不要用`std::min()`。
 
-# 内存回收
+## 内存回收
 
-## ThreadCache::Deallocate
+### ThreadCache::Deallocate
 
 线程使用后的对象被 ThreadCache 回收，而 ThreadCache 是线程私有的。当 ThreadCache 中积累了过多的对象时，需要将部分对象返回给 CentralCache，以便其他线程使用。
 
@@ -1687,7 +1687,7 @@ public:
 
 注意，这里删除到倒数第一个 Object 时就要停下来，和之前取 Object 时一样，将最后一个 Object 的 next 指针置空。两个输出型参数用于返回给 CentralCache，只有拿到地址才能操作。
 
-## CentralCache::ReleaseListToSpans
+### CentralCache::ReleaseListToSpans
 
 CentralCach 回收来自 ThreadCache 由若干 Object 组成的一段自由链表，它们的起始和终止地址由输出型参数 start 和 end 返回。CentralCache 遍历自由链表中的 Object，然后将它们 Push 到自己对应 SizeClass 的自由链表 Span 中，并将 Span 的`_usedCount--`，表示 ThreadCache 归还 Object。
 
@@ -1793,7 +1793,7 @@ void CentralCache::ReleaseListToSpans(void* start, size_t bytes)
 
 将 Span 还给 PageHeap 之前需要将它从 CentralCache 的桶中取出，这个过程需要持有桶锁，并且为了后续内存的安全使用，将 Span **作为结点的信息**清空，注意不要将页号和页数还原，因为这是 PageHeap 后续合并 Span 的依据。在对 PageHeap 访问的前后也需要加大锁。
 
-## PageHeap::ReleaseSpanToPageHeap
+### PageHeap::ReleaseSpanToPageHeap
 
 随着 CentralCache 的不断申请，它的大多数桶都可以挂上 Span。但是有一种极端情况是 CentralCache 不断申请同一页数的 Span，或者剩下的 Span 总是被挂到同一个桶，这样就会导致有的桶很长，有的桶很短。而且由于切分的操作，大页面的 Span 注定不会太多，而小页面的 Span 会很多，因为切分的是离 k 页最近的 n 页，那么 n-k 就会比较小。我们知道 CentralCache 是从头遍历 SpanList 获取新 Span 的，这样会造成后面很多个小页面的 Span 不能被使用，是一个外部碎片问题。
 
@@ -1862,11 +1862,11 @@ struct Span
 // 直接将内存还给堆
 inline static void SystemFree(void* ptr)
 {
-#ifdef _WIN32
+##ifdef _WIN32
 	VirtualFree(ptr, 0, MEM_RELEASE);
-#else
+##else
 	// Linux 下 sbrk unmmap 等
-#endif
+##endif
 }
 ```
 
@@ -1980,9 +1980,9 @@ void PageHeap::ReleaseSpanToPageHeap(Span* span)
 }
 ```
 
-# 内存释放测试
+## 内存释放测试
 
-## 测试一
+### 测试一
 
 对应地，下面用单线程测试释放内存的流程。首先实现 ConcurrentFree() 最基本的功能，这个函数稍后要完善，参数 bytes 可以在函数内求得，这里只是为了测试运行起来。
 
@@ -2047,7 +2047,7 @@ Span 和 leftSpan：
 
 可以看到 rightSpan 确实被合并到了 Span 上，页数也是对上了的。
 
-## 测试二
+### 测试二
 
 下面来进行多线程测试：让两个线程分别执行各自的线程函数，在函数内批量申请和释放内存。
 
@@ -2096,11 +2096,11 @@ void TestMultiThread()
 
 <img src="高并发内存池.IMG/image-20240307202700411.png" alt="image-20240307202700411" style="zoom:40%;" />
 
-# 项目完善
+## 项目完善
 
-## 大内存的申请和释放
+### 大内存的申请和释放
 
-### 申请
+#### 申请
 
 在这个项目中我们只处理了小于 256KB 的内存申请逻辑，下面对其进行补充。
 
@@ -2152,7 +2152,7 @@ static void* ConcurrentAlloc(size_t bytes)
 
 值得注意的是，内存是由线程调用线程池开放的接口 ConcurrentAlloc() 申请的，所以这个函数可以决定从哪里申请内存。超过 256KB 的内存不通过 ThreadCache 而直接访问 PageHeap。
 
-### 释放
+#### 释放
 
 和申请对应：小于 256KB（32 页）的内存释放给 ThreadCache；大于 256KB（32 页）且小于 1MB（128 页）的内存释放给 PageHeap；大于 1MB（32 页）的内存释放给操作系统的堆区。和大内存的申请一样，也是直接还给 PageHeap。
 
@@ -2221,7 +2221,7 @@ void BigAllocTest()
 
  可以看到，释放 33 个页的 Span 时，会将之前被切割剩下的 Span 合并，总页数和初始情况是一样的，都是 128 页。
 
-## 用内存池代替 new 和 delete 管理对象
+### 用内存池代替 new 和 delete 管理对象
 
 在目前的实现中，Span 哨兵位头结点以及 ThreadCache 实例都是用 new 和 delete 申请和释放的，为了彻底脱离使用 malloc/free 函数，分别为它们增加一个内存池，用于分配 Span 和线程创建 ThreadCache 实例。
 
@@ -2275,7 +2275,7 @@ xxxPool.Delete(ptr); // 3. 将对象释放到 xxx 池
 
 <img src="高并发内存池.IMG/image-20240310053010355.png" alt="image-20240310053010355" style="zoom:40%;" />
 
-##  线程查表加锁
+###  线程查表加锁
 
 PageHeap 向系统申请内存，并在内存归还给操作系统之前做着最后的管理，所以要建立 Span 和页号之间的映射关系，以方便 Object 的回收和 Span 间的合并。因此将哈希表交由 PageHeap 维护是合理的。
 
@@ -2285,7 +2285,7 @@ PageHeap 向系统申请内存，并在内存归还给操作系统之前做着�
 
 <img src="高并发内存池.IMG/image-20240310054032715.png" alt="image-20240310054032715" style="zoom:40%;" />
 
-## ObjectPool 加锁
+### ObjectPool 加锁
 
 我们知道 ThreadCache 的内存空间来自同一个 objectsPool，如果按上面这样写，在多线程情况下会出现问题。
 
@@ -2308,14 +2308,14 @@ public:
 
 <img src="高并发内存池.IMG/image-20240310055022324.png" alt="image-20240310055022324" style="zoom:40%;" />
 
-# 综合测试
+## 综合测试
 
 下面在多线程环境下分别测试 malloc/free 和 ConcurrentAlloc/ConcurrentFree 的性能，放在`Benchmark.cpp`中（基准测试）。
 
 在此之前建议仍用之前的单线程用例测试，以保证申请和回收的逻辑是通的，也比较好调试。
 
 ```cpp
-#include"ConcurrentAlloc.h"
+##include"ConcurrentAlloc.h"
 using std::cout;
 using std::endl;
 
@@ -2439,13 +2439,13 @@ int main()
 }
 ```
 
-## 测试一
+### 测试一
 
 测试 4 个线程，10 轮，每轮 10000 次申请和释放固定大小的内存空间（同一个桶）：
 
 <img src="高并发内存池.IMG/image-20240310055607980.png" alt="image-20240310055607980" style="zoom:40%;" />
 
-## 测试二
+### 测试二
 
 测试 4 个线程，10 轮，每轮 10000 次申请和释放不同大小的内存空间（放开第二条注释的代码）：
 
@@ -2457,7 +2457,7 @@ int main()
 
 <img src="高并发内存池.IMG/image-20240310123855644.png" alt="image-20240310123855644" style="zoom:40%;" />
 
-# 性能瓶颈分析
+## 性能瓶颈分析
 
 把 BenchmarkMalloc() 注释掉，调试->性能探查器（Alt+F2）->“检测”->开始。
 
@@ -2471,9 +2471,9 @@ int main()
 
 从 TCMalloc 的设计来看，它高效的主要原因是 ThreadCache 是线程私有的缓存，线程无需加锁获取资源。在 TCMalloc 的实现中，使用了基数树优化性能瓶颈，最小粒度缓解了线程加锁竞争资源的问题。
 
-# 基数树
+## 基数树
 
-## 介绍
+### 介绍
 
 参看：[图解基数树 (RadixTree)](https://blog.ihypo.net/16506944639091.html)；[树 - 前缀树 (Trie Tree)](https://pdai.tech/md/algorithm/alg-basic-tree-trie.html)
 
@@ -2494,7 +2494,7 @@ int main()
 
 基数树能够最大限度地减少锁的使用，从而提高性能，尤其是在多线程高并发的环境中。
 
-## TCMalloc 中的基数树使用
+### TCMalloc 中的基数树使用
 
 基数树的每个节点通常包含一个键值对和指向其子节点的指针。这些子节点的数量取决于基数（radix）的大小。例如，对于一个二进制基数树，每个节点可能有两个子节点（代表 0 和 1）。
 
@@ -2504,7 +2504,7 @@ int main()
 
 在下面的实现中，将用页号作为键，以 Span 对象的地址作为值。
 
-## 分层基数树
+### 分层基数树
 
 在分层的基数树中，键被分解为几个部分，每一部分对应树的一层。树的每个级别都代表键的一个部分。例如，在处理 32 位的内存地址时，可以将地址分解成多个 8 位的部分，每部分用来索引树的下一层。一条完整的边的集合就是一个唯一的地址。
 
@@ -2522,7 +2522,7 @@ int main()
 
 树的层深取决于键值（地址）的长度，在内存分配器中，32 位平台一般使用二层基数树，64 位平台使用三层基数树。
 
-### 单层基数树
+#### 单层基数树
 
 单层基数树直接通过数组查询。
 
@@ -2563,7 +2563,7 @@ private:
 
 在 32 位平台中，BITS 的值是`32-PAGE_SHIFT`。1 个 Page 是 8KB，LENGTH 的值是$2^{32-13}=2^{19}$，所以 BITS 的值是 19，表示存储页号最多要用 19 位。求出它的目的是事先将内存申请好，以应付所有的情况。这个数组的大小是$2^{19}*4B=2^{20}KB*2=2MB$，是合理的。但是 64 位下这个数组的大小是$2^{64-13}*8B=2^{54}B=2^{24}GB$，需要用三层基数树划分。
 
-### 二层基数树
+#### 二层基数树
 
 在 32 位平台中，需要 19 位保存页号。将前 5 位和后 14 位分别作为第一层和第二层的键（Key），分别**最多**需要$2^5*4B=2^7B$和$2^5*2^{14}*4B=2MB$的空间。二层基数树初始状态只需要为第一层数组开辟空间，第二层数组按需开辟。
 
@@ -2636,7 +2636,7 @@ public:
 
 `Ensure()`用于当需要建立页号与其 Span 之间的映射关系时，如果用于映射该页号的空间没有开辟时，则会为它开辟。
 
-### 三层基数树
+#### 三层基数树
 
 和二层基数树的结构类似。
 
@@ -2730,7 +2730,7 @@ public:
 };
 ```
 
-## 用基数树代替哈希表
+### 用基数树代替哈希表
 
 由于测试的平台选择了 32 位，可以随便选几层基数树，这里将二层哈希表的实现放在`PageMap.h`中。Common.h 包含它以后，将 PageHeap 的哈希表换成基数树：
 
@@ -2744,15 +2744,15 @@ public:
 
 有了基数树，PageHeap::MapObjectToSpan() 就不用加锁了。
 
-# 最终测试
+## 最终测试
 
-## 测试一
+### 测试一
 
 测试 4 个线程，10 轮，每轮 10000 次申请和释放固定大小的内存空间（同一个桶）：
 
 <img src="高并发内存池.IMG/image-20240310152302501.png" alt="image-20240310152302501" style="zoom:40%;" />
 
-## 测试二
+### 测试二
 
 测试 4 个线程，10 轮，每轮 10000 次申请和释放不同大小的内存空间（放开第二条注释的代码）：
 
@@ -2760,9 +2760,9 @@ public:
 
 可见，PageHeap::MapObjectToSpan() 没有了锁，尤其是在申请不同大小的对象时，ConcurrentFree 的整体速度要比 free 快好几倍。在 release 模式下会更快，这里用 debug 模式想让现象更明显。
 
-# 总结
+## 总结
 
-## 项目回顾
+### 项目回顾
 
 此项目是一个高效的内存管理器 TCMalloc 简易实现，旨在提高内存分配和回收的性能。它主要采用了以下方法实现高并发内存分配器：
 
@@ -2776,7 +2776,7 @@ public:
 8. 性能测试：通过基准测试（Benchmark.cpp），这可以评估和分析 TCMalloc 在不同条件下的性能。
 10. 内存池：ObjectPool 用于减少频繁内存分配的开销，提高内存分配的效率。
 
-## 项目难点
+### 项目难点
 
 - 理解内部碎片和外部碎片的产生原因和解决办法。
 - 位运算实现内存对齐。
@@ -2793,7 +2793,7 @@ public:
 
 - 等等。
 
-## 个人收获
+### 个人收获
 
 - 学习了内存管理器的思想，将内存从小到大分层，将一定数量的小内存让线程私有，按需申请和释放，这个过程是无锁的，是内存分配器在多线程环境下高效的原因之一。让较大的内存交给中央缓存和页堆管理，当它们的内存都超过一个阈值时，将内存归还给下一级。当下一级将内存分配给上一级时，都需要判断自己能不能一次性给那么多，否则就要向自己的下一级申请内存。分配内存首先要取出，其次是切分，并且要将最后一个置空。
 - 了解了基数树可以实现无锁或最小化锁，从而有效处理并发。
@@ -2809,7 +2809,7 @@ public:
 >
 > 不过万事开头难，之前 Visual Studio 调试的都是简单的逻辑，光这个项目调的次数都有之前加起来的多很多了，也学习了一些调试技巧。
 
-# 参考资料
+## 参考资料
 
 - [【项目设计】高并发内存池](https://blog.csdn.net/chenlong_cxy/article/details/122819562?spm=1001.2014.3001.5502)
 

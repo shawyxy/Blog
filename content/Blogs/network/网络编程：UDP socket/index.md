@@ -3,13 +3,13 @@ title: 网络编程：UDP socket
 weight: 3
 open: true
 ---
-## 阅读前导
+### 阅读前导
 
 UDP（User Datagram Protocol，用户数据报协议）是一个简单的面向数据报的运输层协议。它不提供可靠性，只是把应用程序传给 IP 层的数据报发送出去，但是不能保证它们能到达目的地。由于 UDP 在传输数据报前不用再客户和服务器之间建立一个连接，且没有超时重发等机制，所以传输速度很快。
 
 友情链接：[网络基础：socket 套接字](https://blog.csdn.net/m0_63312733/article/details/130441666?spm=1001.2014.3001.5501)
 
-# 服务端
+## 服务端
 
 实现一个 UDP 服务器通常需要以下几个步骤：
 
@@ -26,13 +26,13 @@ UDP（User Datagram Protocol，用户数据报协议）是一个简单的面向�
 
 <img src="网络编程：UDP socket.IMG/image-20230430125735059.png" alt="image-20230430125735059" style="zoom:40%;" />	
 
-## 定义
+### 定义
 
 服务端的逻辑将被定义在`UdpServer.cc`中，它包含了头文件`UdpServer.hpp`。
 
 而且服务端使用各种 socket 接口的操作将被封装为一个`UdpServer`类，这个类型的对象就可以被称之为服务端。它将在头文件中被定义，在源文件中被使用。
 
-## 日志
+### 日志
 
 在调试过程中，我们经常使用打印语句打印提示信息，虽然“打印大法”在很多时候很有用，但产品始终是面向用户的，因此提示信息既要使用用户看得懂的话呈现，又要将错误信息保存起来，以供开发者修复。日志信息通常保存在日志文件中，它的文件后缀是`.log`
 
@@ -42,19 +42,19 @@ UDP（User Datagram Protocol，用户数据报协议）是一个简单的面向�
 
 ```cpp
 // Log.hpp
-#pragma once
+##pragma once
 
-#include <iostream>
-#include <cstdarg>
-#include <ctime>
-#include <string>
+##include <iostream>
+##include <cstdarg>
+##include <ctime>
+##include <string>
 
 // 日志级别
-#define DEBUG   0
-#define NORMAL  1
-#define WARNING 2
-#define ERROR   3
-#define FATAL   4
+##define DEBUG   0
+##define NORMAL  1
+##define WARNING 2
+##define ERROR   3
+##define FATAL   4
 
 const char *LevelMap[] = 
 {
@@ -68,9 +68,9 @@ const char *LevelMap[] =
 // 打印版本
 void logMessage(int level, const char *format, ...)
 {
-#ifndef DEBUG_SHOW
+##ifndef DEBUG_SHOW
     if(level== DEBUG) return;
-#endif
+##endif
     // 标准部分
     char stdBuffer[1024];
     time_t timestamp = time(nullptr);
@@ -99,9 +99,9 @@ void logMessage(int level, const char *format, ...)
 
 关于可变参数的说明，可以看这里：[stdarg.h](https://gitee.com/shawyxy/2023-linux/blob/main/UdpSocket/SingleProcess/stdarg.md)
 
-## 框架
+### 框架
 
-### 成员属性
+#### 成员属性
 
 一个服务端进程要对数据进行处理，必须要知道数据是谁发送的，因此需要 IP 地址；除此之外，处理数据的主体是进程，网络通信的本质是跨网络的进程间通信，因此需要用端口号标识进程的唯一性。除此之外，每个服务端都需要一个套接字来传输信息。它本质是一个文件，因此使用 int 类型的变量保存它的文件描述符。
 
@@ -109,8 +109,8 @@ void logMessage(int level, const char *format, ...)
 
 ```cpp
 // UdpServer.hpp
-#include <iostream>
-#include <string>
+##include <iostream>
+##include <string>
 
 class UdpServer
 {
@@ -133,16 +133,16 @@ private:
 
 注意：构造函数中的`ip`赋予了缺省值，`0.0.0.0`表示允许接收来自任何 IP 地址的数据，稍后会做详细解释。在正常情况下，它不会被赋予缺省值。
 
-### 服务端框架
+#### 服务端框架
 
 - 控制命令行参数：在运行程序的同时将 IP 和 PORT 作为参数传递给进程，例如`./[name] [IP] [PORT]`这就需要提取出命令行参数`IP`和`PORT`。除此之外，通常的做法是通过打印一个语句来显示它的使用方法，一般使用一个函数`usage()`封装。
 - 参数类型转换：我们知道，IP 和 PORT 都是整数，而命令行参数是一个字符串，所以提取出参数以后，要对它们进行类型转换。由于这里的 IP 地址稍后要用其他函数转换，所以只有 PORT 使用了`atoi()`函数转换为整数。
 - 以防资源泄露，这里使用了`unique_ptr`智能指针管理服务器的资源，不必在此深究，这里的程序比较简单，用一对`new`和`delete`也能实现资源的申请与回收。注意调用构造函数的时候需要传递参数。智能指针的头文件是`<memory>`
 
 ```cpp
-#include "UdpServer.hpp"
-#include <memory>
-#include <cstdio>
+##include "UdpServer.hpp"
+##include <memory>
+##include <cstdio>
 
 static void usage(std::string proc)
 {
@@ -172,11 +172,11 @@ int main(int argc, char* argv[])
 >
 > <img src="网络编程：UDP socket.IMG/image-20230429173832545.png" alt="image-20230429173832545" style="zoom:40%;" />
 
-## 初始化服务器
+### 初始化服务器
 
 初始化服务器的逻辑将被封装在`UdpServer`类的`initServer()`成员函数中。
 
-### 创建套接字
+#### 创建套接字
 
 当服务器对象被创建出来，就要立马初始化它，初始化的第一件事就是创建套接字，这个操作相当于构建了网络通信信道的一端。`socket()`函数用于创建套接字。
 
@@ -208,12 +208,12 @@ int socket(int domain, int type, int protocol);
 下面是创建套接字和差错处理的逻辑：
 
 ```cpp
-#include "Log.hpp"
-#include <cerrno>
-#include <cstring>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <unistd.h>
+##include "Log.hpp"
+##include <cerrno>
+##include <cstring>
+##include <sys/types.h>
+##include <sys/socket.h>
+##include <unistd.h>
 
 class UdpServer{    
 	bool initServer()
@@ -267,16 +267,16 @@ UdpServer : UdpServer.cc
 
 <img src="网络编程：UDP socket.IMG/image-20230430000538861.png" alt="image-20230430000538861" style="zoom:40%;" />
 
-### 绑定
+#### 绑定
 
 上面只完成了初始化服务器的第一步，只是过滤了一些不利条件，但是成员属性的 IP 和 PORT 都还未被使用。如果不用它们的话就没办法传输数据。因此要将用户在命令行传入的 IP 地址和 PORT 在内核中与当前进程强关联起来，也就是绑定（bind）。即通过绑定，在后续的执行逻辑中这个端口号就对只对应着被绑定的服务器进程，因为端口号标定着主机中进程的唯一性，服务器运行起来本身就是一个进程。
 
 `bind()`函数用于将套接字与指定的 IP 地址和端口号绑定。通常在 TCP 协议或 UDP 协议的服务端设置。
 
 ```c
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+##include <sys/socket.h>
+##include <netinet/in.h>
+##include <arpa/inet.h>
 int bind(int sockfd, const struct sockaddr *addr,
                 socklen_t addrlen);
 ```
@@ -360,13 +360,13 @@ bool initServer()
 
 <img src="网络编程：UDP socket.IMG/image-20230430000153690.png" alt="image-20230430000153690" style="zoom:40%;" />
 
-## 运行服务端
+### 运行服务端
 
 UDP 的服务端的初始化非常简单，只要创建套接字并绑定用户提供的 IP 地址和端口号到内核即可，剩下的操作将由操作系统协助完成。只要启动服务端进程，就能直接接收客户端发送的数据。
 
 所谓网络服务器，在正常情况下它的进程应该是永不退出的，也就是服务器的逻辑应该在一个死循环中执行，我们把这样的进程叫做常驻进程，即一直存在于内存中（除非它挂了或者宕机）。因此使用 C/C++实现服务器的逻辑应该尽量杜绝内存泄漏问题。
 
-### 读取数据
+#### 读取数据
 
 `recvfrom()`函数用于从套接字接收消息。它可以用于连接模式或非连接模式的套接字，并且通常与非连接模式套接字一起使用，因为它允许应用程序检索接收数据的源地址。
 
@@ -391,22 +391,22 @@ ssize_t recvfrom(int sockfd, void *buf, size_t len, int flags,
 
 ---
 
-#### 参数解读
+##### 参数解读
 
 在客户端-服务端模式中，服务端除了使用 recvfrom() 函数获取数据本身之外，还要获取客户端的 IP 地址和端口号，反之也是如此。因此后两个参数起着非常大的作用：
 
 - `src_addr`：`sockaddr`类型的**输出型参数**。用于服务端获取客户端的 IP 地址和端口号；如果它的值为`NULL`，那么表示客户端的底层协议没有提供源地址，因此`addrlen`也将会为`NULL`。
-- `addrlen`：`unsigned int`类型的==输入输出型参数==：
+- `addrlen`：`unsigned int`类型的<mark>输入输出型参数</mark>：
   - 作为参数时：指定 recvfrom() 函数读取数据的长度；
   - 作为返回值时：返回源地址的实际大小。
 
 > 到目前为止，这个输入输出型参数是第一次遇见，感觉好妙。
 
-### 处理数据
+#### 处理数据
 
 实现回显（echo）功能：其实就是将接收到的数据打印出来。
 
-### 向客户端发送响应数据
+#### 向客户端发送响应数据
 
 这个步骤是必要的，向客户端发送响应数据是为了让客户端知道它的请求已被服务器接收并处理。这样客户端就可以根据服务器的响应来执行下一步操作，例如更新界面或显示错误信息。而且客户端也可能需要获取服务端处理的结果。
 
@@ -489,11 +489,11 @@ int main(int argc, char* argv[])
 
 注意，只有客户端对服务端进程发送数据，`recvfrom()`函数才会读取成功，返回值才会大于零，处理数据的逻辑才会执行。
 
-### 关闭文件描述符
+#### 关闭文件描述符
 
 在定义`UdpServer`类的时，在析构函数中调用`close()`函数关闭。
 
-# 客户端
+## 客户端
 
 实现一个 UDP 客户端通常需要以下步骤：
 
@@ -507,7 +507,7 @@ int main(int argc, char* argv[])
 
 以上是一个简单的 UDP 客户端实现的基本步骤，和服务端的实现非常类似。根据具体需求，可以在这些步骤中添加更多的逻辑和处理。
 
-## 定义
+### 定义
 
 客户端的逻辑将被定义在`UdpClient.cc`中，它包含了头文件`UdpClient.hpp`。
 
@@ -543,9 +543,9 @@ private:
 
 ```cpp
 // UdpClient.cc
-#include "UdpClient.hpp"
-#include <memory>
-#include <cstdio>
+##include "UdpClient.hpp"
+##include <memory>
+##include <cstdio>
 
 static void usage(std::string proc)
 {
@@ -570,7 +570,7 @@ int main(int argc, char* argv[])
 
 类似地，需要提取命令行参数，然后将它们作为参数传递给类`UdpClient`的构造函数中，以便后续使用。
 
-## 创建套接字
+### 创建套接字
 
 客户端创建套接字的逻辑和服务端是一样的：
 
@@ -590,7 +590,7 @@ bool initClient()
 }
 ```
 
-## 绑定
+### 绑定
 
 按照常理，不论是客户端还是服务端，除了数据本身，IP 地址和 PORT 对它们都是有用的，bind 到内核也是合理的。但是它们面向的用户群体不同，服务端面向的是程序员，客户端面向的是用户。而客户端是被很多人使用的，每个人的机器上肯定有不止一个客户端进程在运行，我们知道，端口号标识着一台机器中进程的唯一性，即在一台机器中一个端口号只能被一个进程占用，因此，如果客户端自己将端口号 bind 到内核，而其他客户端进程可能也需要这个端口号，那么它就会导致其他进程无法正常工作。
 
@@ -602,7 +602,7 @@ bool initClient()
 
 这个临时端口是由操作系统动态分配的，通常是在动态端口范围内选择一个未被占用的端口。客户端可以使用这个临时端口来接收服务器的响应数据。
 
-## 发送数据
+### 发送数据
 
 省去了 bind 操作，UDP 的客户端就只要发送数据给服务端即可。发送数据的前提是要获取服务器的 IP 和 PORT，它将从命令行参数中被提取。
 
@@ -636,7 +636,7 @@ void Start()
 - 这里使用了较为规范的`memset()`将结构体 server 中的值设置为 0。
 - 设置了退出分支。
 
-## 接收服务器的响应数据
+### 接收服务器的响应数据
 
 到目前为止，客户端已经完成了“要向谁发送数据”这个操作，客户端可能会需要服务端执行的结果，因此客户端也要接收服务器的响应数据。
 
@@ -645,7 +645,7 @@ void Start()
 但是在本次的实验中，我们实现的回声服务器并未对数据进行处理，客户端也就没有接收服务端返回的数据的必要，不过为了规范性，仍然使用`recvfrom()`函数接收服务端传回的数据。形式上可以定义一个结构体接收数据，充当占位符的作用。
 
 ```cpp
-#define SIZE 1024
+##define SIZE 1024
 void Start()
 {
     // 3. 发送数据
@@ -682,19 +682,19 @@ void Start()
 >
 > 有些程序员更喜欢使用`for(;;)`，因为它更简洁，也更容易让人一眼看出这是一个无限循环。而有些程序员则更喜欢使用`while(1)`，因为它更符合自然语言的表达方式。 
 
-## 关闭文件描述符
+### 关闭文件描述符
 
 在定义`UdpClient`类的时，在析构函数中调用`close()`函数关闭。
 
-# 测试 1
+## 测试 1
 
-## 本地环回
+### 本地环回
 
 本地环回（Loopback）是指一种网络接口，它可以将发送的数据返回给发送者，而不是将数据发送到外部网络。
 
 在大多数操作系统中，本地环回接口的 IP 地址为`127.0.0.1`，主机名为`localhost`。当应用程序向这个地址发送数据时，数据不会离开主机，而是直接返回给发送者。这样，应用程序就可以在不依赖外部网络的情况下进行测试和调试。
 
-### 作用
+#### 作用
 
 本地环回接口通常用于测试和诊断网络应用程序。由于本地环回接口可以将发送的数据返回给发送者，因此可以用来测试应用程序的网络功能，而无需连接到外部网络。
 
@@ -704,7 +704,7 @@ void Start()
 
 也就是说，通过本地环回传输数据，数据的传输只会从上至下、从下至上地经过协议栈，而不会经过网络。
 
-## 本地测试
+### 本地测试
 
 在下面的测试中，可以使用`127.0.0.1`本地环回地址测试一下上面写好的服务端和客户端程序。端口号随便设置，在这里设置为`8080`。
 
@@ -714,7 +714,7 @@ void Start()
 
 注意：首先要将服务端运行起来。通过实验结果来看，简易的回声服务端就被实现了，服务端将会在自己的进程中打印客户端发送的数据，并将数据原封不动地返回给客户端，`server echo#`后面的内容就是客户端返回的数据。
 
-## netstat 指令
+### netstat 指令
 
 `netstat`是一个用于显示网络状态信息的命令行工具。它可以显示各种网络相关的信息，包括活动的网络连接、路由表、接口统计信息等。
 
@@ -731,7 +731,7 @@ void Start()
 
 以上是对`netstat`命令的简要介绍。更多详细信息可以参考相关文档或使用`man netstat`命令查看手册页。
 
-### 使用
+#### 使用
 
 可以用这个工具查看刚才的程序对应的网络信息：
 
@@ -743,7 +743,7 @@ void Start()
 
 可以看见，两次客户端的端口号都是不一样的，这说明操作系统自动绑定的端口号是不确定的。
 
-## 公网 IP 问题
+### 公网 IP 问题
 
 对于一台云服务器，它的公网 IP 通常是由云服务提供商提供的虚拟公网 IP。这个虚拟公网 IP 并不是服务器真正的物理 IP 地址，而是通过网络地址转换（NAT）技术映射到服务器的私有 IP 地址上。
 
@@ -751,7 +751,7 @@ void Start()
 
 此外，使用虚拟公网 IP 还可以提供更好的安全性和灵活性。由于服务器的真实 IP 地址对外不可见，因此可以有效防止直接攻击。同时，云服务提供商还可以通过调整 NAT 映射规则来快速更换服务器的公网 IP 地址，以应对不同的网络需求。
 
-### 测试
+#### 测试
 
 如果将服务器的构造函数中 IP 的默认值保持`""`或不设置缺省值，然后在绑定之前的 IP 地址填充操作改为`local.sin_addr.s_addr = inet_addr(_ip.c_str())`，表示以用户设置的 IP 地址填充。
 
@@ -765,20 +765,20 @@ void Start()
 
 所以在服务端（尤其）和客户端的构造函数中赋予 IP 地址以缺省值`""`，然后在绑定之前的 IP 地址填充操作设置用这样的逻辑控制：`local.sin_addr.s_addr = _ip.empty() ? INADDR_ANY : inet_addr(_ip.c_str())`，这样就能兼容上述两种情况了。
 
-### INADDR_ANY
+#### INADDR_ANY
 
 注意`INADDR_ANY`，它的本质是一个值为`0`的宏，定义如下：
 
 ```c
 /* Address to accept any incoming messages.  */
-#define	INADDR_ANY		((in_addr_t) 0x00000000)
+##define	INADDR_ANY		((in_addr_t) 0x00000000)
 ```
 
 当服务器端的 IP 地址设置为`INADDR_ANY`时，意味着服务器将监听所有可用的网络接口上的客户端连接请求。也就是说，无论客户端使用哪个 IP 地址来连接服务器，服务器都能够接受连接。
 
 在这种情况下，如果服务器所在的主机拥有多个 IP 地址（包括虚拟 IP 地址），那么客户端可以使用任意一个 IP 地址来连接服务器。服务器会自动处理来自不同 IP 地址的客户端连接请求。
 
-#### 优点
+##### 优点
 
 将服务器端的 IP 地址绑定到`INADDR_ANY`有以下几个好处：
 
@@ -796,7 +796,7 @@ void Start()
 
 因此服务端的逻辑中 IP 地址就不用填充到结构体中了。
 
-## 网络测试
+### 网络测试
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/UdpSocket/SingleProcess)
 
@@ -816,16 +816,16 @@ void Start()
 
 <img src="网络编程：UDP socket.IMG/屏幕录制 2023-04-30 21.43.41.gif" alt="屏幕录制 2023-04-30 21.43.41" style="zoom:40%;" />
 
-# 解析命令版
+## 解析命令版
 
 上面实现了一个简单的回声服务器，是将数据看作字符串的。有时候客户端发送的数据中可能包含让对端主机执行任务的语句（例如`ls -a -l`），那么就要对字符串进行分割，然后在服务器中调用字符串对应的指令。这里的字符串分割当然可以自己实现，但本节的终点是实现功能，实际上也是直接把成熟的工具或框架拿来用，这样能保证安全性。
 
-## popen 函数
+### popen 函数
 
 `popen`是一个 Linux 函数，用于通过创建管道、分叉和调用 shell 来打开进程。由于管道本质上是单向的，因此`type`参数只能指定读取或写入，不能同时指定两者；因此，所得到的流分别是只读或只写的。
 
 ```c
-#include <stdio.h>
+##include <stdio.h>
 
 FILE *popen(const char *command, const char *type);
 
@@ -854,7 +854,7 @@ int pclose(FILE *stream);
 如果命令包含非法指令（例如`rm`或`rmdir`），服务器将向客户端发送一条错误消息并继续读取数据。否则，服务器将读取命令的输出并将其存储在`cmd`字符串中。最后，服务器使用`sendto`函数将命令的输出发送回客户端。
 
 ```cpp
-#define SIZE 1024
+##define SIZE 1024
 void Start()
 {
     char buffer[SIZE]; // 用来存放读取的数据
@@ -905,7 +905,7 @@ void Start()
 
 - 逻辑中使用了`strcasestr()`函数来查找子串。以过滤非法指令。
 
-## 测试
+### 测试
 
 <img src="../../../../var/folders/rn/x47kmrnj7v31hpbbfhlzd2m00000gn/T/com.sindresorhus.Gifski/TemporaryItems/NSIRD_Gifski_NEs8Xj/屏幕录制 2023-04-30 23.02.07.gif" alt="屏幕录制 2023-04-30 23.02.07" style="zoom:40%;" />
 
@@ -917,18 +917,18 @@ void Start()
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/UdpSocket/SingleProcess_command)--实际上只修改了`UdpServer.hpp`中成员函数`Start()`的逻辑，为了方便编译依然将所有文件打包。（实际上也能打包成一个库以供别人使用，不过这样的话就没办法看到代码中的细节了）
 
-# 群聊版（单进程）
+## 群聊版（单进程）
 
 上面的例子是一个服务端进程对应一个客户端进程，要实现群聊版的服务端程序，（想象我们在群里的情景）其实就是将每个用户发送的数据在客户端中收集起来，然后统一发送给每一个客户端。这样就实现了全员广播通信，从效果上看，每个客户端能看见自己和别人发送的信息。
 
-## 用户管理
+### 用户管理
 
 在这里，使用 STL 中的哈希表（也就是`unordered_map`）保存用户的信息，以不同客户端的 IP 和 PORT 来标识它们的身份，如果可能的话，我们可以将 IP 地址与用户设置的昵称映射起来，这就是我们在一个新网站注册的行为。
 
 哈希表被保存在`UdpServer`类的成员属性中。
 
 ```cpp
-#include <unordered_map>
+##include <unordered_map>
 class UdpServer
 {
 private:
@@ -937,7 +937,7 @@ private:
 };
 ```
 
-## 新增用户
+### 新增用户
 
 通过`recvfrom()`函数获取客户端发送过来的数据包`peer`，然后提取出它里面包含的客户端 IP 和 PORT，并将它们拼接在一起，以字符串的格式写入到缓冲区`info[]`中。
 
@@ -982,7 +982,7 @@ void Start()
 - 这是在类中的成员函数，因此仍然以字符串格式的 IP 地址处理。客户端传递的数据包是从网络接收的，因此要将网络字节序转为主机字节序。
 - `buffer[s] = '\0'`和`buffer[s] = 0`是等价的（`'\0'`的 ASCII 码为`0`），前者更规范些。
 
-## 向客户端发送响应数据
+### 向客户端发送响应数据
 
 客户端记录服务端的信息就是以键值对`<IP+PORT, 数据包>`保存在哈希表中，由于要向客户端发送响应数据，因此除了返回数据本身之外，还要将用户的信息和数据本身拼接起来一起返回。
 
@@ -1013,7 +1013,7 @@ void Start()
 }
 ```
 
-## 测试
+### 测试
 
 下面将用 2 个客户端和 1 个服务端进行测试。
 
@@ -1031,7 +1031,7 @@ void Start()
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/UdpSocket/SingleProcess_GroupChat)--实际上只修改了`UdpServer.hpp`中成员函数`Start()`的逻辑，为了方便编译依然将所有文件打包。
 
-# 群聊版（多线程）
+## 群聊版（多线程）
 
 对于上面实现的群聊版的服务端，它的逻辑是没有问题的，问题就在于只用一个进程同时实现客户端发送信息和接收信息会产生 IO 阻塞，因此考虑使用多线程。这里先用 2 个线程，分别发送消息和接收消息。
 
@@ -1041,7 +1041,7 @@ void Start()
 
 不会，因为套接字只会在初始状态修改它，后续只是访问它，不会对其修改，因此不会产生并发问题。
 
-## 封装
+### 封装
 
 在这篇文章中（[线程池](https://blog.csdn.net/m0_63312733/article/details/130396163?spm=1001.2014.3001.5501)），简单介绍了将`pthread`库中的多线程的操作函数封装为了一个`Thread`类，而且还将`pthread`库中的互斥锁的操作函数封装为一个（RAII 的）`Mutex`类，并用它们实现了一个简单的线程池`ThreadPool`，其中的线程函数由于并没有什么真正的需求，所以当时只在里面随便打印了一些语句作为线程函数的任务，现在这些数据从网络中来，而且也有真正的任务，因此到这里才算是线程池较为完善的实现。
 
@@ -1061,7 +1061,7 @@ private:
 
 > 使用普通的指针也可以，这里只是想规范一些，而且也想使用一下 C++11 的新工具。
 
-## 创建线程
+### 创建线程
 
 这里创建线程的主体是客户端，目的是将发送数据和接收数据的操作解耦。
 
@@ -1095,7 +1095,7 @@ public:
 - 智能指针`unique_ptr`只能被直接赋值一次（`=`），也就是第一次。在构造函数中可以通过创建一个临时对象来初始化它。
 - 这里的`Thread`的构造函数的参数列表见注释。至于为什么最后一个参数是`this`指针，见下。
 
-## 线程函数
+### 线程函数
 
 定义两个线程函数`udpSend`和`udpRecv`，分别对应两个线程。
 
@@ -1114,7 +1114,7 @@ public:
 
 而实现这两个线程函数最难的步骤就是如何解决上面这个问题，实际上就是将之前客户端接收和发送数据的逻辑拆分开（在成员函数`Start()`中），分别放到这两个线程函数中。
 
-### udpSend() 线程函数
+#### udpSend() 线程函数
 
 - 提取信息：由于传递给线程的参数实际上是被`ThreadData`类封装起来的（详细请看`Thread`的实现），因此首先要提取出真正的线程参数。其次由于传入的参数是指向对象的`this`指针，所以用一个指针`client_ptr`保存它，以便后续使用。
 - 填充 socket 信息和发送信息的步骤和之前一模一样。
@@ -1158,7 +1158,7 @@ static void *udpSend(void *args)
 
 > 注意`exit`函数终止的对象是进程而不是线程，它会使主线程（main() 进程）和所有线程都退出。
 
-### udpRecv() 线程函数
+#### udpRecv() 线程函数
 
 提取信息和接收数据的操作已经介绍过，在此不再赘述。
 
@@ -1185,9 +1185,9 @@ static void *udpRecv(void *args)
 }
 ```
 
-## 测试
+### 测试
 
-### 本地测试
+#### 本地测试
 
 下面用两个客户端和一个服务端进行群聊测试。
 
@@ -1210,7 +1210,7 @@ int main(int argc, char* argv[])
 
 不论是读还是写的两个线程，它们使用的 socket 都是同一个，那么 sockfd 对应的就是同一个文件。常规情况下，同时对一个文件进行读写会出现问题。但是 UDP/TCP 中的 socket 是全双工的，这意味着它可以同时进行读写操作而不干扰对方线程。
 
-### 管道测试
+#### 管道测试
 
 除了 `mkfifo` 函数之外，还有一个 `mkfifo` 命令。这个命令可以在 Linux 命令行中使用，它允许用户创建命名管道（FIFO）。它的基本语法是 `mkfifo [OPTION]... NAME...` 。
 
@@ -1237,7 +1237,7 @@ int main(int argc, char* argv[])
 
 [源代码](https://gitee.com/shawyxy/2023-linux/tree/main/UdpSocket/Threads_GroupChat)--修改了客户端的逻辑、Makefile 以及线程封装时格式化写入的部分逻辑。
 
-## 优化
+### 优化
 
 即使是这样，打印出来的信息也是比较混乱的，可以再进一步优化。
 
@@ -1249,4 +1249,4 @@ int main(int argc, char* argv[])
 
 > 关于互斥锁和条件变量，在上面的《线程池》一文中有作出介绍。
 
-# 群聊版（线程池）
+## 群聊版（线程池）

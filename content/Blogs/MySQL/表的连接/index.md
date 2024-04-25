@@ -4,7 +4,7 @@ weight: 10
 open: true
 ---
 
-# 什么是连接
+## 什么是连接
 
 数据库的连接是指在数据库系统中，两个或多个数据表之间建立的关联关系，使它们可以进行数据的交互和操作。连接通常基于某种**共同**的字段或条件，用于将相关数据组合在一起。
 
@@ -40,11 +40,11 @@ open: true
 
 <img src="表的连接.IMG/bg2019011507.png" alt="img" style="zoom:40%;" />
 
-# 测试表
+## 测试表
 
 <img src="表的连接.IMG/image-20240223173257335.png" alt="image-20240223173257335" style="zoom:40%;" />
 
-# 内连接
+## 内连接
 
 内连接（Inner Join）：内连接返回两个数据表中满足连接条件的交集部分。只有当连接条件在两个表中**都**存在匹配时，才会返回结果。
 
@@ -68,11 +68,11 @@ SQL 的构造顺序是：
 
 由于 id=2，name=香蕉这条记录在 table2 中没有相同的属性，因此它不会被作为内连接的返回值。
 
-# 外连接
+## 外连接
 
 外连接（Outer Join）：外连接返回连接条件满足的结果，以及其中一个表中未匹配到的行。外连接分为左外连接（Left Outer Join）、右外连接（Right Outer Join）和全外连接（Full Outer Join），具体取决于哪个表的所有行都包括在结果中。
 
-## 左外连接
+### 左外连接
 
 ```SQL
 SELECT ... FROM t1 LEFT JOIN t2 ON 连接条件 [LEFT JOIN t3 ON 连接条件] ... AND 其他条件；
@@ -84,7 +84,7 @@ SELECT ... FROM t1 LEFT JOIN t2 ON 连接条件 [LEFT JOIN t3 ON 连接条件] .
 
 这意味着即使香蕉没有价格，也会将它的所有信息显示，因为香蕉存在于左表中的记录。其中左表不存在的属性，将会以 NULL 值填充。
 
-## 右外连接
+### 右外连接
 
 ```SQL
 SELECT ... FROM t1 RIGHT JOIN t2 ON 连接条件 [RIGHT JOIN t3 ON 连接条件] ... AND 其他条件；
@@ -104,7 +104,7 @@ SELECT ... FROM t1 RIGHT JOIN t2 ON 连接条件 [RIGHT JOIN t3 ON 连接条件]
 >
 > 使用 SELECT * 来获取返回值，结果也是一样的。
 
-## 全外连接
+### 全外连接
 
 ```SQL
 SELECT ... FROM t1 FULL JOIN t2
@@ -114,7 +114,7 @@ SELECT ... FROM t1 FULL JOIN t2
 
 <img src="表的连接.IMG/image-20240223180041495.png" alt="image-20240223180041495" style="zoom:40%;" />
 
-# 自然连接
+## 自然连接
 
 自然连接是一种特殊的连接，它省略了连接条件，直接使用两个表中相同列名进行连接。
 
@@ -130,7 +130,7 @@ SELECT ... FROM t1 NATURAL JOIN t2;
 
 自然连接避免了笛卡尔积中的大量无关组合，只返回在连接列上值匹配的行，因此结果集通常比笛卡尔积小得多。如果两个表没有列名相同的列，自然连接的结果将是一个空集，而不是笛卡尔积。
 
-# 交叉连接
+## 交叉连接
 
 交叉连接返回两个表的笛卡尔积，即其中一个表的每一行都与另一个表的每一行组合。
 
@@ -142,6 +142,6 @@ SELECT ... FROM t1 CROSS JOIN t2;
 
 返回 table1 和 table2 的所有可能组合，即 table1 中每一行与 table2 中每一行的组合。
 
-# 参考资料
+## 参考资料
 
 - [数据库表连接的简单解释](https://www.ruanyifeng.com/blog/2019/01/table-join.html)

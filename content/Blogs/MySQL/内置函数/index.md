@@ -3,7 +3,7 @@ title: 内置函数
 weight: 8
 open: true
 ---
-# MySQL 内置函数
+## MySQL 内置函数
 
 MySQL 的内置函数主要分为以下几种：
 
@@ -14,7 +14,7 @@ MySQL 的内置函数主要分为以下几种：
 - 流程控制函数：用于根据条件执行不同的操作，如条件判断、选择、循环等。
 - 信息函数：用于获取数据库、表、列、用户等的信息，如数据库名、表名、列名、用户名、版本号等。
 
-# 日期和时间函数
+## 日期和时间函数
 
 常用的日期和时间函数有：
 
@@ -67,7 +67,7 @@ date_sub 函数的功能完全相同，只是它对已有日期或时间操作�
 
 <img src="内置函数.IMG/image-20231126165737087.png" alt="image-20231126165737087" style="zoom:40%;" />
 
-# 字符串函数
+## 字符串函数
 
 常用字符串函数有：
 
@@ -143,7 +143,7 @@ ltrim 和 rtrim 函数：去除字符串的前空格和后空格。
 
 <img src="内置函数.IMG/image-20231128143820702.png" alt="image-20231128143820702" style="zoom:40%;" />
 
-# 数学函数
+## 数学函数
 
 常用的数学函数如下：
 
@@ -194,7 +194,7 @@ mod 函数：对参数求余。
 
 <img src="内置函数.IMG/image-20231128145514818.png" alt="image-20231128145514818" style="zoom:40%;" />
 
-# 信息函数
+## 信息函数
 
 user 函数：获取 MySQL 连接的当前用户名和主机名。
 
@@ -224,7 +224,7 @@ ifnull 函数接受两个参数，如果第一个参数不为 null 则返回第�
 
 <img src="内置函数.IMG/image-20231128150733468.png" alt="image-20231128150733468" style="zoom:40%;" />
 
-# 参考资料
+## 参考资料
 
 - [MySQL 函数|菜鸟教程](https://www.runoob.com/mysql/mysql-functions.html)
 - [MySQL 内置函数](https://blog.csdn.net/chenlong_cxy/article/details/128538165)

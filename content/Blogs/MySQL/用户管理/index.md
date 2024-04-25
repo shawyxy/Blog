@@ -3,7 +3,7 @@ title: 用户管理
 weight: 11
 open: true
 ---
-# 查看用户信息
+## 查看用户信息
 
 在名为`mysql`的数据库中有一个表`user`维护着 MySQL 的用户信息。
 
@@ -26,7 +26,7 @@ open: true
 
 MySQL 的所有用户管理工作都通过 user 表来进行，实际上，后续所有的用户操作都会被 MySQL 解析为 SQL 来执行，并且允许用户直接通过 SQL 对 user 表修改。例如通过 INSERT 添加用户，UPDATE+password 函数来修改用户密码登操作，都是可行的。但是这只能作为特殊情况的补救措施，因为这么做有风险。
 
-# 创建用户
+## 创建用户
 
 SQL：
 ```sql
@@ -70,7 +70,7 @@ mysql -unew_user -p
 
 由于`%`表示允许来自任何主机的用户登录，所以在远端登录 MySQL 的方式也是一样的。需要注意的是，可能在连接时会不被允许，这可能是服务端主机没有开放 3306（MySQL 服务器）端口，为了测试可以在`/etc/mysql.cnf`修改 MySQL 的端口配置为测试端口如 8080。实际应用中，数据库不对外开放而只在内网中使用。
 
-# 修改密码
+## 修改密码
 
 用户自己修改密码：
 
@@ -84,7 +84,7 @@ set password=password('新密码');
 set password for '用户名'@'登录主机'=password('新密码');
 ```
 
-# 删除用户
+## 删除用户
 
 SQL：
 ```sql
@@ -93,7 +93,7 @@ DROP USER '用户名'@'登录地址';
 
 注意，如果不指明待用户的登录地址，则默认删除的是登录地址为 % 的用户。
 
-# 授予权限
+## 授予权限
 
 MySQL 数据库提供的权限如下：
 
@@ -164,7 +164,7 @@ grant select on curd_db.* to 'new_user'@'%' identified by '12345';
 grant all on curd_db.* to 'new_user'@'%';
 ```
 
-# 收回权限
+## 收回权限
 
 ```sql
 REVOKE 权限列表 ON 库名。对象名 FROM '用户名'@'登录地址';
