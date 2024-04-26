@@ -396,13 +396,14 @@ int main()
 ```
 
 测试：
-<img src="./IMG/屏幕录制 2023-09-30 17.18.27.gif" alt="屏幕录制 2023-09-30 17.18.27" style="zoom:40%;" />
+
+<img src="IO多路复用.IMG/屏幕录制2023-09-30 17.18.27.gif" alt="屏幕录制 2023-09-30 17.18.27" style="zoom:40%;" />
 
 设置 timeout 参数为 3.0 秒，但是 3 秒过后却不断地打印。这是因为 timeout 是一个输入输出型参数，它的值就像倒计时一样，如果在这个时间范围内成功返回，那么 timeout 最终输出的值就是剩余的秒数；如果超时，它就是 0，那么下次循环时它依然是 0，也就是让 select 函数非阻塞式地等待。
 
 所以要将 timeout 参数的初始化放在循环内。这个例子只是为了说明 timeout 是一个输入输出型参数，为了更好地观察现象，后续测试仍然以阻塞式等待，也就是参数 timeout 的值为 NULL 或 nullptr。
 
-<img src="./IMG/屏幕录制 2023-09-30 17.23.08.gif" alt="屏幕录制 2023-09-30 17.23.08" style="zoom:40%;" />
+<img src="IO多路复用.IMG/屏幕录制2023-09-30 17.23.08.gif" alt="屏幕录制 2023-09-30 17.23.08" style="zoom:40%;" />
 
 > 为什么 select 函数的第一个参数是套接字的文件描述符+1？
 
@@ -410,7 +411,7 @@ int main()
 
 下面用 telnet 工具，在本地模拟客户端进行测试：
 
-<img src="./IMG/屏幕录制 2023-09-30 18.39.20.gif" alt="屏幕录制 2023-09-30 18.39.20" style="zoom:40%;" />
+<img src="IO多路复用.IMG/屏幕录制2023-09-30 18.39.20.gif" alt="屏幕录制 2023-09-30 18.39.20" style="zoom:40%;" />
 
 但是一旦连接成功，服务端会一直打印“新连接”信息，这是因为建立连接后，我们并没有设置将连接“取走”的逻辑，select 函数就会不断地在循环中通知用户进程。
 
@@ -465,7 +466,7 @@ select 函数的作用是监听一组文件描述符的 I/O 事件是否就绪�
 
 测试：
 
-<img src="IO 多路复用.IMG/image-20230930190854327.png" alt="image-20230930190854327" style="zoom:40%;" />
+<img src="IO多路复用.IMG/image-20230930190854327.png" alt="image-20230930190854327" style="zoom:40%;" />
 
 注意，处理完连接后，我们不应该立即调用 recv、read 这样传统的阻塞式 I/O 接口，为什么呢？因为即使建立了连接，用户进程是无法的值客户端什么时候会发送数据的，极端地说，如果有恶意客户端只连接不发送，会造成服务端阻塞，这样就前功尽弃了。但这个场景依然是我们熟悉的，我们第一次处理阻塞式 Accept() 函数也是类似的，那就再用一次 select 函数，只不过这次连接已经建立了，那么任务变成了：监测客户端是否发送数据，有数据说明读事件应该就绪，通知用户进程读取；反之则否。这样读取时用户进程就可以避免因为不知道客户端什么时候发送数据而导致的阻塞了。
 
@@ -669,7 +670,8 @@ private:
 ```
 
 测试 ：注意到文件描述符集合 fd_set 在每次循环中都要重新定义，文件描述符也要重新添加，这是因为文件描述符是动态变化的，在每次循环的一开始，打印当前服务端系统中打开的文件描述符。下面用多个 telnet 客户端连接，进行测试：
-<img src="./IMG/屏幕录制 2023-10-01 15.11.40.gif" alt="屏幕录制 2023-10-01 15.11.40" style="zoom:40%;" />
+
+<img src="IO多路复用.IMG/屏幕录制2023-10-01 15.11.40.gif" alt="屏幕录制 2023-10-01 15.11.40" style="zoom:40%;" />
 
 **缺陷**：
 
@@ -685,7 +687,8 @@ private:
 理解第三点和第四点，是理解 I/O 多路复用服务器的要点。
 
 下面就第三点进行测试，代码中为三个函数增加了一个计数器，以观察现象：
-<img src="./IMG/屏幕录制 2023-10-01 16.29.45.gif" alt="屏幕录制 2023-10-01 16.29.45" style="zoom:40%;" />
+
+<img src="IO多路复用.IMG/屏幕录制2023-10-01 16.29.45.gif" alt="屏幕录制 2023-10-01 16.29.45" style="zoom:40%;" />
 
 通过测试结果可以知道：每个（TCP）客户端在进行数据传输之前，都必须与服务端建立连接，服务端每建立一个新的连接，都要调用一次 Accepter()；而同一个客户端每次发送信息都要调用一次 Recver()，而不会调用 Accepter()，因为 Accepter() 只是用来处理连接事件的，也就是处理就绪的监听套接字。
 
@@ -1225,7 +1228,7 @@ struct epitem {
 >
 > 实际上，结构体除了红黑树和就绪队列以外，还有锁（lock、mtx）和等待队列（wq，wait queue），以保证并发安全和异步通知。
 
-<img src="IO 多路复用.IMG/008eGmZEly1gpc5cdhrr0j310f0u0djf.jpg" alt="img" style="zoom:40%;" />
+<img src="IO多路复用.IMG/008eGmZEly1gpc5cdhrr0j310f0u0djf.jpg" alt="img" style="zoom:40%;" />
 
 图片来源：[linux 内核 Epoll 实现原理 ](https://www.jxhs.me/2021/04/08/linux%E5%86%85%E6%A0%B8Epoll-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/)
 
@@ -1572,7 +1575,7 @@ int main()
 
 #### 测试
 
-<img src="./IMG/屏幕录制 2023-10-05 01.19.22.gif" alt="屏幕录制 2023-10-05 01.19.22" style="zoom:40%;" />
+<img src="IO多路复用.IMG/屏幕录制2023-10-05 01.19.22.gif" alt="屏幕录制 2023-10-05 01.19.22" style="zoom:40%;" />
 
 ### 5.5 优缺点
 
@@ -1706,7 +1709,7 @@ epoll 使用内核文件系统（eventpollfs）来存储事件列表，并通过
 
 作为一个拖延症严重的人，快递小哥 A 的方式肯定是比较温和的，但是一个人每天工作的时间是有限的，如果老是遇到像小明这样的人，一天肯定送不完；反之快递小哥的方式虽然简单粗暴，但是他的效率会更高。
 
-<img src="IO 多路复用.IMG/Level-triggering.png" alt="img" style="zoom:40%;" />
+<img src="IO多路复用.IMG/Level-triggering.png" alt="img" style="zoom:40%;" />
 
 图片来源：[**Edge Triggering and Level Triggering** ](https://www.geeksforgeeks.org/edge-triggering-and-level-triggering/)
 
@@ -1776,3 +1779,4 @@ ET 工作模式下 epoll 通知用户的次数一般比 LT 少，因此 ET 的�
 - [SelectServer](https://gitee.com/shawyxy/2023-linux/tree/main/SelectServer)
 - [PollServer](https://gitee.com/shawyxy/2023-linux/tree/main/PollServer)
 - [EpollServer](https://gitee.com/shawyxy/2023-linux/tree/main/EpollServer)
+
