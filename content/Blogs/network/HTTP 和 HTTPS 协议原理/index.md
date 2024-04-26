@@ -2,6 +2,7 @@
 title: HTTP 和 HTTPS 协议原理
 weight: 6
 open: true
+math: true
 ---
 友情链接：[HTTP 协议【网络基础/应用层】](https://blog.csdn.net/m0_63312733/article/details/131142468?spm=1001.2014.3001.5501)
 

@@ -2,6 +2,7 @@
 title: 生产者消费者模式
 weight: 13
 open: true
+math: true
 ---
 
 ## 1. 概念

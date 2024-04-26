@@ -2,6 +2,7 @@
 title: I/O 多路复用
 weight: 17
 open: true
+math: true
 ---
 
 阅读前导：

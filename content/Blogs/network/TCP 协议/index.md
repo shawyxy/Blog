@@ -2,6 +2,7 @@
 title: TCP 协议
 weight: 8
 open: true
+math: true
 ---
 > [重要] 本文默认读者已经体系地学习过操作系统。
 >

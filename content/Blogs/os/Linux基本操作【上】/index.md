@@ -2,6 +2,7 @@
 title: Linux基本操作【上】
 weight: 1
 open: true
+math: true
 ---
 
 操作环境：CentOS 7.6

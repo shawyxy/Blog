@@ -2,6 +2,7 @@
 title: 认识协议
 weight: 4
 open: true
+math: true
 ---
 
 ## 什么是协议

@@ -2,6 +2,7 @@
 title: 信号量
 weight: 13
 open: true
+math: true
 ---
 
 阅读前导：

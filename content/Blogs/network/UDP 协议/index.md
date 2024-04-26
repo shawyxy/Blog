@@ -2,6 +2,7 @@
 title: UDP 协议
 weight: 7
 open: true
+math: true
 ---
 友情链接：[网络基础入门](https://blog.csdn.net/m0_63312733/article/details/130377048?spm=1001.2014.3001.5501)
 

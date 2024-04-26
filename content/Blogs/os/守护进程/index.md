@@ -2,6 +2,7 @@
 title: 守护进程
 weight: 15
 open: true
+math: true
 ---
 
 ## 前导知识

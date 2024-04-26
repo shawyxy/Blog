@@ -2,6 +2,7 @@
 title: 表的连接
 weight: 10
 open: true
+math: true
 ---
 
 ## 什么是连接

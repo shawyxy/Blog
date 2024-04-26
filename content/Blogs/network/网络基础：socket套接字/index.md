@@ -2,6 +2,7 @@
 title: 网络基础：socket 套接字
 weight: 2
 open: true
+math: true
 ---
 ## 1. 前导知识
 

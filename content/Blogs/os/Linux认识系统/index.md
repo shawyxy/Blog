@@ -2,6 +2,7 @@
 title: 认识系统
 weight: 4
 open: true
+math: true
 ---
 
 ##  1. 冯诺依曼体系

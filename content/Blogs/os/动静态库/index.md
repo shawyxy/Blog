@@ -2,6 +2,7 @@
 title: 动静态库
 weight: 8
 open: true
+math: true
 ---
 
 ## 1. 背景

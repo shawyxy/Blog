@@ -3,6 +3,7 @@ title: Reactor 模式
 weight: 18
 open: true
 
+math: true
 ---
 
 前导：本文是 I/O 多路复用的升级和实践，如果想实现一个类似的服务器的话，需要事先学习 epoll 服务器的编写。

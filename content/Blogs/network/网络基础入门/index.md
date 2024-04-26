@@ -2,6 +2,7 @@
 title: 网络基础入门
 weight: 1
 open: true
+math: true
 ---
 ## 1. 计算机网络的发展背景
 

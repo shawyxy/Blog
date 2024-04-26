@@ -2,6 +2,7 @@
 title: 进程信号
 weight: 10
 open: true
+math: true
 ---
 
 ## 1. 什么是信号

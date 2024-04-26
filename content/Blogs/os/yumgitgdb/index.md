@@ -2,6 +2,7 @@
 title: yum, git, gdb
 weight: 3
 open: true
+math: true
 ---
 
 使用系统：CentOS 7.6

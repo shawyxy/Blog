@@ -2,6 +2,7 @@
 title: 库的操作
 weight: 3
 open: true
+math: true
 ---
 ## 创建数据库
 

@@ -2,6 +2,7 @@
 title: 进程间通信
 weight: 9
 open: true
+math: true
 ---
 
 ## 1. 进程间通信

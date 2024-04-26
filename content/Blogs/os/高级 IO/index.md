@@ -2,6 +2,7 @@
 title: 高级 I/O
 weight: 16
 open: true
+math: true
 ---
 阅读前导：
 

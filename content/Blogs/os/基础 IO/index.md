@@ -3,6 +3,7 @@ title: 基础 I/O
 weight: 7
 highlight: true
 open: true
+math: true
 ---
 
 ## 前言

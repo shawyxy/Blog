@@ -3,6 +3,7 @@ title: 索引
 weight: 12
 math: true
 open: true
+math: true
 ---
 ## 什么是索引
 

@@ -2,6 +2,7 @@
 title: 网络编程：UDP socket
 weight: 3
 open: true
+math: true
 ---
 ### 阅读前导
 

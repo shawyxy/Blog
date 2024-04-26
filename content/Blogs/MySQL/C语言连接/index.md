@@ -2,6 +2,7 @@
 title: C语言连接
 weight: 15
 open: true
+math: true
 ---
 
 ## 安装 MySQL 库

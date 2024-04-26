@@ -2,6 +2,7 @@
 title: 事务
 weight: 13
 open: true
+math: true
 ---
 ## 事务的概念
 

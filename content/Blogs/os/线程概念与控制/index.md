@@ -2,6 +2,7 @@
 title: 线程概念与控制
 weight: 11
 open: true
+math: true
 ---
 
 ## 1. 基础概念

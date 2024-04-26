@@ -2,6 +2,7 @@
 title: 表内容的操作
 weight: 7
 open: true
+math: true
 ---
 阅读前导：
 

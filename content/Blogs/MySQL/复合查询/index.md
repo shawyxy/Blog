@@ -2,6 +2,7 @@
 title: 复合查询
 weight: 9
 open: true
+math: true
 ---
 ## 复合查询
 

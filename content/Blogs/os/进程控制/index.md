@@ -2,6 +2,7 @@
 title: 进程控制
 weight: 6
 open: true
+math: true
 ---
 
 ##  1. 创建进程

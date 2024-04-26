@@ -2,6 +2,7 @@
 title: HTTP 协议
 weight: 5
 open: true
+math: true
 ---
 ## 1. 网络基础 TCP/IP
 

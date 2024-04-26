@@ -2,6 +2,7 @@
 title: Linux基本操作【下】
 weight: 2
 open: true
+math: true
 ---
 
 ##  1. more 指令

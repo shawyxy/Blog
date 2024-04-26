@@ -2,6 +2,7 @@
 title: 线程同步与互斥
 weight: 12
 open: true
+math: true
 ---
 
 ## 1. 引入

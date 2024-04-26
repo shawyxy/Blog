@@ -5,6 +5,7 @@ description: ""
 
 tags: ["TCmalloc", "malloc", "池化技术", "单例模式", "内存管理", "哈希桶", "基数树"]
 categories: ["项目", "内存管理"]
+math: true
 ---
 
 

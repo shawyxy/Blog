@@ -2,6 +2,7 @@
 title: 线程池
 weight: 14
 open: true
+math: true
 ---
 
 ## 1. 引入

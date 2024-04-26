@@ -2,6 +2,7 @@
 title: 用户管理
 weight: 11
 open: true
+math: true
 ---
 ## 查看用户信息
 

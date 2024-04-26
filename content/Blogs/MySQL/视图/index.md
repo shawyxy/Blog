@@ -2,6 +2,7 @@
 title: 视图
 weight: 14
 open: true
+math: true
 ---
 ## 概念
 

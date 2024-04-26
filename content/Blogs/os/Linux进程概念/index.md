@@ -2,6 +2,7 @@
 title: 进程概念
 weight: 5
 open: true
+math: true
 ---
 
 ##  1. 进程
