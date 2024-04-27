@@ -1,15 +1,15 @@
-@font-face {
+/* @font-face {
     font-family: 'Microsoft Sans Serif';
     src: url('/fonts/Microsoft Sans Serif.woff2') format('woff2'),
-}
+} */
 /* @font-face {
     font-family: 'PingFangTC-Medium';
     src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Medium.woff') format('woff'),
 } */
-@font-face {
+/* @font-face {
     font-family: 'Hei';
     src: url('/fonts/Hei.woff2') format('woff2'),
-}
+} */
 /* @font-face {
     font-family: 'PingFangTC-Medium';
     src: url('/fonts/PingFang-Mod-19.0d5e3-TC-Medium.otf') format('opentype'),
@@ -29,7 +29,7 @@ strong
 {
     color: rgb(115, 88, 125);
     font-weight: Bold;
-    font-family: "Microsoft Sans Serif", "Hei";
+    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
 }
 
 h1,
@@ -78,36 +78,36 @@ h6 code {
     font-size: inherit;
 }
 h1 {
-    font-family: "Microsoft Sans Serif", "Hei";
+    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
     font-size: 2.25em;
     line-height: 1.2;
     font-weight: 900;
     border-bottom: 1px solid #eee;
 }
 h2 {
-    font-family: "Microsoft Sans Serif", "Hei";
+    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
     font-size: 1.75em;
     font-weight: 900;
     line-height: 1.225;
 }
 h3 {
-    font-family: "Microsoft Sans Serif", "Hei";
+    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
     font-size: 1.5em;
     font-weight: 900;
     line-height: 1.43;
 }
 h4 {
-    font-family: "Microsoft Sans Serif", "Hei";
+    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
     font-weight: 900;
     font-size: 1.25em;
 }
 h5 {
-    font-family: "Microsoft Sans Serif", "Hei";
+    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
     font-weight: 900;
     font-size: 1em;
 }
 h6 {
-    font-family: "Microsoft Sans Serif", "Hei";
+    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
     font-weight: 900;
    font-size: 1em;
     color: #777;
