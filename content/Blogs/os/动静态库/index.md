@@ -49,7 +49,7 @@ math: true
 
 用一个简单的例子初步了解动静态库：
 ```cpp
-##include <stdio.h>
+#include <stdio.h>
 int main()
 {
     printf("Hello World!\n");
@@ -157,7 +157,7 @@ gcc -static mylib.c -o mylib-s
 `Add.h`：
 
 ```c
-##pragma once
+#pragma once
 
 extern int Add(int a, int b);
 ```
@@ -174,7 +174,7 @@ int Add(int a, int b)
 `Print.h`：
 
 ```c
-##pragma once
+#pragma once
 
 extern void Print(const char* str);
 ```
@@ -182,7 +182,7 @@ extern void Print(const char* str);
 `Print.c`：
 
 ```c
-##include <stdio.h>
+#include <stdio.h>
 
 void Print(const char* str)
 {
@@ -195,9 +195,9 @@ void Print(const char* str)
 `main.c`：
 
 ```c
-##include <stdio.h>
-##include "Print.h"
-##include "Add.h"
+#include <stdio.h>
+#include "Print.h"
+#include "Add.h"
 int main()
 {
     int res = Add(1, 2);

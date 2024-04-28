@@ -159,7 +159,7 @@ pipe() 函数创建一个匿名管道。
 原型：
 
 ```cpp
-##include <unistd.h>
+#include <unistd.h>
 int pipe(int pipefd[2]);
 ```
 
@@ -186,9 +186,9 @@ int pipe(int pipefd[2]);
 <img src="进程间通信.IMG/image-20230318150816927.png" alt="image-20230318150816927" style="zoom:40%;" />
 
 ```cpp
-##include <iostream>
-##include <assert.h>
-##include <unistd.h>
+#include <iostream>
+#include <assert.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -212,10 +212,10 @@ int main()
 同时还可以打印一下数组中的内容以供 debug 时提示：
 
 ```cpp
-##ifdef DEBUG
+#ifdef DEBUG
     cout << "pipefd[0]: " << pipefd[0] << endl; // 3
     cout << "pipefd[1]: " << pipefd[1] << endl; // 4
-##endif
+#endif
 ```
 
 > 在这里使用了一个 GCC 编译器选项`-DDEBUG` ，这相当于在源代码中添加了一行 `#define DEBUG`，即第一个 D 意为 difine 。
@@ -253,7 +253,7 @@ if(id == 0) // 子进程
 注意：写入管道写端的数据会被内核缓存，直到被读取。在这里，我们可以调用系统接口读取和写入数据。由于像 read 和 write 等接口需要使用一个缓冲区作为参数，所以父子进程<mark>分别使用</mark>一个数组作为缓冲区。例如，read 函数和 write 函数的原型为：
 
 ```c
-##include <unistd.h>
+#include <unistd.h>
 ssize_t read(int fd, void *buf, size_t count);
 
 ssize_t write(int fd, const void *buf, size_t count);
@@ -365,8 +365,8 @@ assert(ret > 0);
 waitpid 函数的原型是：
 
 ```c
-##include <sys/types.h>
-##include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 pid_t waitpid(pid_t pid, int *status, int options);
 ```
 
@@ -387,14 +387,14 @@ pid_t waitpid(pid_t pid, int *status, int options);
 包含所需的头文件后，整体代码如下：
 
 ```cpp
-##include <iostream>
-##include <string>
-##include <cstdio>
-##include <cstring>
-##include <assert.h>
-##include <unistd.h>
-##include <sys/types.h>
-##include <sys/wait.h>
+#include <iostream>
+#include <string>
+#include <cstdio>
+#include <cstring>
+#include <assert.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 using namespace std;
 
 int main()
@@ -403,10 +403,10 @@ int main()
     int pipefd[2] = { 0 };
     int n = pipe(pipefd);
     assert(n != -1); (void)n; // debug && release assert
-##ifdef DEBUG
+#ifdef DEBUG
     cout << "pipefd[0]: " << pipefd[0] << endl; // 3
     cout << "pipefd[1]: " << pipefd[1] << endl; // 4
-##endif
+#endif
     // 2. 创建子进程
 
     pid_t id = fork();
@@ -649,12 +649,12 @@ g++ -o $@ $^ -std=c++11 #-DDEBUG
 进程池的源代码文件的命名为`ProcessPool.cc`。
 
 ```cpp
-##include <iostream>
-##include <cassert>
-##include <sys/types.h>
+#include <iostream>
+#include <cassert>
+#include <sys/types.h>
 using namespace std;
 
-##define PROCESS_NUM 3
+#define PROCESS_NUM 3
 
 int main()
 {
@@ -727,7 +727,7 @@ close(pipefd[0]); // 关闭读端
 记录子进程信息的方式很简单，在每次循环最后 push_back 一下就好。
 
 ```cpp
-##include <vector>
+#include <vector>
 
 int main()
 {
@@ -760,8 +760,8 @@ int main()
 2. 把任务指派给进程，是通过一个叫`SandAndWakeup`的函数实现的。
 
 ```cpp
-##include <ctime>
-##include <sys/wait.h>
+#include <ctime>
+#include <sys/wait.h>
 
 int main()
 {
@@ -881,14 +881,14 @@ while(1) // 等待命令
 ##### Method.hpp
 
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <string>
-##include <vector>
-##include <unordered_map>
-##include <unistd.h>
-##include <functional>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <unistd.h>
+#include <functional>
 
 typedef std::function<void()> func; // 定义函数包装器类型
 
@@ -944,18 +944,18 @@ int MethodNum() // 获取方法总数
 ##### ProcessPool.cc
 
 ```cpp
-##include <iostream>
-##include <vector>
-##include <cstdlib>
-##include <ctime>
-##include <cassert>
-##include <unistd.h>
-##include <sys/wait.h>
-##include <sys/types.h>
-##include "Method.hpp"
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+#include <cassert>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include "Method.hpp"
 using namespace std;
 
-##define PROCESS_NUM 3
+#define PROCESS_NUM 3
 
 void SendAndWakeup(pid_t who, int fd, uint32_t command) // 父进程发送命令
 {
@@ -1158,13 +1158,13 @@ int mkfifo(const char *pathname, mode_t mode);
 关于 mode 参数，如果将它设置为 0666，那么命名管道文件创建的权限应该是这样的：`prw-rw-rw-`。
 
 ```cpp
-##include <iostream>
-##include <sys/types.h>
-##include <sys/stat.h>
+#include <iostream>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 using namespace std;
 
-##define FILE_NAME "myfifo"
+#define FILE_NAME "myfifo"
 int main()
 {
     if(mkfifo(FILE_NAME, 0666) < 0) // 创建失败
@@ -1207,17 +1207,17 @@ umask(0);
 6. 删除管道文件
 
 ```cpp
-##include <iostream>
-##include <cstdio>
-##include <sys/stat.h>
-##include <sys/types.h>
-##include <unistd.h>
-##include <sys/wait.h>
-##include <fcntl.h>
+#include <iostream>
+#include <cstdio>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <fcntl.h>
 using namespace std;
 
-##define FILE_PATH "./myfifo" // 文件路径
-##define MODE 0666 // 文件权限
+#define FILE_PATH "./myfifo" // 文件路径
+#define MODE 0666 // 文件权限
 
 int main()
 {
@@ -1276,9 +1276,9 @@ GetMessage 用于从命名管道中读取数据，它的逻辑如下：
 ```cpp
 // server.cc
 
-##include <cstring>
+#include <cstring>
 
-##define BUFF_SIZE 1024       // 缓冲区大小
+#define BUFF_SIZE 1024       // 缓冲区大小
 
 static void GetMessage(int fd)
 {
@@ -1320,7 +1320,7 @@ static void GetMessage(int fd)
 3. 关闭管道文件。
 
 ```cpp
-##include "comm.hpp"
+#include "comm.hpp"
 
 int main()
 {
@@ -1492,8 +1492,8 @@ struct ipc_perm
 
 shmget 函数用于创建共享内存。函数原型：
 ```cpp
-##include <sys/ipc.h>
-##include <sys/shm.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
 
 int shmget(key_t key, size_t size, int shmflg);
 ```
@@ -1552,18 +1552,18 @@ ftok 实际上就是将传入的路径名 pathname 和一个整数标识符 proj
 
 通过 ftok 函数获取到 key 以后才能使用 shmget 函数创建共享内存，为了方便观察现象，可以将这两个函数的返回值分别打印出来。这里用两个源文件`shmClient.cc`和`shmServer.cc`，它们的代码完全相同，目的是验证这个 key 是否是相等的。
 ```cpp
-##include <iostream>
-##include <sys/types.h>
-##include <sys/ipc.h>
-##include <sys/shm.h>
-##include <unistd.h>
-##include <cstdio>
-##include <cstdlib>
+#include <iostream>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <unistd.h>
+#include <cstdio>
+#include <cstdlib>
 using namespace std;
 
-##define PATH_NAME "./tmp.cc" // 文件路径
-##define PROJ_ID 0x666              // 标识符
-##define SHM_SIZE 4096              // 共享内存大小
+#define PATH_NAME "./tmp.cc" // 文件路径
+#define PROJ_ID 0x666              // 标识符
+#define SHM_SIZE 4096              // 共享内存大小
 
 int main()
 {
@@ -1831,7 +1831,7 @@ int shmid = shmget(key, SHM_SIZE, IPC_CREAT | IPC_EXCL | 0666);
 ```cpp
 // shmServer.cc
 
-##include "comm.hpp"
+#include "comm.hpp"
 
 int main()
 {
@@ -1881,7 +1881,7 @@ int main()
 ```cpp
 // shmClient.cc
 
-##include "comm.hpp"
+#include "comm.hpp"
 
 int main()
 {
@@ -2122,9 +2122,9 @@ void Wakeup(int fd)
 例如，可以使用 semget 函数来创建一个新的信号量集。原型：
 
 ```c
-##include <sys/types.h>
-##include <sys/ipc.h>
-##include <sys/sem.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
 
 int semget(key_t key, int nsems, int semflg);
 ```
@@ -2160,9 +2160,9 @@ int semget(key_t key, int nsems, int semflg);
 
 semctl 函数被用来删除一个信号量集。原型：
 ```cpp
-##include <sys/types.h>
-##include <sys/ipc.h>
-##include <sys/sem.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
 
 int semctl(int semid, int semnum, int cmd, ...);
 ```
@@ -2185,9 +2185,9 @@ int semctl(int semid, int semnum, int cmd, ...);
 semop 函数用于对一个或多个信号量执行 wait 或 signal 操作。原型：
 
 ```c
-##include <sys/types.h>
-##include <sys/ipc.h>
-##include <sys/sem.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/sem.h>
 
 int semop(int semid, struct sembuf *sops, unsigned nsops);
 ```
@@ -2256,8 +2256,8 @@ struct sembuf {
 下面是一个简单的例子，演示了如何使用互斥锁来实现进程互斥：
 
 ```c
-##include <stdio.h>
-##include <pthread.h>
+#include <stdio.h>
+#include <pthread.h>
 
 pthread_mutex_t lock;
 

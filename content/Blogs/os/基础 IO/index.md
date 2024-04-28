@@ -99,8 +99,8 @@ filename 是要打开的文件名，mode 的打开文件要做什么。
 对文件写入数据示例：
 
 ```cpp
-##include <stdio.h>
-##include <string.h>
+#include <stdio.h>
+#include <string.h>
 int main()
 {
     FILE* fp = fopen("log.txt", "w");//创建 log.txt 新文件
@@ -135,7 +135,7 @@ int main()
 读取文件数据示例：
 
 ```cpp
-##include <stdio.h>
+#include <stdio.h>
 int main()
 {
     FILE* fp = fopen("log.txt", "r");
@@ -239,12 +239,12 @@ man stdout
 动手试试：用 open 以只读的方式打开一个文件（暂时忽略 fd，后面会解释）：
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
-##include <string.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 int main()
 {
   int fd = open("log.txt", O_WRONLY); // 以只读形式打开文件
@@ -326,11 +326,11 @@ open 的第三个参数只有需要创建文件的情况下才会使用，也就
 上面的例子中，open 的返回值 fd 是 3，那么如果多打开几次文件呢？
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 int main()
 {
 	umask(0);
@@ -355,12 +355,12 @@ int main()
 ### 2.2 read
 
 ```cpp
-##include <stdio.h>
-##include <string.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <stdlib.h>
-##include <fcntl.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <fcntl.h>
 int main()
 {
     umask(0);
@@ -426,11 +426,11 @@ Linux 下一切皆文件，我们知道，OS 会将各种接入计算机的硬�
 用代码验证一下：
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 int main()
 {
     printf("stdin, %d\n", stdin->_fileno);
@@ -457,11 +457,11 @@ int main()
 例如，就 2.1 的代码，可以用 close 把 fd=0/2 的文件关掉，然后再打开一个其他文件，看看 fd 的情况：
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 int main()
 {
     close(0); // 关闭标准输入
@@ -514,11 +514,11 @@ echo 重定向测试 > test.txt
 首先来看，如果关掉了 fd=1（标准输出）的文件后，会发生什么？
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 int main()
 {
 	close(1);
@@ -591,11 +591,11 @@ int fd = open("log.txt", O_WRONLY|O_APPEND|O_CREAT, 0666);
 和输出重定向的原理类似，都是修改 fd_array[] 元素的指向。对于 C 语言，输入是从 stdin 读取的数据，所以要修改的下标 fd=0。
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 int main()
 {
 	close(0);
@@ -646,7 +646,7 @@ int main()
 和 printf 和 scanf 对应，perror 默认输出到 stderr 中：
 
 ```cpp
-##include <stdio.h>
+#include <stdio.h>
 int main()
 {
     printf("stdout printf\n");                                                    
@@ -719,11 +719,11 @@ int dup2(int oldfd, int newfd);
 打开一个文件 log.txt，用 fd 变量保存文件的文件描述符，然后 close(1)，关闭 stdout 文件，使用 dup2 实现 stdout 数据到文件 log.txt 的重定向。
 
 ```cpp
-##include <stdio.h>                                                              
-##include <unistd.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <fcntl.h>
+#include <stdio.h>                                                              
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 int main()
 {
     int fd = open("log.txt", O_WRONLY | O_CREAT, 0666);
@@ -802,7 +802,7 @@ struct _IO_FILE {
     /*  char* _save_gptr;  char* _save_egptr; */
 
     _IO_lock_t *_lock;
-##ifdef _IO_USE_OLD_IO_FILE
+#ifdef _IO_USE_OLD_IO_FILE
 };
 ```
 
@@ -817,7 +817,7 @@ typedef struct _IO_FILE _IO_FILE;
 ```cpp
 typedef struct _IO_FILE FILE;
 
-##include <libio.h>
+#include <libio.h>
 ```
 
 在头文件`<libio.h>`中，有一个成员变量名为`_fileno`，它就是封装的文件描述符。而在 C 语言的标准输入输出库`stdio`中，包含了系统库`libio.h`，并将`FILE`作为`_IO_FILE`的别名。
@@ -849,8 +849,8 @@ typedef struct _IO_FILE FILE;
 首先以一个程序引入，代码中分别调用了两个 C 库函数和一个系统调用，并且在 return 语句之前 fork 创建了子进程：
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <unistd.h>
 int main()
 {
     printf("hello world <- printf\n");

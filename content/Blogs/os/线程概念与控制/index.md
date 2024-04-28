@@ -81,12 +81,12 @@ struct vm_area_struct {
     struct file* vm_file;
     void* vm_private_data;
   
-##ifndef CONFIG_MMU
+#ifndef CONFIG_MMU
     struct vm_region* vm_region;
-##endif
-##ifdef CONFIG_NUMA
+#endif
+#ifdef CONFIG_NUMA
     struct mempolicy* vm_policy;
-##endif
+#endif
 };
 ```
 
@@ -241,7 +241,7 @@ POSIX 线程库（pthread 库）通常是作为操作系统的 C 库（例如 Li
 pthread_create 用于在进程中创建一个新线程。原型：
 
 ```c
-##include <pthread.h>
+#include <pthread.h>
 
 int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
                    void *(*start_routine) (void *), void *arg);
@@ -280,10 +280,10 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
 下面的代码通过主线程和它创建的 5 个线程一起打印进程的 PID：
 
 ```cpp
-##include <iostream>
-##include <pthread.h>
-##include <unistd.h>
-##include <string>
+#include <iostream>
+#include <pthread.h>
+#include <unistd.h>
+#include <string>
 using namespace std;
 
 void Print(const string& name)
@@ -331,7 +331,7 @@ int main()
 可以用 ps 指令查看当前系统内的线程信息：
 ```shell
 ps -aL | head -1 && ps -aL | grep threadTest
-## -L 选项表示查看每个进程内的线程（轻量级进程，Light）。
+# -L 选项表示查看每个进程内的线程（轻量级进程，Light）。
 ```
 
 <img src="线程概念与控制.IMG/image-20230406000841551.png" alt="image-20230406000841551" style="zoom:40%;" />
@@ -550,7 +550,7 @@ int main()
 while :; do ps -aL | head -1 && ps -aL | grep threadTest | grep -v grep;echo "#";sleep 3;done
 ```
 
-<img src="线程概念与控制.IMG/屏幕录制 2023-04-06 13.37.30.gif" alt="屏幕录制 2023-04-06 13.37.30" style="zoom:40%;" />
+<img src="线程概念与控制.IMG/屏幕录制2023-04-06 13.37.30.gif" alt="屏幕录制 2023-04-06 13.37.30" style="zoom:40%;" />
 
 可见，LWP 为 3163 的线程始终存在，说明它就是主线程，其 LWP 和 进程的 PID 是相同的，并且当所有线程退出以后，主线程也会随之退出。
 
@@ -610,7 +610,7 @@ int main()
 }
 ```
 
-<img src="线程概念与控制.IMG/屏幕录制 2023-04-06 13.56.41.gif" alt="屏幕录制 2023-04-06 13.56.41" style="zoom:40%;" />
+<img src="线程概念与控制.IMG/屏幕录制2023-04-06 13.56.41.gif" alt="屏幕录制 2023-04-06 13.56.41" style="zoom:40%;" />
 
 可以通过 pthread_join 线程等待，获取线程的退出信息。
 
@@ -698,7 +698,7 @@ int main()
 
 还可以通过之前使用的脚本查看线程信息，为了能不留空隙地打印，在注释掉  pthread_cancel 函数和 pthread_create 函数中间的 sleep 之后，在每次循环的最后 sleep 2 秒，每 1 秒打印线程信息：
 
-<img src="线程概念与控制.IMG/屏幕录制 2023-04-06 15.04.40.gif" alt="屏幕录制 2023-04-06 15.04.40" style="zoom:40%;" />
+<img src="线程概念与控制.IMG/屏幕录制2023-04-06 15.04.40.gif" alt="屏幕录制 2023-04-06 15.04.40" style="zoom:40%;" />
 
 可以发现，每次只会打印 1 个线程的信息，它是主线程，即使使用 pthread_create 创建了线程，只要立刻 pthread_cancel 取消线程，那么它就不会被创建。
 

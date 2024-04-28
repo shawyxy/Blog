@@ -18,8 +18,8 @@ yum install mysql-devel
 用一个 MySQL 库提供的接口验证 MySQL 库是否安装成功：
 
 ```cpp
-##include <iostream>
-##include <mysql/mysql.h>
+#include <iostream>
+#include <mysql/mysql.h>
 
 using namespace std;
 
@@ -36,7 +36,7 @@ int main()
 g++ sql.cc -o sql -I/usr/include/mysql -L/usr/lib64/mysql -lmysqlclient
 ```
 
-<img src="./IMG/image-20240227182356233.png" alt="image-20240227182356233" style="zoom:40%;" />
+<img src="./C语言连接.IMG/image-20240227182356233.png" alt="image-20240227182356233" style="zoom:40%;" />
 
 编译选项中关于库的使用：
 
@@ -178,9 +178,9 @@ grant all on curd_db.* to 'new_user'@'%' identified by '12345';
 在本地测试：
 
 ```cpp
-##include <iostream>
-##include <string>
-##include <mysql/mysql.h>
+#include <iostream>
+#include <string>
+#include <mysql/mysql.h>
 using namespace std;
 
 const string host = "localhost";

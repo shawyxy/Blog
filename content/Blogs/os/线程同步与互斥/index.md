@@ -12,9 +12,9 @@ math: true
 多人在同一时间段抢固定数量的票是一个很好的多线程编程例子。在这个例子中，每个人可以被视为一个线程，票的数量可以被视为共享资源，那么它将会被设置为一个全局变量，被所有线程共享。下面是它的简单实现：
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <pthread.h>
+#include <iostream>
+#include <unistd.h>
+#include <pthread.h>
 
 using namespace std;
 
@@ -249,9 +249,9 @@ pthread_mutexattr_destroy(&attr);
 3. 在操作全局变量后使用`pthread_mutex_unlock()`解锁。
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <pthread.h>
+#include <iostream>
+#include <unistd.h>
+#include <pthread.h>
 
 using namespace std;
 
@@ -332,15 +332,15 @@ int main()
 可以将线程的信息（例如线程的别名）和锁的地址打包成一个对象传递给线程函数，这个对象的类型可以定义为`ThreadData`：
 
 ```cpp
-##include <iostream>
-##include <string>
-##include <unistd.h>
-##include <pthread.h>
-##include <ctime>
-##include <chrono>
+#include <iostream>
+#include <string>
+#include <unistd.h>
+#include <pthread.h>
+#include <ctime>
+#include <chrono>
 using namespace std;
 
-##define THREAD_NUM 5
+#define THREAD_NUM 5
 
 int tickets = 10000; 		// 票数
 
@@ -459,7 +459,7 @@ int main()
 串行执行可以用来描述单个线程中语句的执行顺序，也可以用来描述多个线程之间的执行顺序。在程序中，指的是指令按顺序依次执行，每条指令的执行必须在前一条指令执行完成后才能开始。下面是一个简单的 C++ 程序，它演示了串行执行的过程：
 
 ```c++
-##include <iostream>
+#include <iostream>
 int main() 
 {
     std::cout << "Step 1" << std::endl;
@@ -595,7 +595,7 @@ ret # 返回
 
 ```asm
 spin_lock # 调用 spin_lock 获取锁
-## ... 临界区代码。..
+# ... 临界区代码。..
 spin_unlock # 调用 spin_unlock 释放锁
 ```
 
@@ -1053,13 +1053,13 @@ int pthread_cond_signal(pthread_cond_t cond);
 下面的例子将有多个线程执行不同的任务，当它们正在执行任务时，其他线程正在等待。使用了一个函数指针数组保存不同线程函数，同样地，传递给线程的信息可以保存在一个对象中。在加锁之前，首先写好框架，示例创建了三个线程，每个线程执行一个不同的任务，并使用一个函数指针类型作为参数传递给线程函数：
 
 ```cpp
-##include <iostream>
-##include <string>
-##include <unistd.h>
-##include <pthread.h>
+#include <iostream>
+#include <string>
+#include <unistd.h>
+#include <pthread.h>
 using namespace std;
 
-##define THREAD_NUM 3						// 线程数量
+#define THREAD_NUM 3						// 线程数量
 typedef void (*func_t)(const string& name); // 定义一个函数指针类型
 class ThreadData
 {
@@ -1458,14 +1458,14 @@ void tFunc1(const string& tname, pthread_mutex_t* pmtx, pthread_cond_t* pcond)
 ##### 代码
 
 ```cpp
-##include <iostream>
-##include <string>
-##include <pthread.h>
-##include <unistd.h>
+#include <iostream>
+#include <string>
+#include <pthread.h>
+#include <unistd.h>
 
 using namespace std;
 
-##define THREAD_NUM 3						// 线程数量
+#define THREAD_NUM 3						// 线程数量
 typedef void (*func_t)(const string& name, 	// 定义一个函数指针类型
 					   pthread_mutex_t* pmtx, 
 					   pthread_cond_t* pcond); 
@@ -1629,8 +1629,8 @@ int main()
 下面是一个简单的示例，演示了如何使用条件变量：
 
 ```cpp
-##include <iostream>
-##include <pthread.h>
+#include <iostream>
+#include <pthread.h>
 
 pthread_mutex_t mtx;
 pthread_cond_t cond;

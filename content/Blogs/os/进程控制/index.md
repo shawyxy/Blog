@@ -23,10 +23,10 @@ fork 函数的位置就是一个分界点，fork 之前的代码由父进程执�
 > - fork 返回，开始调度器调度。
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
-##include <stdlib.h>
-##include <sys/types.h>                                                                                         
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/types.h>                                                                                         
 int main()
 {
   printf("fork before:PID:%d\n", getpid());
@@ -118,8 +118,8 @@ fork 之后的代码中，包括最后的 return 语句，由于 fork 之后的�
 通过 strerror 函数可以获取错误码和错误信息字符串的映射关系：
 
 ```cpp
-##include <stdio.h>
-##include <string.h>
+#include <stdio.h>
+#include <string.h>
 int main()
 {
   for(int i = 0; i < 150; i++)
@@ -157,8 +157,8 @@ int main()
 ####  exit 函数退出
 
 ```cpp
-##include <stdio.h>
-##include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 void show()
 {
   printf("hello world");
@@ -180,9 +180,9 @@ int main()
 同样是上面的代码，将 exit 换成_exit，注意包含头文件`<unistd>`：
 
 ```cpp
-##include <stdio.h>
-##include <stdlib.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 void show()
 {
   printf("hello world");
@@ -274,8 +274,8 @@ if (WIFEXITED(status)) {
 **函数声明和头文件**
 
 ```cpp
-##include<sys/types.h>
-##include<sys/wait.h>
+#include<sys/types.h>
+#include<sys/wait.h>
 pid_t wait(int* status);
 ```
 
@@ -295,11 +295,11 @@ pid_t wait(int* status);
 下面用 fork 创建一个子进程，然后让子进程工作一段时间，在这段时间中，使用 wait 函数让父进程等待子进程结束。子进程结束以后父进程读取子进程的信息，然后打印子进程的 status 参数。
 
 ```cpp
-##include <stdio.h>
-##include <stdlib.h>
-##include <unistd.h>
-##include <sys/types.h>
-##include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 int main()
 {
     pid_t id = fork();
@@ -345,8 +345,8 @@ while :; do ps axj | head -1 && ps axj | grep proc | grep -v grep;echo "########
 **函数声明和头文件**
 
 ```cpp
-##include<sys/types.h>
-##include<sys/wait.h>
+#include<sys/types.h>
+#include<sys/wait.h>
 pid_t waitpid(pid_t pid, int* status, int options);
 ```
 
@@ -444,7 +444,7 @@ exec 函数族提供了一个在进程中启动另一个程序执行的方法。
 **头文件**
 
 ```cpp
-##include <unistd.h>
+#include <unistd.h>
 ```
 
 **函数原型**
@@ -492,8 +492,8 @@ execl 中的 l，可以看作 list 的缩写。
 - 第二个参数实际上也是有顺序的：第一个参数是程序名，中间的是选项，以字符串形式传入，最后以 NULL 结尾。也就是在命令行是怎么写的，这里就怎么传，下面的示例也是一样的。
 
 ```cpp
-##include <unistd.h>
-##include <stdio.h>
+#include <unistd.h>
+#include <stdio.h>
 int main()
 {
     printf("exec 函数之前、n");
@@ -530,11 +530,11 @@ execv 中的 v，可以认为是 vector，和第二个参数 argv 对应，表�
 下面把参数放到数组中，然后将数组作为参数传入 execv：
 
 ```cpp
-##include <unistd.h>
-##include <stdio.h>
-##include <stdlib.h>
-##include <sys/types.h>
-##define NUM 16
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#define NUM 16
 int main()
 {
 	pid_t id = fork();
@@ -583,10 +583,10 @@ execlp 中的 p 和环境变量 PATH 对应。
 也就是说，execlp 可以直接调用环境变量中的程序，而不用传入路径。
 
 ```cpp
-##include <unistd.h>
-##include <stdio.h>
-##include <stdlib.h>
-##include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
 int main()
 {
 	pid_t id = fork();
@@ -631,9 +631,9 @@ execle 中的 e 和 environment variables（环境变量）对应，所以不带
 
 ```cpp
 //mycmd
-##include <stdio.h>
-##include <string.h>
-##include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 {
 	if(argc != 2)
@@ -659,11 +659,11 @@ int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 
 ```cpp
 //proc2.c
-##include <unistd.h>
-##include <stdio.h>
-##include <stdlib.h>
-##include <sys/types.h>
-##define NUM 16
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#define NUM 16
 //绝对路径或相对路径都可以
 const char* myfile = "mycmd";
 
@@ -705,11 +705,11 @@ int main()
 在 proc2.c 的 main 函数中定义一个指针数组作为要传入的环境变量：
 
 ```cpp
-##include <unistd.h>
-##include <stdio.h>
-##include <stdlib.h>
-##include <sys/types.h>
-##define NUM 16
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#define NUM 16
 
 const char* myfile = "mycmd";
 int main()
@@ -743,9 +743,9 @@ int main()
 在 mycmd.c 中，增加查看环境变量的打印语句：
 
 ```cpp
-##include <stdio.h>
-##include <string.h>
-##include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 int main(int argc, char* argv[])//命令行参数个数，命令行参数数组
 {
 	if(argc != 2)
@@ -880,8 +880,8 @@ while(1)
 用一个全局的数组储存命令行参数。因为我们输入命令行参数的形式是一个字符串，就像这样：`"ls -a -l"`，所以这个字符数组存储的是字符串。为了等下方便完整且刚好地截取输入的字符串，在初始化这个数组的时候就将所有元素置为`\0`。
 
 ```cpp
-##include <string.h>//注意 memset 的头文件
-##define NUM 1024    //定义缓冲区的长度
+#include <string.h>//注意 memset 的头文件
+#define NUM 1024    //定义缓冲区的长度
 
 char cmd_line[NUM];  //定义缓冲区字符数组
 
@@ -929,8 +929,8 @@ cmd_line[strlen(cmd_line) - 1] = '\0';//除去、n
 还记得上面的 exec 函数族吗？给它们传入的命令参数是一个数组，这个数组的元素是命令或选项，就像这样："ls"，"-a"，"-l"。但是我们知道，输入的命令行参数是一个字符串，为了使用这个接口，我们需要将这个字符串拆分成若干个命令和选项的小字符串，并且把它们存到一个数组里面，最后传入这个数组到 exec 函数（至于选哪个，等下再说）中。
 
 ```cpp
-##define SIZE 32
-##define SEP " "     //定义" "为拆散字符串的分隔符
+#define SIZE 32
+#define SEP " "     //定义" "为拆散字符串的分隔符
 char cmd_line[NUM];  //定义缓冲区字符数组，保存输入的命令行字符串
 char *g_argv[SIZE];  //保存拆散后的命令行字符串
 
@@ -1030,15 +1030,15 @@ else//父进程
 编译运行以下代码：
 
 ```cpp
-##include <unistd.h>
-##include <stdio.h>
-##include <stdlib.h>
-##include <sys/types.h>
-##include <sys/wait.h>
-##include <string.h>//注意 memset 的头文件
-##define NUM 1024    //定义缓冲区的长度
-##define SIZE 32
-##define SEP " "     //定义" "为拆散字符串的分隔符
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <string.h>//注意 memset 的头文件
+#define NUM 1024    //定义缓冲区的长度
+#define SIZE 32
+#define SEP " "     //定义" "为拆散字符串的分隔符
 char cmd_line[NUM];  //定义缓冲区字符数组，保存输入的命令行字符串
 char *g_argv[SIZE];  //保存拆散后的命令行字符串
 

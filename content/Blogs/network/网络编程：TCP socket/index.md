@@ -47,19 +47,19 @@ TCP 套接字编程的基本流程是这样的：
 
 ```cpp
 // Log.hpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <cstdarg>
-##include <ctime>
-##include <string>
+#include <iostream>
+#include <cstdarg>
+#include <ctime>
+#include <string>
 
 // 日志级别
-##define DEBUG   0
-##define NORMAL  1
-##define WARNING 2
-##define ERROR   3
-##define FATAL   4
+#define DEBUG   0
+#define NORMAL  1
+#define WARNING 2
+#define ERROR   3
+#define FATAL   4
 
 const char *LevelMap[] = 
 {
@@ -73,9 +73,9 @@ const char *LevelMap[] =
 // 打印版本
 void logMessage(int level, const char *format, ...)
 {
-##ifndef DEBUG_SHOW
+#ifndef DEBUG_SHOW
     if(level== DEBUG) return;
-##endif
+#endif
     // 标准部分
     char stdBuffer[1024];
     time_t timestamp = time(nullptr);
@@ -116,16 +116,16 @@ void logMessage(int level, const char *format, ...)
 
 ```cpp
 // TcpServer.hpp 
-##include <iostream>
-##include <string>
-##include <cerrno>
-##include <cstring>
-##include <sys/types.h>
-##include <sys/socket.h>
-##include <netinet/in.h>
-##include <arpa/inet.h>
-##include <unistd.h>
-##include "Log.hpp"
+#include <iostream>
+#include <string>
+#include <cerrno>
+#include <cstring>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include "Log.hpp"
 class TcpServer
 {
 public:
@@ -172,8 +172,8 @@ private:
 
 ```cpp
 // TcpServer.cc
-##include "TcpServer.hpp"
-##include <memory>
+#include "TcpServer.hpp"
+#include <memory>
 
 static void usage(std::string name)
 {
@@ -275,9 +275,9 @@ public:
 `bind()`函数用于将套接字与指定的 IP 地址和端口号绑定。通常在 TCP 协议或 UDP 协议的服务端设置。
 
 ```c
-##include <sys/socket.h>
-##include <netinet/in.h>
-##include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 int bind(int sockfd, const struct sockaddr *addr,
                 socklen_t addrlen);
 ```
@@ -370,8 +370,8 @@ TCP 服务器是面向连接的，客户端在向服务器发送数据之前，�
 `listen()` 函数用于将套接字标记为被动套接字，即用于使用 `accept()` 接受传入的连接请求的套接字。
 
 ```c
-##include <sys/types.h>
-##include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 int listen(int sockfd, int backlog);
 ```
@@ -479,8 +479,8 @@ int main()
 `accept()` 函数用于基于连接的套接字类型（`SOCK_STREAM`，`SOCK_SEQPACKET`）。它从监听套接字 `sockfd` 的挂起连接队列中提取第一个连接请求，创建一个新的已连接套接字，并返回指向该套接字的新文件描述符。新创建的套接字不处于监听状态。原始套接字 `sockfd` 不受此调用影响。参数 `sockfd` 是一个已使用 `socket(2)` 创建、使用 `bind(2)` 绑定到本地地址且正在监听的套接字。
 
 ```cpp
-##include <sys/types.h>
-##include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
 ```
@@ -572,7 +572,7 @@ private:
 用 write() 向套接字写入数据，用 read() 从套接字中读取数据。
 
 ```c
-##include <unistd.h>
+#include <unistd.h>
 
 ssize_t read(int fd, void *buf, size_t count);
 ssize_t write(int fd, const void *buf, size_t count);
@@ -583,7 +583,7 @@ ssize_t write(int fd, const void *buf, size_t count);
 目前的服务端函数的任务是实现一个回声服务器（echo），即将客户端发送的数据打印出来，然后原封不动地回发数据。下面是服务端使用`read()`函数和`write()`函数读取数据和差错处理的逻辑：
 
 ```cpp
-##define NUM 1024
+#define NUM 1024
 static void service(int service_sockfd, std::string client_ip, uint16_t client_port)
 {
     char buffer[NUM]; // 以字符串作为缓冲区
@@ -836,7 +836,7 @@ void start()
 
 下面是使用孙子进程执行服务端任务的逻辑：
 ```cpp
-##include <sys/wait.h>
+#include <sys/wait.h>
 void start()
 {
     while (1)
@@ -977,8 +977,8 @@ public:
 connect 函数的功能是客户端主动连接服务器，建立连接是通过三次握手，而这个连接的过程是由内核完成，不是这个函数完成的，这个函数的作用仅仅是通知 Linux 内核，让 Linux 内核自动完成 TCP 三次握手连接。（具体细节将在 TCP 协议专题介绍）
 
 ```c
-##include <sys/types.h>
-##include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 ```
@@ -1046,7 +1046,7 @@ ssize_t recv(int socket, void *buf, size_t len, int flags);
 由于实现的是一个回声服务器，就像`echo`指令一样，所以服务端在接收到数据以后直接原封不动地将数据返回给客户端。
 
 ```cpp
-##define SIZE 1024
+#define SIZE 1024
 void start()
 {
     // 4.0 发送并接收数据
@@ -1312,10 +1312,10 @@ private:
 ### Task 类
 
 ```cpp
-##pragma once
-##include "Log.hpp"
-##include <string>
-##include <functional>
+#pragma once
+#include "Log.hpp"
+#include <string>
+#include <functional>
 
 // typedef std::function<void (int, const std::string &, uint16_t &)> func_t;
 // 等价于
@@ -1641,9 +1641,9 @@ static void enToZh(int service_sockfd, std::string client_ip, uint16_t client_po
 在 Linux 中，有一些地址转换函数可以用来在字符串 IP 地址和整数 IP 地址之间进行转换。这些函数通常包含在以下头文件中，下面介绍几个常用的函数：
 
 ```c
-##include <sys/socket.h>
-##include <netinet/in.h>
-##include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 ```
 
 1. `inet_addr()`：将字符串 IP 地址转换为 32 位整数 IP 地址。该函数的原型如下：
@@ -1741,9 +1741,9 @@ inet_ntoa() 函数在将 32 位整数 IP 地址转换为字符串 IP 地址时�
 下面创建两个套接字，然后将它的二进制 IP 成员的值分别设置为`0`和`0xffffffff`，再分别调用`inet_ntoa()`函数转化，打印两次函数调用的返回值：
 
 ```cpp
-##include <iostream>
-##include <netinet/in.h>
-##include <arpa/inet.h>
+#include <iostream>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 using namespace std;
 
 int main()
@@ -1774,11 +1774,11 @@ int main()
 
 在多线程条件下，这个静态的字符串内存区域相当于被所有线程共享的临界资源，如果不用互斥锁或条件变量限制线程的行为，那么很可能会发生并发问题，也就是说，inet_ntoa 函数不是线程安全的。
 ```cpp
-##include <iostream>
-##include <netinet/in.h>
-##include <arpa/inet.h>
-##include <pthread.h>
-##include <unistd.h>
+#include <iostream>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <unistd.h>
 using namespace std;
 
 void*func1(void *args)

@@ -210,8 +210,8 @@ I/O 操作包括等待和拷贝两个步骤，而像 read、recvfrom 等 I/O 系
 下面以一个简单的例子作为引入：
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
+#include <iostream>
+#include <unistd.h>
 using namespace std;
 
 int main()
@@ -246,8 +246,8 @@ int main()
 在上面代码的基础上，如果要以非阻塞的方式打开某个文件或套接字，就需要使用 fcntl （file control）系统调用：
 
 ```c
-##include <unistd.h>
-##include <fcntl.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 int fcntl(int fd, int cmd, ... /* arg */);
 ```
@@ -286,11 +286,11 @@ int fcntl(int fd, int cmd, ... /* arg */);
 所以还要为 read 函数的返回值进一步做差错处理，出现上述错误码则说明本次调用的 read 函数没有成功地读取缓冲区中的数据，所以应该等待下一次调用。
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <fcntl.h>
-##include <cstring>
-##include <cerrno>
+#include <iostream>
+#include <unistd.h>
+#include <fcntl.h>
+#include <cstring>
+#include <cerrno>
 using namespace std;
 
 bool SetNonBlock(int fd)

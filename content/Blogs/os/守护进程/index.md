@@ -61,7 +61,7 @@ math: true
 
 为了方便观察现象，使用同一个休眠或死循环来生成多个可执行程序：
 ```cpp
-##include <unistd.h>
+#include <unistd.h>
 int main()
 {
     sleep(100000000);
@@ -240,12 +240,12 @@ ps axj|head -1&&ps axj|grep test
 下面这个程序遵循了以上这些规则，可以成为守护进程：
 
 ```cpp
-##include <fcntl.h>
-##include <signal.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <unistd.h>
-##include <stdlib.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -293,7 +293,7 @@ int main()
 许多 UNIX 系统在它们的 C 函数库中提供了 daemon() 函数来自动完成这些工作，从而简化了一些繁琐的工作：
 
 ```c
-##include <unistd.h>
+#include <unistd.h>
 
 int daemon(int nochdir, int noclose);
 ```
@@ -305,12 +305,12 @@ int daemon(int nochdir, int noclose);
 用 daemon() 完善代码：
 
 ```cpp
-##include <fcntl.h>
-##include <signal.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <unistd.h>
-##include <stdlib.h>
+#include <fcntl.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 void daemonTest(int nochdir, int noclose)
 {

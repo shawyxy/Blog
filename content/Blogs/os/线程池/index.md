@@ -86,13 +86,13 @@ private:
 除了构造函数和析构函数以外， 最重要的两个接口是`run()`和`pushTask()`，分别代表线程执行任务和任务入队（等待被执行）。
 
 ```cpp
-##pragma once
+#pragma once
 
-##include "Thread.hpp"
-##include <vector>
-##include <queue>
+#include "Thread.hpp"
+#include <vector>
+#include <queue>
 
-##define THREAD_NUM 5
+#define THREAD_NUM 5
 template<class T>
 class ThreadPool
 {
@@ -184,7 +184,7 @@ void joins()
 main 函数启动的线程就是主线程，主线程的作用一般是指派任务给其他线程。在主线程中`new`一个线程池对象，在对象实例化时，`ThreadPool`类构造函数会被调用，接着会调用`Thread`类的构造函数。
 
 ```cpp
-##include "ThreadPool.hpp"
+#include "ThreadPool.hpp"
 
 // 主线程
 int main()
@@ -219,11 +219,11 @@ int main()
 下面将`pthread`库中的锁的操作用一个类`Mutex`简单地封装起来，它将被定义在`LockGuard.hpp`中。
 
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <pthread.h>
-##include <string>
+#include <iostream>
+#include <pthread.h>
+#include <string>
 
 class Mutex
 {
@@ -275,7 +275,7 @@ private:
 下面是增加了互斥锁和条件变量的线程池代码：
 
 ```cpp
-##define THREAD_NUM 5
+#define THREAD_NUM 5
 template<class T>
 class ThreadPool
 {
@@ -443,11 +443,11 @@ static void* routine(void* args)
 
 主线程的作用是分配任务，在这里可以简单地用加减操作作为任务，它将被定义在`Task.hpp`中：
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <functional>
-##define SOL_NUM 2
+#include <iostream>
+#include <functional>
+#define SOL_NUM 2
 
 typedef std::function<int(int, int)> func_t;
 
@@ -487,10 +487,10 @@ public:
 在主线程中，可以用`Task`类创建任务。用一个值域为 0 或 1，表示`sol[0]`或`sol[1]`，以选择加法或减法。同时用随机数定义两个操作数，传入函数中，这样就完成了任务的生产，将`Task`对象存入任务队列中。
 
 ```cpp
-##include <iostream>
-##include "ThreadPool.hpp"
-##include "Task.hpp"
-##include <sys/types.h>
+#include <iostream>
+#include "ThreadPool.hpp"
+#include "Task.hpp"
+#include <sys/types.h>
 
 // 主线程
 int opt = -1;
@@ -562,11 +562,11 @@ Task task(x, y, [](int x, int y)->int
 根据日志的重要性，赋予日志以优先级，以保证重要的问题最先被处理。
 
 ```cpp
-##define DEBUG   0
-##define NORMAL  1
-##define WARNING 2
-##define ERROR   3
-##define FATAL   4
+#define DEBUG   0
+#define NORMAL  1
+#define WARNING 2
+#define ERROR   3
+#define FATAL   4
 const char* LevelMap[] = 
 {
     "DEBUG",
@@ -612,8 +612,8 @@ stdarg 是由 standard（标准） arguments（参数）简化而来，主要目
 下面是一个简单的例子，它演示了如何使用 `stdarg.h` 头文件中的宏来定义一个接受可变数量参数的函数。这个函数计算传递给它的所有整数参数的平均值。
 
 ```c
-##include <stdio.h>
-##include <stdarg.h>
+#include <stdio.h>
+#include <stdarg.h>
 
 double average(int count, ...) 
 {
@@ -660,8 +660,8 @@ Average of 5, 10, 15 = 10.000000
 下面是一个简单的例子，演示了如何使用 `vsnprintf` 函数：
 
 ```c
-##include <stdio.h>
-##include <stdarg.h>
+#include <stdio.h>
+#include <stdarg.h>
 
 void format_string(char *buffer, size_t size, const char *format, ...) {
     va_list args;
@@ -689,19 +689,19 @@ Hello, world!
 
 下面使用文件接口，将日志信息写入到`ThreadPool.log`日志文件中：
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <cstdarg>
-##include <ctime>
-##include <string>
+#include <iostream>
+#include <cstdarg>
+#include <ctime>
+#include <string>
 
 // 日志级别
-##define DEBUG   0
-##define NORMAL  1
-##define WARNING 2
-##define ERROR   3
-##define FATAL   4
+#define DEBUG   0
+#define NORMAL  1
+#define WARNING 2
+#define ERROR   3
+#define FATAL   4
 
 const char *LevelMap[] = 
 {
@@ -712,14 +712,14 @@ const char *LevelMap[] =
     "FATAL"
 };
 
-##define LOGFILE "./ThreadPool.log"
+#define LOGFILE "./ThreadPool.log"
 
 void logMessage(int level, const char *format, ...)
 {
 
-##ifndef DEBUG_SHOW
+#ifndef DEBUG_SHOW
     if(level == DEBUG) return;
-##endif
+#endif
 
     char stdBuffer[1024]; // 标准部分（一定要有的）
     time_t timestamp = time(nullptr); // 时间
@@ -741,9 +741,9 @@ void logMessage(int level, const char *format, ...)
 其中，这是一个预处理命令，`DEBUG_SHOW`是编译选项，例如`g++ ... -DDEBUG_SHOW`，就会启用这个日志文件重程序，否则不会执行。
 
 ```cpp
-##ifndef DEBUG_SHOW
+#ifndef DEBUG_SHOW
     if(level == DEBUG) return;
-##endif
+#endif
 ```
 
 现在有了记录日志的逻辑，就可以使用它来程序主体中使用：
@@ -772,7 +772,7 @@ void logMessage(int level, const char *format, ...)
 下面是一个简单的示例，演示了如何使用懒汉模式来实现单例模式：
 
 ```c++
-##include <mutex>
+#include <mutex>
 
 class Singleton {
 public:
@@ -810,7 +810,7 @@ std::once_flag Singleton::flag;
 下面是一个简单的示例，演示了如何在多线程环境中使用双重检查锁定模式来实现单例模式：
 
 ```c++
-##include <mutex>
+#include <mutex>
 
 class Singleton 
 {

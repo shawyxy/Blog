@@ -1,10 +1,11 @@
 import os
 import re
 
-def decrease_heading_level(directory):
-    # 正则表达式用于匹配 Markdown 标题
-    heading_pattern = re.compile(r'^(#+)', re.MULTILINE)
+def fix_code_blocks(directory):
+    # 正则表达式用于匹配 Markdown 中的代码块
     code_block_pattern = re.compile(r'^```')
+    # 正则表达式用于匹配代码块中错误增加的 # 符号
+    hash_pattern = re.compile(r'^##')
 
     # 遍历指定目录及其子目录下的所有文件
     for root, dirs, files in os.walk(directory):
@@ -20,8 +21,8 @@ def decrease_heading_level(directory):
                     if code_block_pattern.match(line):
                         in_code_block = not in_code_block
                     
-                    if not in_code_block and heading_pattern.match(line):
-                        line = heading_pattern.sub(lambda m: '#' + m.group(1), line)
+                    if in_code_block and hash_pattern.match(line):
+                        line = line.replace('##', '#', 1)
                     
                     updated_lines.append(line)
 
@@ -31,4 +32,4 @@ def decrease_heading_level(directory):
 
 # 示例使用路径，请替换为你的实际路径
 directory_path = '/Users/man9o/'
-decrease_heading_level(directory_path)
+fix_code_blocks(directory_path)

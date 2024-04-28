@@ -98,9 +98,9 @@ ps aux | head -1 && ps aux | grep proc | grep -v grep
 通过以下代码可以打印这段代码运行起来创建的进程的 PID 和 PPID：
 
 ```cpp
-##include <stdio.h>
-##include <sys/types.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
 int main() 
 {
     printf("pid: %d\n", getpid());
@@ -131,9 +131,9 @@ int main()
 
 运行以下代码：
 ```cpp
-##include <stdio.h>
-##include <sys/types.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
 int main() 
 {
     fork();
@@ -186,8 +186,8 @@ fork 之后，代码是父子进程共享的，但是创建子进程的初衷不
 上面提到，创建子进程的初衷是让父子进程各自干各自的事情，下面以 if...else 语句为例：
 
 ```cpp
-##include <stdio.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <unistd.h>
 int main()
 {
 	printf("hello world");
@@ -312,9 +312,9 @@ S 状态也叫可中断睡眠状态（interruptible sleep），浅睡眠。表�
 现在将刚才的代码修改，用计数器让子进程所在的分支结束：
 
 ```cpp
-##include <stdio.h>
-##include <stdlib.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 int main()
 {
     printf("hello world\n");
@@ -371,9 +371,9 @@ while :; do ps axj | head -1 && ps axj | grep proc | grep -v grep;echo "########
 同样地，将上面的代码修改，用计数器先让父进程退出，观察子进程的信息：
 
 ```cpp
-##include <stdio.h>
-##include <stdlib.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 int main()
 {
     printf("hello world\n");
@@ -690,7 +690,7 @@ int main（int argc, char* agrv[], char* envp[]）
 通过前者构造循环，打印后者：
 
 ```cpp
-##include <stdio.h>
+#include <stdio.h>
 int main(int argc, char* argv[])
 {
     for(int i = 0; i < argc; i++)
@@ -712,7 +712,7 @@ int main(int argc, char* argv[])
 实际上 main 函数的第三个参数接收的是环境变量表，通过以下代码获取系统环境变量：
 
 ```cpp
-##include <stdio.h>
+#include <stdio.h>
 int main(int argc, char* argv[], char* envp[])
 {
 	for(int i = 0; envp[i]; i++)
@@ -734,9 +734,9 @@ int main(int argc, char* argv[], char* envp[])
 上面获取环境变量的方法都是循环打印，都是把环境变量当成字符串，而且有点麻烦，一般情况下都不会使用。可以通过系统调用（函数）直接获取环境变量：
 
 ```cpp
-##include <stdio.h>
-##include <stdlib.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 int main(int argc, char* argv[], char* envp[])
 {
 	printf("%s\n", getenv("PATH"));
@@ -757,9 +757,9 @@ int main(int argc, char* argv[], char* envp[])
 首先打印环境变量 PATH 的值和它的 PPID：
 
 ```cpp
-##include <stdio.h>
-##include <stdlib.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 int main(int argc, char* argv[], char* envp[])
 {
 	printf("%s\n", getenv("PATH"));
@@ -783,9 +783,9 @@ int main(int argc, char* argv[], char* envp[])
 下面的代码在全局定义了一个变量 g_val，然后通过 fork 创建的子进程修改它的值，在父子进程都打印它的值和它的地址：
 
 ```cpp
-##include <stdio.h>
-##include <sys/types.h>
-##include <unistd.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
 int g_val = 1;
 int main()
 {
@@ -839,8 +839,8 @@ int main()
 下面通过代码验证：
 
 ```cpp
-##include <stdio.h>
-##include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 //定义全局变量
 //未定义
 int g_unval;

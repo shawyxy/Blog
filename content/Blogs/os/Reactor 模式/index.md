@@ -127,12 +127,12 @@ public:
 ##### Epoll 类
 
 ```cpp
-###pragma once
+#pragma once
 
-###include <iostream>
+#include <iostream>
 using namespace std;
 
-###include <sys/epoll.h>
+#include <sys/epoll.h>
 
 class Epoll
 {
@@ -541,17 +541,17 @@ void Recver(Connection *conn)
 
 ```cpp
 // Protocol.hpp
-###pragma once
+#pragma once
 
-###include <iostream>
-###include <cstring>
-###include <string>
-###include <vector>
+#include <iostream>
+#include <cstring>
+#include <string>
+#include <vector>
 
-###define SEP "X"
-###define SEP_LEN strlen(SEP)
-###define SPACE " "
-###define SPACE_LEN strlen(SPACE)
+#define SEP "X"
+#define SEP_LEN strlen(SEP)
+#define SPACE " "
+#define SPACE_LEN strlen(SPACE)
 
 void SpliteMessage(std::string &buffer, std::vector<std::string> *out)
 {
@@ -679,8 +679,8 @@ public:
 
 ```cpp
 // main.cc
-###include "TcpServer.hpp"
-###include <memory>
+#include "TcpServer.hpp"
+#include <memory>
 
 static Response calculatorHelper(const Request &req)
 {

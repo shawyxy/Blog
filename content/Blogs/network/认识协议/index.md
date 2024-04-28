@@ -122,16 +122,16 @@ math: true
 将 Linux 中的网络操作例如创建套接字、监听、获取连接、连接等操作封装为函数，然后放在类`Sock`中。
 
 ```cpp
-##include <iostream>
-##include <string>
-##include <cerrno>
-##include <cstring>
-##include <sys/types.h>
-##include <sys/socket.h>
-##include <netinet/in.h>
-##include <arpa/inet.h>
-##include <unistd.h>
-##include "Log.hpp"
+#include <iostream>
+#include <string>
+#include <cerrno>
+#include <cstring>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include "Log.hpp"
 
 class Sock
 {
@@ -235,12 +235,12 @@ public:
 
 ```cpp
 // CalServer.hpp
-##pragma once
+#pragma once
 
-##include <pthread.h>
-##include <functional>
-##include <vector>
-##include "Sock.hpp"
+#include <pthread.h>
+#include <functional>
+#include <vector>
+#include "Sock.hpp"
 
 namespace ns_tcpserver
 {
@@ -325,9 +325,9 @@ namespace ns_tcpserver
 
 ```cpp
 // CalServer.cc
-##include <iostream>
-##include <memory>
-##include "CalServer.hpp"
+#include <iostream>
+#include <memory>
+#include "CalServer.hpp"
 
 using namespace ns_tcpserver;
 
@@ -362,7 +362,7 @@ int main(int argc, char *argv[])
 
 ```cpp
 // CalClient.hpp
-##include "Sock.hpp"
+#include "Sock.hpp"
 
 namespace ns_tcpclient
 {
@@ -407,9 +407,9 @@ namespace ns_tcpclient
 
 ```cpp
 // CalClient.cc
-##include <iostream>
-##include <memory>
-##include "CalClient.hpp"
+#include <iostream>
+#include <memory>
+#include "CalClient.hpp"
 
 using namespace ns_tcpclient;
 
@@ -465,8 +465,8 @@ int main(int argc, char *argv[])
 // Protocol.hpp
 namespace ns_protocol
 {
-##define SPACE " "
-##define SPACE_LEN strlen(SPACE)
+#define SPACE " "
+#define SPACE_LEN strlen(SPACE)
     // 请求
     class Request
     {
@@ -531,10 +531,10 @@ namespace ns_protocol
 // Protocol.hpp
 namespace ns_protocol
 {
-##define SPACE " "
-##define SPACE_LEN strlen(SPACE)
-##define SEP "\r\n"
-##define SEP_LEN strlen(SEP)    
+#define SPACE " "
+#define SPACE_LEN strlen(SPACE)
+#define SEP "\r\n"
+#define SEP_LEN strlen(SEP)    
 	// 响应
     class Response
     {
@@ -889,8 +889,8 @@ TCP 和 UDP 是「传输控制」协议。在 TCP 协议中，客户端和服务
 这样就通过多个标记字符`'\r\n'`（当做一个整体）将报文划分为 2 个区域：有效数据的长度+有效数据。这样当主机从网络中获取到报文时，通过这个标记字符就能取出它们，并验证长度是否正确，这样就能保证报文的完整性。为了方便使用，用宏定义它们：
 
 ```cpp
-##define SEP "\r\n"
-##define SEP_LEN strlen(SEP)
+#define SEP "\r\n"
+#define SEP_LEN strlen(SEP)
 ```
 
 注意不能用 sizeof 计算它的长度，否则会包含最后的'\0'。
@@ -1086,14 +1086,14 @@ setsid COMMAND
 
 下面将在进程中调用该函数，让它自己成为一个守护进程：
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <unistd.h>
-##include <signal.h>
-##include <sys/types.h>
-##include <sys/stat.h>
-##include <fcntl.h>
+#include <iostream>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 void MyDaemon()
 {
@@ -1204,9 +1204,9 @@ sudo yum install jsoncpp-devel
 注意头文件的包含。
 
 ```cpp
-##include <iostream>
-##include <string>
-##include <jsoncpp/json/json.h>
+#include <iostream>
+#include <string>
+#include <jsoncpp/json/json.h>
 
 int main()
 {

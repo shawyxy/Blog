@@ -355,7 +355,9 @@ man ls
 man sleep
 ```
 <img src="Linux基本操作【上】.IMG/427eaa4e180a960efe62c7e52dda9f7f.png" alt="image.png" style="zoom:40%;" />
+
 ## *7. cp 指令
+
 ### 语法
 cp [选项] [源文件/目标文件  +  目录]
 ### 功能
@@ -497,7 +499,7 @@ cat 指令最常用的用途就是打印文件内容，不需要调用记事本�
 ls
 clash  Code  d1  Git  test  test1.txt
 cat test1.txt 
-##include <stdio.h>
+#include <stdio.h>
 int main()
 {
   pritf("hello cat\n");
@@ -515,7 +517,7 @@ tac test1.txt
   pritf("hello cat\n");
 {
 int main()
-##include <stdio.h>
+#include <stdio.h>
 ```
 虽然它看起来没什么用但还是有点用的（存在即合理，大佬考虑的应用场景很多）
 ### 补充 echo

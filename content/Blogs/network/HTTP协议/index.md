@@ -334,12 +334,12 @@ Content-Length: 88
 
 ```cpp
 // HttpServer.hpp
-##include <iostream>
-##include <functional>
-##include <signal.h>
-##include <sys/types.h>
+#include <iostream>
+#include <functional>
+#include <signal.h>
+#include <sys/types.h>
 
-##include "Sock.hpp"
+#include "Sock.hpp"
 
 class HttpServer
 {
@@ -393,8 +393,8 @@ public:
 
 ```cpp
 // HttpServer.cc
-##include "HttpServer.hpp"
-##include <memory>
+#include "HttpServer.hpp"
+#include <memory>
 void Usage(const std::string &proc)
 {
     std::cout << "\nUsage: " << proc << " [PORT]\n" << std::endl;
@@ -531,10 +531,10 @@ void HttpRequestHandler(int sockfd)
 最后，如果字符串`s`中还有剩余部分，则将其作为最后一个子字符串存储到 vector 中。
 
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <vector>
+#include <iostream>
+#include <vector>
 
 class Util
 {
@@ -564,9 +564,9 @@ public:
 完善的逻辑实现了一个简单的 HTTP 服务器，能够处理客户端的 GET 请求并返回相应的文件内容：
 
 ```cpp
-##include <fstream>
-##include <vector>
-##include "Util.hpp"
+#include <fstream>
+#include <vector>
+#include "Util.hpp"
 void HttpRequestHandler(int sockfd)
 {
     // 1. 读取请求

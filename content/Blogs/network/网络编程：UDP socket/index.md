@@ -43,19 +43,19 @@ UDP（User Datagram Protocol，用户数据报协议）是一个简单的面向�
 
 ```cpp
 // Log.hpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <cstdarg>
-##include <ctime>
-##include <string>
+#include <iostream>
+#include <cstdarg>
+#include <ctime>
+#include <string>
 
 // 日志级别
-##define DEBUG   0
-##define NORMAL  1
-##define WARNING 2
-##define ERROR   3
-##define FATAL   4
+#define DEBUG   0
+#define NORMAL  1
+#define WARNING 2
+#define ERROR   3
+#define FATAL   4
 
 const char *LevelMap[] = 
 {
@@ -69,9 +69,9 @@ const char *LevelMap[] =
 // 打印版本
 void logMessage(int level, const char *format, ...)
 {
-##ifndef DEBUG_SHOW
+#ifndef DEBUG_SHOW
     if(level== DEBUG) return;
-##endif
+#endif
     // 标准部分
     char stdBuffer[1024];
     time_t timestamp = time(nullptr);
@@ -110,8 +110,8 @@ void logMessage(int level, const char *format, ...)
 
 ```cpp
 // UdpServer.hpp
-##include <iostream>
-##include <string>
+#include <iostream>
+#include <string>
 
 class UdpServer
 {
@@ -141,9 +141,9 @@ private:
 - 以防资源泄露，这里使用了`unique_ptr`智能指针管理服务器的资源，不必在此深究，这里的程序比较简单，用一对`new`和`delete`也能实现资源的申请与回收。注意调用构造函数的时候需要传递参数。智能指针的头文件是`<memory>`
 
 ```cpp
-##include "UdpServer.hpp"
-##include <memory>
-##include <cstdio>
+#include "UdpServer.hpp"
+#include <memory>
+#include <cstdio>
 
 static void usage(std::string proc)
 {
@@ -209,12 +209,12 @@ int socket(int domain, int type, int protocol);
 下面是创建套接字和差错处理的逻辑：
 
 ```cpp
-##include "Log.hpp"
-##include <cerrno>
-##include <cstring>
-##include <sys/types.h>
-##include <sys/socket.h>
-##include <unistd.h>
+#include "Log.hpp"
+#include <cerrno>
+#include <cstring>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
 class UdpServer{    
 	bool initServer()
@@ -275,9 +275,9 @@ UdpServer : UdpServer.cc
 `bind()`函数用于将套接字与指定的 IP 地址和端口号绑定。通常在 TCP 协议或 UDP 协议的服务端设置。
 
 ```c
-##include <sys/socket.h>
-##include <netinet/in.h>
-##include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 int bind(int sockfd, const struct sockaddr *addr,
                 socklen_t addrlen);
 ```
@@ -544,9 +544,9 @@ private:
 
 ```cpp
 // UdpClient.cc
-##include "UdpClient.hpp"
-##include <memory>
-##include <cstdio>
+#include "UdpClient.hpp"
+#include <memory>
+#include <cstdio>
 
 static void usage(std::string proc)
 {
@@ -646,7 +646,7 @@ void Start()
 但是在本次的实验中，我们实现的回声服务器并未对数据进行处理，客户端也就没有接收服务端返回的数据的必要，不过为了规范性，仍然使用`recvfrom()`函数接收服务端传回的数据。形式上可以定义一个结构体接收数据，充当占位符的作用。
 
 ```cpp
-##define SIZE 1024
+#define SIZE 1024
 void Start()
 {
     // 3. 发送数据
@@ -711,7 +711,7 @@ void Start()
 
 注意，上面的代码中使用了日志，有的日志级别是`DEBUG`，在测试中可以在编译选项中加上`DDUBUG_SHOW`以更好地观察现象，这是一个自定义预处理命令。
 
-<img src="网络编程：UDP socket.IMG/屏幕录制 2023-04-30 17.49.17.gif" alt="屏幕录制 2023-04-30 17.49.17" style="zoom:40%;" />
+<img src="网络编程：UDP socket.IMG/屏幕录制2023-04-30 17.49.17.gif" alt="屏幕录制 2023-04-30 17.49.17" style="zoom:40%;" />
 
 注意：首先要将服务端运行起来。通过实验结果来看，简易的回声服务端就被实现了，服务端将会在自己的进程中打印客户端发送的数据，并将数据原封不动地返回给客户端，`server echo#`后面的内容就是客户端返回的数据。
 
@@ -772,7 +772,7 @@ void Start()
 
 ```c
 /* Address to accept any incoming messages.  */
-##define	INADDR_ANY		((in_addr_t) 0x00000000)
+#define	INADDR_ANY		((in_addr_t) 0x00000000)
 ```
 
 当服务器端的 IP 地址设置为`INADDR_ANY`时，意味着服务器将监听所有可用的网络接口上的客户端连接请求。也就是说，无论客户端使用哪个 IP 地址来连接服务器，服务器都能够接受连接。
@@ -815,7 +815,7 @@ void Start()
 
 例如运营商提供给我的私有 IP 是`172.17.177.235`：
 
-<img src="网络编程：UDP socket.IMG/屏幕录制 2023-04-30 21.43.41.gif" alt="屏幕录制 2023-04-30 21.43.41" style="zoom:40%;" />
+<img src="网络编程：UDP socket.IMG/屏幕录制2023-04-30 21.43.41.gif" alt="屏幕录制 2023-04-30 21.43.41" style="zoom:40%;" />
 
 ## 解析命令版
 
@@ -826,7 +826,7 @@ void Start()
 `popen`是一个 Linux 函数，用于通过创建管道、分叉和调用 shell 来打开进程。由于管道本质上是单向的，因此`type`参数只能指定读取或写入，不能同时指定两者；因此，所得到的流分别是只读或只写的。
 
 ```c
-##include <stdio.h>
+#include <stdio.h>
 
 FILE *popen(const char *command, const char *type);
 
@@ -855,7 +855,7 @@ int pclose(FILE *stream);
 如果命令包含非法指令（例如`rm`或`rmdir`），服务器将向客户端发送一条错误消息并继续读取数据。否则，服务器将读取命令的输出并将其存储在`cmd`字符串中。最后，服务器使用`sendto`函数将命令的输出发送回客户端。
 
 ```cpp
-##define SIZE 1024
+#define SIZE 1024
 void Start()
 {
     char buffer[SIZE]; // 用来存放读取的数据
@@ -908,8 +908,6 @@ void Start()
 
 ### 测试
 
-<img src="../../../../var/folders/rn/x47kmrnj7v31hpbbfhlzd2m00000gn/T/com.sindresorhus.Gifski/TemporaryItems/NSIRD_Gifski_NEs8Xj/屏幕录制 2023-04-30 23.02.07.gif" alt="屏幕录制 2023-04-30 23.02.07" style="zoom:40%;" />
-
 > 这个程序在缓冲区中还是有一些问题，如果频繁输入不存在的命令将会使`popen()`函数处于阻塞状态。
 >
 > 如果客户端发送了`rm`或`rmdir`等非法指令，那么客户端将会记录错误信息，并直接返回错误信息。
@@ -929,7 +927,7 @@ void Start()
 哈希表被保存在`UdpServer`类的成员属性中。
 
 ```cpp
-##include <unordered_map>
+#include <unordered_map>
 class UdpServer
 {
 private:
@@ -1018,7 +1016,7 @@ void Start()
 
 下面将用 2 个客户端和 1 个服务端进行测试。
 
-<img src="网络编程：UDP socket.IMG/屏幕录制 2023-05-01 15.14.35.gif" alt="屏幕录制 2023-05-01 15.14.35" style="zoom:40%;" />
+<img src="网络编程：UDP socket.IMG/屏幕录制2023-05-01 15.14.35.gif" alt="屏幕录制 2023-05-01 15.14.35" style="zoom:40%;" />
 
 但是这并不是我们想象中的群聊，这里只有发送信息的客户端才能收到自己发送的消息，而不会立刻显示另一个客户端发送的消息，而是在回显自己发送的几条信息之后才显示。而且我们通过服务端的日志可以看到，实际上客户端是有将每条接收到的数据发送给两个客户端的：
 
@@ -1205,7 +1203,7 @@ int main(int argc, char* argv[])
 }
 ```
 
-<img src="网络编程：UDP socket.IMG/屏幕录制 2023-05-01 19.36.33.gif" alt="屏幕录制 2023-05-01 19.36.33" style="zoom:40%;" />
+<img src="网络编程：UDP socket.IMG/屏幕录制2023-05-01 19.36.33.gif" alt="屏幕录制 2023-05-01 19.36.33" style="zoom:40%;" />
 
 注意：由于使用了`pthread`库，因此要增加编译选项：`-pthread`。
 
@@ -1226,7 +1224,7 @@ int main(int argc, char* argv[])
 
 <img src="网络编程：UDP socket.IMG/image-20230501201002778.png" alt="image-20230501201002778" style="zoom:40%;" />
 
-<img src="网络编程：UDP socket.IMG/屏幕录制 2023-05-01 20.15.32.gif" alt="屏幕录制 2023-05-01 20.15.32" style="zoom:40%;" />
+<img src="网络编程：UDP socket.IMG/屏幕录制2023-05-01 20.15.32.gif" alt="屏幕录制 2023-05-01 20.15.32" style="zoom:40%;" />
 
 通过管道作为客户端和服务端之间的缓冲区，就可以实现在专门的模块中输入（右边）和输出（中间），这样就不会像上面一样输入和输出乱成一锅粥了。
 

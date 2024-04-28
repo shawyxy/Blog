@@ -118,7 +118,7 @@ UDP（User Datagram Protocol，用户数据报协议）是一个简单的面向�
 这个转换的工作已经由 C 标准库完成，实际上，Windows 也使用的是相同的一套函数。
 
 ```cpp
-##include <arpa/inet.h>
+#include <arpa/inet.h>
 
 uint32_t htonl(uint32_t hostlong);
 uint16_t htons(uint16_t hostshort);
@@ -162,8 +162,8 @@ UDP 是面向字节流的，它的步骤比较简单：
 它们的头文件都是：
 
 ```c
-##include <sys/types.h>
-##include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 ```
 
 #### 创建套接字
@@ -192,9 +192,9 @@ int socket(int domain, int type, int protocol);
 `bind()`函数用于将套接字与指定的 IP 地址和端口号绑定。通常在 TCP 协议或 UDP 协议的服务端设置。
 
 ```c
-##include <sys/socket.h>
-##include <netinet/in.h>
-##include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 int bind(int sockfd, const struct sockaddr *addr,
                 socklen_t addrlen);
 ```

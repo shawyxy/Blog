@@ -192,8 +192,8 @@ template<size_t N>
 
 ```cpp
 // ObjectPool.h
-##pragma once
-##include "Common.h"
+#pragma once
+#include "Common.h"
 
 template<class T>
 class ObjectPool
@@ -277,11 +277,11 @@ static const size_t PAGE_SHIFT = 13;
 // 向堆按页申请空间
 inline static void* SystemAlloc(size_t kpage)
 {
-##ifdef _WIN32
+#ifdef _WIN32
 	void* ptr = VirtualAlloc(0, kpage << PAGE_SHIFT, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-##else
+#else
 	// linux 下 brk mmap 等
-##endif
+#endif
 	if (ptr == nullptr)
 		throw std::bad_alloc();
 	return ptr;
@@ -798,7 +798,7 @@ static __declspec(thread) ThreadCache* TLSThreadCache_ptr = nullptr;
 那么现在 ThreadCache 就不能作为普通变量直接定义了，而是由`TLSThreadCache_ptr`接管，资源只归属于线程本身。所有向 ThreadCache 申请和释放的请求，都要经过`TLSThreadCache_ptr`处理。所以在`ConcurrentAlloc.h`中封装 ThreadCache 的分配和回收接口。
 
 ```cpp
-##include "ThreadCache.h"
+#include "ThreadCache.h"
 
 static void* ConcurrentAlloc(size_t bytes)
 {
@@ -899,13 +899,13 @@ Span 中的 Object 数量可能会被分配或者合并，所以 Span 管理的�
 
 ```cpp
 // Common.h
-##ifdef _WIN64
+#ifdef _WIN64
 	typedef unsigned long long PAGE_ID;
-##elif _WIN32
+#elif _WIN32
 	typedef unsigned int PAGE_ID;
-##else
+#else
 	// Linux
-##endif
+#endif
 ```
 
 值得注意的是，32 位平台中只有_WIN32 有定义，64 位平台两者都有，所以应该先判断、_WIN64。
@@ -1863,11 +1863,11 @@ struct Span
 // 直接将内存还给堆
 inline static void SystemFree(void* ptr)
 {
-##ifdef _WIN32
+#ifdef _WIN32
 	VirtualFree(ptr, 0, MEM_RELEASE);
-##else
+#else
 	// Linux 下 sbrk unmmap 等
-##endif
+#endif
 }
 ```
 
@@ -2316,7 +2316,7 @@ public:
 在此之前建议仍用之前的单线程用例测试，以保证申请和回收的逻辑是通的，也比较好调试。
 
 ```cpp
-##include"ConcurrentAlloc.h"
+#include"ConcurrentAlloc.h"
 using std::cout;
 using std::endl;
 

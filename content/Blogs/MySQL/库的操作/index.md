@@ -102,24 +102,24 @@ MySQL 没有默认的校验规则是因为不同的字符集和场景可能需�
 下面以 utf8_general_ci 校验规则来创建一个`person_test1`数据库，并创建一个`person1`表：
 
 ```mysql
-## 创建数据库
+# 创建数据库
 mysql> create database person_test1 collate=utf8_general_ci;
 Query OK, 1 row affected (0.00 sec)
-## 进入数据库
+# 进入数据库
 mysql> use person_test1;
 Database changed
-## 创建表
+# 创建表
 mysql> create table person1(
     -> name varchar(20)
     -> );
 Query OK, 0 rows affected (0.02 sec)
-## 插入两行数据
+# 插入两行数据
 mysql> insert into person1 values ('AAAAA');
 Query OK, 1 row affected (0.01 sec)
 
 mysql> insert into person1 values ('aaaaa');
 Query OK, 1 row affected (0.00 sec)
-## 输出表中的内容
+# 输出表中的内容
 mysql> select * from person1;
 +-------+
 | name  |

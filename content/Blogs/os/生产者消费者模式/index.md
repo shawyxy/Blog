@@ -107,8 +107,8 @@ Blocking Queue 与普通队列的主要区别在于它具有阻塞功能。这�
 将在`ProdCons.cc`源文件中实现创建、等待线程，生产者和消费者函数。
 
 ```cpp
-##include "BlockQueue.hpp"
-##include <pthread.h>
+#include "BlockQueue.hpp"
+#include <pthread.h>
 
 void* productor(void* args)
 {
@@ -151,11 +151,11 @@ STL 不是线程安全的，这是因为它的设计目标并不是支持多线�
 为了判断缓冲区是否为空，所以要有一个计数器记录着容量，这个操作也是由用户实现的。同时，为了泛化类型，使用了模板。下面是`BlockQueue`类的框架。
 
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <queue>
-##include <pthread.h>
+#include <iostream>
+#include <queue>
+#include <pthread.h>
 
 using namespace std;
 
@@ -435,10 +435,10 @@ while(isQueueEmpty())
 可以另外在`task.hpp`中定义它们。
 
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <functional>
+#include <iostream>
+#include <functional>
 using namespace std;
 
 typedef function<int(int, int)> func_t;
@@ -469,7 +469,7 @@ public:
 可以以一个简单的加减法函数作为线程的数据处理任务，在这里用一个数组保存：
 
 ```cpp
-##define SOL_NUM 2
+#define SOL_NUM 2
 
 typedef function<int(int, int)> func_t;
 

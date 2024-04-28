@@ -177,8 +177,8 @@ Term 和 Core 都表示终止进程。Term 表示正常终止，而 Core 表示�
 可以通过一个简单的除零错误让 OS 生成 core 文件：
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
+#include <iostream>
+#include <unistd.h>
 using namespace std;
 
 int main()
@@ -220,11 +220,11 @@ man signal 手册的 Action 列中的 Core 就是让 OS 判断是否发生核心
 有了终止信号之后，还需要让操作系统接收到这个终止信号是否会发生核心转储。下面将不捕捉信号，直接获取到进程的 status 输出型参数，并通过位运算获取到第七位的 core dump 标志位。
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <signal.h>
-##include <sys/wait.h>
-##include <sys/types.h>
+#include <iostream>
+#include <unistd.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <sys/types.h>
 using namespace std;
 
 int main()
@@ -289,7 +289,7 @@ int main()
 对信号的处理通过函数 signal 完成，它的原型（可通过 man 2 signal 查看）：
 
 ```cpp
-##include <signal.h>
+#include <signal.h>
 
 typedef void (*sighandler_t)(int);
 sighandler_t signal(int signum, sighandler_t handler);
@@ -311,9 +311,9 @@ void (*signal(int signum, void (*handler)(int)))(int)
 下面将用 signal 接口捕获 2 号信号：
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <signal.h>
+#include <iostream>
+#include <unistd.h>
+#include <signal.h>
 using namespace std;
 void catchSignal(int signum)
 {
@@ -357,7 +357,7 @@ int main()
 `kill` 用于向任何进程组或进程发送信号。函数原型：
 
 ```cpp
-##include <signal.h>
+#include <signal.h>
 int kill(pid_t pid, int sig)
 ```
 
@@ -378,10 +378,10 @@ int kill(pid_t pid, int sig)
 假设我们要输入的命令是这样的：./mykill -2 pid ，那么参数个数 argc 为 3，我们使用字符串转整数 atoi，提取出传入的命令编号和进程 PID。然后将它们作为参数传入系统调用 kill ，完成手动终止进程的操作。
 
 ```cpp
-##include <iostream>
-##include <cstring>
-##include <string>
-##include <signal.h>
+#include <iostream>
+#include <cstring>
+#include <string>
+#include <signal.h>
 using namespace std;
 
 static void Usage(string proc)
@@ -432,9 +432,9 @@ int raise(int sig);
 - 失败：返回非零。
 
 ```cpp
-##include <iostream>
-##include <signal.h>
-##include <unistd.h>
+#include <iostream>
+#include <signal.h>
+#include <unistd.h>
 using namespace std;
 
 int main()
@@ -467,10 +467,10 @@ void abort(void);
 它没有参数，也不返回任何值。
 
 ```cpp
-##include <iostream>
-##include <signal.h>
-##include <stdlib.h>
-##include <unistd.h>
+#include <iostream>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
 using namespace std;
 
 int main()
@@ -517,7 +517,7 @@ int main()
 原型：
 
 ```cpp
-##include <unistd.h>
+#include <unistd.h>
 
 unsigned int alarm(unsigned int seconds);
 ```
@@ -530,9 +530,9 @@ seconds 参数：无符号整数，作为表示定时器的秒数。
 
 下面将测试我的服务器在 1s 内能计算多少次++操作，结果用 count 保存并输出：
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <signal.h>
+#include <iostream>
+#include <unistd.h>
+#include <signal.h>
 using namespace std;
 
 int main()
@@ -560,10 +560,10 @@ int main()
 每计算一次，进程都会被阻塞（停下来），IO（包括上面两方面）完成以后才会再计算下一次，可见 IO 非常费时间。如果要单纯计算算力，我们可以用 signal 捕捉信号：
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <signal.h>
-##include <stdlib.h>
+#include <iostream>
+#include <unistd.h>
+#include <signal.h>
+#include <stdlib.h>
 using namespace std;
 
 int count = 0;
@@ -877,7 +877,7 @@ sigset_t 是一个不透明的数据类型，它的具体实现取决于操作�
 
 ```c
 // 在头文件<signa.h>中
-##define _SIGSET_NWORDS (1024 / (8 * sizeof (unsigned long int)))
+#define _SIGSET_NWORDS (1024 / (8 * sizeof (unsigned long int)))
 typedef struct
 {
   unsigned long int __val[_SIGSET_NWORDS];
@@ -898,7 +898,7 @@ typedef struct
 sigpending 返回进程的 pending 信号集，即在阻塞时已经被触发的信号。挂起信号的掩码将返回到变量 set 中。原型：
 
 ```c
-##include <signal.h>
+#include <signal.h>
 
 int sigpending(sigset_t *set);
 ```
@@ -912,7 +912,7 @@ set 参数：输出型参数，用于存储 pending 信号集。
 sigprocmask 用于获取或更改 blocked 掩码。该调用的行为取决于 how 的值。原型：
 
 ```c
-##include <signal.h>
+#include <signal.h>
 
 int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
 ```
@@ -947,9 +947,9 @@ int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
 用循环将 1->31 的信号通过 signal 注册为阻塞，并绑定函数 catchSig，函数会打印捕捉到的信号编号：
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <signal.h>
+#include <iostream>
+#include <unistd.h>
+#include <signal.h>
 
 using namespace std;
 
@@ -982,7 +982,7 @@ int main()
 除了上面两个信号集操作函数之外，还有一些操作信号集的函数：
 
 ```c
-##include <signal.h>
+#include <signal.h>
 
 int sigemptyset(sigset_t *set);
 
@@ -1008,8 +1008,8 @@ int sigismember(const sigset_t *set, int signum);
 示例代码：
 
 ```c
-##include <stdio.h>
-##include <signal.h>
+#include <stdio.h>
+#include <signal.h>
 
 int main()
 {
@@ -1215,7 +1215,7 @@ int main()
 上述逻辑本身就是进程在运行的。`pidof + 进程名称`，可以直接获取进程 pid，用一个脚本查看每个进程自动发送 1-31 信号，把脚本保存在：SendSig.sh：
 
 ```shell
-##!/bin/bash
+#!/bin/bash
 
 i=1
 id=$(pidof signalTest)
@@ -1440,7 +1440,7 @@ CPU 中有 2 套寄存器，一套是可见的，一套是它自己用的。其�
 除了用前面用过的 signal 函数之外，我们还可以使用 sigaction 函数捕捉信号，它允许调用进程检查和/或指定与特定信号相关联的动作。原型：
 
 ```c
-##include <signal.h>
+#include <signal.h>
 
 int sigaction(int sig, const struct sigaction *restrict act, struct sigaction *restrict oact);
 ```
@@ -1720,9 +1720,9 @@ volatile 关键字通常用于多线程环境中，volatile 提醒编译器它�
 ### 6.1 示例 1
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <signal.h>
+#include <iostream>
+#include <unistd.h>
+#include <signal.h>
 using namespace std;
 
 int flag = 0; // 定义一个全局变量
@@ -1785,9 +1785,9 @@ g++ -std=c++11 -O3  -o $@ $^
 下面这段代码演示了使用 signal 函数来处理子进程退出时发送的 SIGCHLD 信号。
 
 ```cpp
-##include <iostream>
-##include <unistd.h>
-##include <signal.h>
+#include <iostream>
+#include <unistd.h>
+#include <signal.h>
 using namespace std;
 
 void handler(int signum)

@@ -50,6 +50,7 @@ mysql> create table students(
 <img src="表内容的操作.IMG/image-20231030141453258.png" alt="image-20231030141453258" style="zoom:40%;" />
 
 如果将 id 列的属性设置为自增，那么自增的值将是当前 id 的最大值+1，即 3。这允许插入时不指定 id 的值：
+
 <img src="表内容的操作.IMG/image-20231030142703270.png" alt="image-20231030142703270" style="zoom:40%;" />
 
 <img src="表内容的操作.IMG/image-20231030142738265.png" alt="image-20231030142738265" style="zoom:40%;" />
@@ -89,6 +90,7 @@ INSERT INTO table_name (column1, column2,..) VALUES (value1, value2,..) ON DUPLI
 所以 MySQL 会提示有 2 行被影响。
 
 如果不存在这条记录，相当于直接插入：
+
 <img src="表内容的操作.IMG/image-20231030150147812.png" alt="image-20231030150147812" style="zoom:40%;" />
 
 ## Retrieve（查找）
@@ -124,9 +126,11 @@ mysql> insert into en_exam
 ```
 
 查询表中指定列名的值：
+
 <img src="表内容的操作.IMG/image-20231030152605413.png" alt="image-20231030152605413" style="zoom:40%;" />
 
 通过通配符`*`来查询全列信息：
+
 <img src="表内容的操作.IMG/image-20231030152703550.png" alt="image-20231030152703550" style="zoom:40%;" />
 
 在测试时表的结构简单，通常用全列查询。但实际上数据库的一张表中就可能维护着成千上万条记录，这么做不但可读性差，而且如果是通过网络连接到 MySQL 服务器，可能对 MySQL 客户端的性能产生影响。
@@ -192,6 +196,7 @@ WHERE 子句用于从表中选择满足指定条件的数据。用户可以使�
 #### 条件查询
 
 在 en_exam 表中，做一下条件查询：
+
 <img src="表内容的操作.IMG/image-20231031155349033.png" alt="image-20231031155349033" style="zoom:40%;" />
 
 查询听力在 6 分以下的人的姓名：
@@ -366,6 +371,7 @@ UPDATE table_name SET column1=expr1 [, column2=expr2] ... [WHERE ...] [ORDER BY 
 修改子句总是最后才执行的，因为前面的子句都是查询。
 
 将口语成绩前 3 的同学的口语成绩全部+3 分：
+
 <img src="表内容的操作.IMG/image-20231120144521647.png" alt="image-20231120144521647" style="zoom:40%;" />
 
 不论是多复杂的查询，总是要先得到查询后的这张子表，在子表中修改属性的值。另外注意 MySQL 不支持诸如+=这样的运算符。前 3 名+3 分后仍然是前三，但是如果是倒数 3 名+3 分后，可能就不是了。
@@ -381,6 +387,7 @@ DELETE FROM table_name [WHERE ...] [ORDER BY ...] [LIMIT ...];
 和修改数记录一样，删除记录的前提是这条记录存在。所以 delete 子句也是在找到最终这张子表之后进行的。
 
 删除孙大勇的记录：
+
 <img src="表内容的操作.IMG/image-20231120145205253.png" alt="image-20231120145205253" style="zoom:40%;" />
 
 删除表：
@@ -464,6 +471,7 @@ truncate 子句的作用类似于没有 where 条件的 delete 语句，或者�
 <img src="表内容的操作.IMG/image-20231120215840516.png" alt="image-20231120215840516" style="zoom:40%;" />
 
 统计这张表中总共有多少条记录：
+
 <img src="表内容的操作.IMG/image-20231120220626042.png" alt="image-20231120220626042" style="zoom:40%;" />
 
 分别用`*`和表达式`1`作为参数，得到的结果是一样的。这是因为后者这种写法相当于在查询时在原表中新增了一个值为 1 的列，然后 count 函数就会计算出有多少行值为 1 的列。

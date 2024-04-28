@@ -169,13 +169,13 @@ PV 操作。
 
 在`ringQueue.hpp`中实现环形队列：
 ```cpp
-##include <iostream>
-##include <vector>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
-##ifndef _RING_QUEUE_HPP_
-##define _RING_QUEUE_HPP_
+#ifndef _RING_QUEUE_HPP_
+#define _RING_QUEUE_HPP_
 
 template<class T>
 class RingQueue
@@ -194,7 +194,7 @@ private:
 	int _num;
 };
 
-##endif
+#endif
 ```
 
 其中，环形队列使用了 vector 容器，以便在编写 pop 和 push 逻辑时复用 vector 的接口。`num`是用来记录队列中有效数据的个数的，其实可以复用 vector 的 size 接口，这里是显式地定义 num，强调了有效数据的个数。
@@ -209,7 +209,7 @@ private:
 
 在`ProdCon.cc`中实现多线程并发访问临界资源的逻辑：
 ```cpp
-##include "ringQueue"
+#include "ringQueue"
 
 void* productor(void* args)
 {
@@ -356,10 +356,10 @@ pop() 的逻辑也是类似的，需要注意的是`out`是一个输出型参数
 所以我们使用信号量来保护缓冲区中的空间（对应生产者）和数据（对应消费者）。由于信号量本质上是一个整数计数器（也就是说它应该是递减的），所以它的初始值应该是被手动赋值的。下面将在`sem.hpp`中将信号量的操作接口用一个类封装，这也是常用的模块化方式。
 
 ```cpp
-##ifndef _SEM_HPP_
-##define _SEM_HPP_
+#ifndef _SEM_HPP_
+#define _SEM_HPP_
 
-##include <semaphore.h>
+#include <semaphore.h>
 
 class Sem
 {
@@ -384,7 +384,7 @@ private:
 	sem_t _sem;
 };
 
-##endif
+#endif
 ```
 
 注意：`sem_t`和`pthread_t`以及`pid_t`一样，是一个内核提供数据类型。
@@ -448,10 +448,10 @@ private:
 #### 测试 1
 
 ```cpp
-##include "ringQueue.hpp"
-##include "Task.hpp"
-##include <sys/types.h>
-##include <unistd.h>
+#include "ringQueue.hpp"
+#include "Task.hpp"
+#include <sys/types.h>
+#include <unistd.h>
 void* productor(void* args)
 {
 

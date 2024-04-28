@@ -69,7 +69,7 @@ select 函数的名称的含义是：它可以从一组文件描述符中**选�
 
 函数原型：
 ```c
-##include <sys/select.h>
+#include <sys/select.h>
 int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
 ```
 
@@ -87,7 +87,7 @@ int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struc
 fd_set 是一个位图结构，它的不同标志位用来记录被监视的文件描述符的属性，如可读、可写或异常状态等，它的大小固定是 128 字节，最多 能够记录 128 * 8 = 1024 个文件描述符。原型：
 
 ```c
-##include <sys/select.h>
+#include <sys/select.h>
 typedef struct {
     long int fds_bits[32]; // 一个长整型数组，每一位对应一个文件描述符
 } fd_set;
@@ -141,20 +141,20 @@ struct timeval {
 由于本节是网络部分中靠后的知识点，因此 socket 套接字的编写不是本节的重点，将它们封装为一个 Sock 类，以供后续使用。
 
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <string>
-##include <cstring>
-##include <cerrno>
-##include <cassert>
-##include <unistd.h>
-##include <memory>
-##include <sys/types.h>
-##include <sys/socket.h>
-##include <arpa/inet.h>
-##include <netinet/in.h>
-##include <ctype.h>
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <cerrno>
+#include <cassert>
+#include <unistd.h>
+#include <memory>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <ctype.h>
 
 // 注：为了方便使用，并且将重点放在 select Server 的编写上，
 // 所有接口都设置为静态，通过 类名：: 函数名 调用
@@ -233,19 +233,19 @@ public:
 为了方便观察现象，下面实现了一个简单的 Log 日志类（这里是我直接拿了之前写的），下面的代码中可以把它当做普通的打印语句。
 
 ```cpp
-##pragma once
+#pragma once
 
-##include <iostream>
-##include <cstdarg>
-##include <ctime>
-##include <string>
+#include <iostream>
+#include <cstdarg>
+#include <ctime>
+#include <string>
 
 // 日志级别
-##define DEBUG   0
-##define NORMAL  1
-##define WARNING 2
-##define ERROR   3
-##define FATAL   4
+#define DEBUG   0
+#define NORMAL  1
+#define WARNING 2
+#define ERROR   3
+#define FATAL   4
 
 const char *LevelMap[] = 
 {
@@ -260,9 +260,9 @@ const char *LevelMap[] =
 
 void logMessage(int level, const char *format, ...)
 {
-##ifndef DEBUG_SHOW
+#ifndef DEBUG_SHOW
     if(level== DEBUG) return;
-##endif
+#endif
     // 标准部分
     char stdBuffer[1024];
     time_t timestamp = time(nullptr);
@@ -302,14 +302,14 @@ void logMessage(int level, const char *format, ...)
 ```cpp
 // SelectServer.hpp
 
-##ifndef __SELECT_SVR_H__
-##define __SELECT_SVR_H__
+#ifndef __SELECT_SVR_H__
+#define __SELECT_SVR_H__
 
-##include <iostream>
-##include <sys/select.h>
+#include <iostream>
+#include <sys/select.h>
 
-##include "Sock.hpp"
-##include "Log.hpp"
+#include "Sock.hpp"
+#include "Log.hpp"
 
 class SelectServer
 {
@@ -333,7 +333,7 @@ private:
     int _listensock;
 };
 
-##endif
+#endif
 ```
 
 值得注意的是，这里使用的是云服务器测试，所以 IP 地址可能是厂商虚拟提供给我们的，在实现 Sock 类时，设置为任何 IP 都可以使用，如果要显式地设置为指定 IP 作为参数也可以。
@@ -385,8 +385,8 @@ void Start()
 在 main.cc 中，将服务器运行起来（使用普通指针也可以）：
 
 ```cpp
-##include "selectServer.hpp"
-##include <memory>
+#include "selectServer.hpp"
+#include <memory>
 
 int main()
 {
@@ -505,9 +505,9 @@ select 函数的作用是监听一组文件描述符的 I/O 事件是否就绪�
 2. 在 HandlerEvent() 函数中，处理 select 函数检测到的读取事件。但由于文件描述符集合 fd_set 中既包含了监听套接字文件描述符，也包含了普通的文件描述符，因此我们要根据它们的类型做不同的处理。在上一个 HandlerEvent() 函数的编写中，只实现了前者的处理。为了将读写逻辑模块化，将处理二者的逻辑分别用成员函数 Accepter() 和 Recver() 函数封装。
 
 ```cpp
-##define BITS 8
-##define NUM (sizeof(fd_set) * BITS)
-##define FD_NONE -1
+#define BITS 8
+#define NUM (sizeof(fd_set) * BITS)
+#define FD_NONE -1
 
 class SelectServer
 {
@@ -809,9 +809,9 @@ events 和 revents 的取值：
 它们是宏，其二进制序列中只有一个比特位为 1，且以 1 的位置区分。例如：
 
 ```c
-##define POLLIN		0x001		/* There is data to read.  */
-##define POLLPRI		0x002		/* There is urgent data to read.  */
-##define POLLOUT		0x004		/* Writing now will not block.  */
+#define POLLIN		0x001		/* There is data to read.  */
+#define POLLPRI		0x002		/* There is urgent data to read.  */
+#define POLLOUT		0x004		/* Writing now will not block.  */
 ```
 
 在 poll 的测试中，我们只使用 POLLIN 和 POLLOUT。
@@ -846,21 +846,21 @@ events 和 revents 的取值：
 #### 实现
 
 ```cpp
-##ifndef __POLL_SVR_H__
-##define __POLL_SVR_H__
+#ifndef __POLL_SVR_H__
+#define __POLL_SVR_H__
 
-##include <iostream>
-##include <cerrno>
-##include <cstring>
-##include <string>
+#include <iostream>
+#include <cerrno>
+#include <cstring>
+#include <string>
 
-##include <sys/poll.h>
-##include <sys/time.h>
+#include <sys/poll.h>
+#include <sys/time.h>
 
-##include "Sock.hpp"
-##include "Log.hpp"
+#include "Sock.hpp"
+#include "Log.hpp"
 
-##define FD_NONE -1
+#define FD_NONE -1
 
 class PollServer
 {
@@ -1008,7 +1008,7 @@ private:
     int _timeout;
 };
 
-##endif
+#endif
 ```
 
 ### 4.3 优缺点
@@ -1294,9 +1294,9 @@ EpollWait()：取出 epoll 模型中就绪队列中就绪的文件描述符。�
 而且，当 epoll_wait() 返回时，会将就绪队列中所有就绪的文件描述符都放入这个数组中，返回值就是它们的个数。如果数组的大小不足以一次性存入所有就绪事件的文件描述符，那么它只会返回数组能容纳的最大事件数，即第三个参数的值。需要下一次调用 epol_wait() 才能获取。因此第三个参数应该设置为一个足够大的值，以覆盖可能的最大并发连接数。
 
 ```cpp
-##pragma once
+#pragma once
 
-##include <sys/epoll.h>
+#include <sys/epoll.h>
 
 class Epoll
 {
@@ -1508,7 +1508,7 @@ void Accepter(int listensock)
 在 EpollServer 类中新增一个函数对象，它的参数是 RequestData 类型，这是我定义的一个简单的“信息”类，用来传送这个数据的信息。在这里仅仅是为了打印它的 sock 和传输的数据。在这里只是为了提一下像 RequestData 这样保存请求的小数据包是有可能作为参数的，测试时直接拆分为一个个参数即可。
 
 ```cpp
-##include <functional>
+#include <functional>
 
 struct RequestData
 {
