@@ -3,6 +3,10 @@ title: Linux基本操作【下】
 weight: 2
 open: true
 math: true
+prev: \Blogs\os\Linux基本操作【上】
+next: \Blogs\os\yumgitgdb
+sidebar:
+  open: true
 ---
 
 ##  1. more 指令
@@ -231,7 +235,7 @@ date [选项] [格式]
 
 - -s：根据字符串设置系统时间。
 
-输出的时间格式： 格式设定为一个加号后接数个标记，其中常用的标记列表如下
+输出的时间格式：格式设定为一个加号后接数个标记，其中常用的标记列表如下
 
 - %d : 日 (01..31)
 - %H : 小时 (00..23)

@@ -3,6 +3,10 @@ title: Linux基本操作【上】
 weight: 1
 open: true
 math: true
+prev: 
+next: /Blogs/os/Linux基本操作【下】
+sidebar:
+  open: true
 ---
 
 操作环境：CentOS 7.6
