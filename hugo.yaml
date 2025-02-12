@@ -5,16 +5,16 @@ title: "Shawy's Blog"
 module:
   imports:
   - path: github.com/imfing/hextra
+  - path: github.com/alecthomas/chroma/v2
 
 
 enableRobotsTXT: true
 enableGitInfo: true
-# enableEmoji: false
+enableEmoji: true
+enableKatex: true
+enableKatexMath: true
 hasCJKLanguage: true
 
-# services:
-#   googleAnalytics:
-#     ID: G-MEASUREMENT_ID
 
 outputs:
   home: [HTML]
@@ -22,26 +22,29 @@ outputs:
   section: [HTML, RSS]
 
 markup:
+  highlight:
+    style: "nord"
+    noClasses: false
   goldmark:
     renderer:
       unsafe: true
-  highlight:
-    noClasses: false
-    renderer:
-      unsafe: true  # 允许 HTML 标签
+    extensions:
+      passthrough:
+        delimiters:
+          block: [['\[', '\]'], ['$$', '$$']]
+          inline: [['\(', '\)']]
+        enable: true
+
 enableInlineShortcodes: true
 
 menu:
   main:
-    - name: Blogs
-      pageRef: /blogs
+    - name: 文档
+      pageRef: /docs
       weight: 1
-    - name: About
+    - name: 关于
       pageRef: /about
       weight: 2
-    - name: Contact ↗
-      url: "/contact/微信好友二维码.pic.jpg"
-      weight: 3
     - name: Search
       weight: 4
       params:
@@ -52,38 +55,38 @@ menu:
       params:
         icon: github
 
-  sidebar:
-    - identifier: more
-      name: More
-      params:
-        type: separator
-      weight: 1
-    - identifier: about
-      name: "About"
-      pageRef: "/about"
-      weight: 2
+  # sidebar:
+    # - identifier: more
+    #   name: More
+    #   params:
+    #     type: separator
+    #   weight: 1
+    # - identifier: about
+    #   name: "About"
+    #   pageRef: "/about"
+    #   weight: 2
 
 params:
-  description: Modern, responsive, batteries-included Hugo theme for creating beautiful static websites.
+  description: ""
   navbar:
     displayTitle: true
-    displayLogo: true
+    displayLogo: false
 
   footer:
     displayCopyright: true
     displayPoweredBy: true
 
-    logo:
-      path: images/logo.svg
-      dark: images/logo-dark.svg
+    # logo:
+    #   path: images/logo.svg
+    #   dark: images/logo-dark.svg
       # width: 40
       # height: 20
       # link: /
-    width: wide
+    # width: wide
 
   page:
     # full (100%), wide (90rem), normal (1280px)
-    width: full
+    width: wide
 
   theme:
     # light | dark | system
@@ -124,3 +127,18 @@ params:
       enable: true
       # hover | always
       display: hover
+
+  comments:
+    enable: true
+    type: giscus
+
+    giscus:
+      repo: "shawyxy/shawyxy.github.io"
+      repoId: "R_kgDOLxf-pA"
+      category: "Announcements"
+      categoryId: "DIC_kwDOLxf-pM4Cm5D5"
+      data-mapping: "pathname"
+
+services:
+  googleAnalytics:
+    ID: G-MEASUREMENT_ID

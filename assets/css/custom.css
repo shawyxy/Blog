@@ -1,93 +1,12 @@
 body {
-    font-family: "Microsoft Sans Serif";
+    font-family: "Arial", "sans-serif", "Hei", "SimHei", "黑体", "SimSun", "宋体";
 }
 strong
 {
-    color: rgb(204, 227, 235);
     font-weight: Bold;
-    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    position: relative;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
-    line-height: 1.4;
-    cursor: text;
-}
-h1:hover a.anchor,
-h2:hover a.anchor,
-h3:hover a.anchor,
-h4:hover a.anchor,
-h5:hover a.anchor,
-h6:hover a.anchor {
-    text-decoration: none;
-}
-h1 tt,
-h1 code {
-    font-size: inherit;
-}
-h2 tt,
-h2 code {
-    font-size: inherit;
-}
-h3 tt,
-h3 code {
-    font-size: inherit;
-}
-h4 tt,
-h4 code {
-    font-size: inherit;
-}
-h5 tt,
-h5 code {
-    font-size: inherit;
-}
-h6 tt,
-h6 code {
-    font-size: inherit;
-}
-h1 {
-    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
-    font-size: 2.25em;
-    line-height: 1.2;
-    font-weight: 900;
-    border-bottom: 1px solid #eee;
-}
-h2 {
-    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
-    font-size: 1.75em;
-    font-weight: 900;
-    line-height: 1.225;
-}
-h3 {
-    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
-    font-size: 1.5em;
-    font-weight: 900;
-    line-height: 1.43;
-}
-h4 {
-    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
-    font-weight: 900;
-    font-size: 1.25em;
-}
-h5 {
-    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
-    font-weight: 900;
-    font-size: 1em;
-}
-h6 {
-    font-family: "Microsoft Sans Serif", "Hei", "SimHei";
-    font-weight: 900;
-   font-size: 1em;
-    color: #777;
-}
+
 .content :where(blockquote):not(:where([class~=not-prose],[class~=not-prose] *)) {
     margin-top: 1.5rem;
     --tw-border-opacity: 1;

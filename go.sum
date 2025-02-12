@@ -1,2 +1,8 @@
+github.com/alecthomas/chroma/v2 v2.15.0 h1:LxXTQHFoYrstG2nnV9y2X5O94sOBzf0CIUpSTbpxvMc=
+github.com/alecthomas/chroma/v2 v2.15.0/go.mod h1:gUhVLrPDXPtp/f+L1jo9xepo9gL4eLwRuGAunSZMkio=
+github.com/dlclark/regexp2 v1.11.4 h1:rPYF9/LECdNymJufQKmri9gV604RvvABwgOA8un7yAo=
+github.com/dlclark/regexp2 v1.11.4/go.mod h1:DHkYz0B9wPfa6wondMfaivmHpzrQ3v9q8cnmRbL6yW8=
 github.com/imfing/hextra v0.8.5 h1:M/BByWjC6KtKg1eoAB7/IMmTcXDlBadBf1UHsGuMMVY=
 github.com/imfing/hextra v0.8.5/go.mod h1:cEfel3lU/bSx7lTE/+uuR4GJaphyOyiwNR3PTqFTXpI=
+github.com/imfing/hextra v0.9.4 h1:k1KEC2mtYbMVBMOYUYK5Yy8pNPpIH3u6pBTRyBSN6No=
+github.com/imfing/hextra v0.9.4/go.mod h1:cEfel3lU/bSx7lTE/+uuR4GJaphyOyiwNR3PTqFTXpI=

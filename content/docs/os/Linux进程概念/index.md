@@ -1056,7 +1056,7 @@ int main(int argc, char* argv[], char *envp[])
 
 对上面步骤的总结：
 
-==进程 = 内核数据结构 + 进程代码和数据==
+<mark>进程 = 内核数据结构 + 进程代码和数据</mark>
 
 对于进程独立性的理解：
 
@@ -1100,4 +1100,4 @@ int main(int argc, char* argv[], char *envp[])
 
 - 将来会被父进程或子进程写入的数据。
 
-> （众所周知），std::string 内部类中也使用了写时拷贝技术。
+> C++98 std::string 内部类中也使用了写时拷贝技术，由于存在线程安全问题，所以 C++11 从 std::string 中移除了写时拷贝技术。
